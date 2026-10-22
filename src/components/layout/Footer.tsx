@@ -37,7 +37,7 @@ export async function Footer() {
             <div className="max-w-2xl space-y-3">
               <span className="inline-flex items-center gap-2 rounded-full border border-[#D88B99]/30 bg-[#D88B99]/10 px-3.5 py-1 text-xs font-medium text-[#E5A5B1]">
                 <Sparkles className="h-3.5 w-3.5 text-[#D88B99]" strokeWidth={1.5} />
-                Studio Privé Haute Couture • Dakar Mermoz
+                Studio Privé Haute Couture • Dakar Grand Médine
               </span>
               <h2 className="font-serif text-3xl font-semibold tracking-tight text-white sm:text-4xl">
                 Prête à révéler l’intensité de votre regard ?
@@ -276,7 +276,7 @@ export async function Footer() {
             <ul className="space-y-2.5 text-xs text-[#B8ABB0]">
               <li className="flex items-start gap-2">
                 <MapPin className="mt-0.5 h-3.5 w-3.5 shrink-0 text-[#D88B99]" strokeWidth={1.75} />
-                <span>{settings.zoneLabel || 'Dakar, Mermoz Pyrotechnie (sur RDV)'}</span>
+                <span>{settings.zoneLabel || 'Dakar, Grand Médine — Rue GM-01 (sur RDV)'}</span>
               </li>
               <li className="flex items-start gap-2">
                 <Clock className="mt-0.5 h-3.5 w-3.5 shrink-0 text-[#D88B99]" strokeWidth={1.75} />

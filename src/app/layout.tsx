@@ -31,7 +31,7 @@ export const viewport: Viewport = {
 export const metadata: Metadata = {
   title: 'DIAMA EYELASH EXTENSIONS | Extensions de Cils à Dakar',
   description:
-    'Studio privé Diama Eyelash Extensions à Dakar (Mermoz). Réservez votre pose d’extensions de cils (Cil à cil, Pose Mixte, Volume Léger, Volume Intense) en ligne selon les vrais créneaux disponibles.',
+    'Studio privé Diama Eyelash Extensions à Dakar (Grand Médine). Réservez votre pose d’extensions de cils (Cil à cil, Pose Mixte, Volume Léger, Volume Intense) en ligne selon les vrais créneaux disponibles.',
 };
 
 export default function RootLayout({

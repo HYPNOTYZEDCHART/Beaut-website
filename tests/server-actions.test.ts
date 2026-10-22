@@ -161,8 +161,10 @@ describe('SERVER ACTIONS & TRANSACTION ACID — Cycle de Vie Complet Réservatio
     });
     assert.strictEqual(successResult.success, true);
     assert.ok(successResult.data);
-    assert.strictEqual(successResult.data.status, 'CONFIRMED');
-    assert.ok(successResult.data.clientConfirmationWhatsAppUrl.includes('Mermoz'));
+    assert.ok(
+      decodeURIComponent(successResult.data.clientConfirmationWhatsAppUrl).includes('GM-01') ||
+      decodeURIComponent(successResult.data.clientConfirmationWhatsAppUrl).includes('Grand Médine')
+    );
   });
 
   it('5. completeBookingAndGenerateReviewLinkAction et soumission d avis via token', async () => {

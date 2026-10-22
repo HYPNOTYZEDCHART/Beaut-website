@@ -29,9 +29,9 @@ async function main(): Promise<void> {
       tagline:
         'Extensions de cils sur-mesure dans un cadre doux, calme et intimiste.',
       zoneLabel:
-        'Dakar — Mermoz / Sacré-Cœur (adresse exacte communiquée dès confirmation)',
+        'Dakar — Grand Médine (adresse exacte communiquée dès confirmation)',
       exactAddress:
-        'Mermoz Pyrotechnie, Villa n°24 (Porte rose poudré, 1er étage), Dakar',
+        'Rue GM-01, HLM Grand Médine (proche Stade Léopold Sédar Senghor), Dakar',
       whatsappPhone: '+221773956966',
       wavePhone: '+221773956966',
       orangeMoneyPhone: '+221773956966',

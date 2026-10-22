@@ -57,7 +57,7 @@ export default async function ASavoirPage() {
               </div>
             </div>
             <p className="mt-3 text-sm leading-relaxed text-[#1C191A]">
-              Le studio est situé à Dakar (secteur Mermoz / Sacré-Cœur). Par
+              Le studio est situé à Dakar (secteur Grand Médine / Stade Senghor). Par
               mesure de tranquillité et de sécurité,{' '}
               <strong>
                 l’adresse exacte ainsi que la localisation précise sont
