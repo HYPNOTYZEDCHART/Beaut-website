@@ -1,0 +1,878 @@
+'use client';
+
+import React, { useState, useMemo } from 'react';
+import { useRouter } from 'next/navigation';
+import { AnimatePresence, motion } from 'framer-motion';
+import {
+  Sparkles,
+  Clock,
+  ShieldCheck,
+  MapPin,
+  CheckCircle2,
+  Info,
+  ArrowRight,
+  Star,
+  Wallet,
+  MessageCircle,
+  Instagram,
+} from 'lucide-react';
+import {
+  PublicStudioSettingsDTO,
+  ServiceCatalogItemDTO,
+} from '@/actions/availability.actions';
+import { PublicReviewDTO } from '@/actions/review.actions';
+import {
+  buildGeneralContactWhatsAppUrl,
+  formatDakarDateLong,
+  formatXof,
+} from '@/lib/whatsapp';
+import { cn } from '@/lib/cn';
+import { PowderyBadge } from '@/components/ui/PowderyBadge';
+import { TactileButton } from '@/components/ui/TactileButton';
+import {
+  ShimmerBookingButton,
+  StickyAndroidBookingBar,
+} from '@/components/ui/ShimmerBookingButton';
+import { ServiceConditionsDrawer } from '@/components/ui/ServiceConditionsDrawer';
+import { LashIllustrationCard } from '@/components/vitrine/LashIllustrationCard';
+
+interface LongScrollTrainExperienceProps {
+  settings: PublicStudioSettingsDTO;
+  services: ServiceCatalogItemDTO[];
+  reviews: PublicReviewDTO[];
+  averageRating: number;
+  totalReviews: number;
+}
+
+const HIGH_INTENSITY_SPRING = {
+  type: 'spring' as const,
+  stiffness: 380,
+  damping: 28,
+};
+
+const STAGGER_CONTAINER_VARIANTS = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.06,
+      delayChildren: 0.04,
+    },
+  },
+};
+
+const STAGGER_ITEM_VARIANTS = {
+  hidden: {
+    opacity: 0,
+    y: 20,
+    scale: 0.94,
+    filter: 'blur(8px)',
+  },
+  visible: {
+    opacity: 1,
+    y: 0,
+    scale: 1,
+    filter: 'blur(0px)',
+    transition: HIGH_INTENSITY_SPRING,
+  },
+};
+
+export function LongScrollTrainExperience({
+  settings,
+  services,
+  reviews,
+  averageRating,
+  totalReviews,
+}: LongScrollTrainExperienceProps) {
+  const router = useRouter();
+  const [categoryFilter, setCategoryFilter] = useState<
+    'ALL' | 'FULL_SET' | 'REFILL'
+  >('ALL');
+  const [highlightedService, setHighlightedService] =
+    useState<ServiceCatalogItemDTO | null>(services[0] ?? null);
+  const [drawerService, setDrawerService] =
+    useState<ServiceCatalogItemDTO | null>(null);
+
+  const filteredServices = useMemo(() => {
+    if (categoryFilter === 'ALL') return services;
+    return services.filter((s) => s.category === categoryFilter);
+  }, [services, categoryFilter]);
+
+  const whatsappContactUrl = buildGeneralContactWhatsAppUrl(
+    settings.whatsappPhone
+  );
+  const cleanInsta = settings.instagramHandle.replace(/^@/, '');
+  const instagramUrl = `https://instagram.com/${cleanInsta}`;
+
+  return (
+    <div className="relative pb-24 md:pb-0">
+      {/* Bannière Mode Examens si activé */}
+      {settings.examModeActive && (
+        <div className="border-b border-[#F6DFC0] bg-[#FDF4E7] px-4 py-3 text-center text-xs font-medium text-[#B4690E] sm:text-sm">
+          {settings.examModeMessage ??
+            'Mode Examens activé : les réservations sont temporairement en pause.'}
+        </div>
+      )}
+
+      {/* =====================================================================
+          WAGON 01 — ACCUEIL & HERO HAUTE COUTURE (#accueil)
+         ===================================================================== */}
+      <section
+        id="accueil"
+        className="relative scroll-mt-24 overflow-hidden bg-white py-10 sm:py-16 lg:py-20"
+      >
+        {/* Photo d'arrière-plan Haute Couture voilée (Blanc Pur & Rose Poudré, contraste WCAG optimal) */}
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-0 overflow-hidden"
+        >
+          <img
+            src="/images/hero-studio-bg.jpg"
+            alt=""
+            loading="eager"
+            className="h-full w-full object-cover object-center opacity-35"
+          />
+          <div className="absolute inset-0 bg-gradient-to-r from-white/95 via-white/88 to-[#FDF8F9]/75" />
+          <div className="absolute inset-x-0 bottom-0 h-20 bg-gradient-to-t from-white to-transparent" />
+        </div>
+
+        <motion.div
+          variants={STAGGER_CONTAINER_VARIANTS}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: '-60px' }}
+          className="relative z-10 mx-auto max-w-5xl px-4 sm:px-6"
+        >
+          <div className="grid grid-cols-1 items-center gap-10 lg:grid-cols-12">
+            <div className="lg:col-span-7 space-y-6">
+              <motion.div
+                variants={STAGGER_ITEM_VARIANTS}
+                className="flex flex-wrap items-center gap-2"
+              >
+                <PowderyBadge variant="rose">Wagon 01 • Accueil</PowderyBadge>
+                <PowderyBadge
+                  variant={settings.examModeActive ? 'amber' : 'sage'}
+                >
+                  <span className="h-2 w-2 rounded-full bg-current" />
+                  {settings.examModeActive
+                    ? 'Période d’examens en cours'
+                    : 'Vrais créneaux ouverts en direct'}
+                </PowderyBadge>
+              </motion.div>
+
+              <motion.h1
+                variants={STAGGER_ITEM_VARIANTS}
+                className="font-serif text-4xl font-semibold leading-[1.1] tracking-tight text-[#1C191A] sm:text-5xl lg:text-6xl"
+              >
+                {settings.studioName}
+              </motion.h1>
+
+              <motion.p
+                variants={STAGGER_ITEM_VARIANTS}
+                className="max-w-xl text-base leading-relaxed text-[#786B6E] sm:text-lg"
+              >
+                {settings.tagline} Défilez à travers nos poses, nos consignes de
+                séance et les avis vérifiés, puis réservez votre créneau en toute
+                autonomie sans perturber mes heures d’études.
+              </motion.p>
+
+              <motion.div
+                variants={STAGGER_ITEM_VARIANTS}
+                className="flex flex-col gap-3 pt-2 sm:flex-row sm:items-center"
+              >
+                <ShimmerBookingButton
+                  href={
+                    highlightedService
+                      ? `/reserver?service=${encodeURIComponent(highlightedService.slug)}`
+                      : '/reserver'
+                  }
+                  label="Réserver mon rendez-vous"
+                  sublabel={
+                    highlightedService
+                      ? `Pose présélectionnée : ${highlightedService.name}`
+                      : 'Calendrier en temps réel • Wave & OM'
+                  }
+                />
+
+                <a
+                  href="#prestations"
+                  className="inline-flex min-h-12 items-center justify-center gap-2 rounded-full border border-[#F3E1E6] bg-[#FDF8F9] px-6 py-3.5 text-sm font-medium text-[#1C191A] shadow-powdery transition-transform duration-150 ease-emil-out active:scale-[0.97]"
+                >
+                  <span>Explorer les 5 poses</span>
+                  <ArrowRight
+                    className="h-4 w-4 text-[#D88B99]"
+                    strokeWidth={1.5}
+                  />
+                </a>
+              </motion.div>
+
+              <motion.div
+                variants={STAGGER_ITEM_VARIANTS}
+                className="grid grid-cols-1 gap-3 pt-3 sm:grid-cols-3"
+              >
+                <div className="flex items-center gap-2.5 rounded-2xl border border-[#F3E1E6] bg-[#FDF8F9] px-3.5 py-2.5 text-xs text-[#786B6E] tabular-nums">
+                  <Clock
+                    className="h-4 w-4 shrink-0 text-[#D88B99]"
+                    strokeWidth={1.5}
+                  />
+                  <span>Réservation {settings.minNoticeHours}–48h avant</span>
+                </div>
+                <div className="flex items-center gap-2.5 rounded-2xl border border-[#F3E1E6] bg-[#FDF8F9] px-3.5 py-2.5 text-xs text-[#786B6E]">
+                  <ShieldCheck
+                    className="h-4 w-4 shrink-0 text-[#D88B99]"
+                    strokeWidth={1.5}
+                  />
+                  <span>Zéro doublon de créneau</span>
+                </div>
+                <div className="flex items-center gap-2.5 rounded-2xl border border-[#F3E1E6] bg-[#FDF8F9] px-3.5 py-2.5 text-xs text-[#786B6E]">
+                  <MapPin
+                    className="h-4 w-4 shrink-0 text-[#D88B99]"
+                    strokeWidth={1.5}
+                  />
+                  <span>Mermoz / Sacré-Cœur</span>
+                </div>
+              </motion.div>
+            </div>
+
+            <motion.div
+              variants={STAGGER_ITEM_VARIANTS}
+              className="lg:col-span-5"
+            >
+              <LashIllustrationCard />
+            </motion.div>
+          </div>
+        </motion.div>
+      </section>
+
+      {/* =====================================================================
+          WAGON 02 — PRESTATIONS & TARIFS EN FCFA (#prestations)
+         ===================================================================== */}
+      <section
+        id="prestations"
+        className="scroll-mt-24 border-y border-[#F3E1E6] bg-[#FDF8F9] py-14 sm:py-20"
+      >
+        <motion.div
+          variants={STAGGER_CONTAINER_VARIANTS}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: '-60px' }}
+          className="mx-auto max-w-5xl px-4 sm:px-6"
+        >
+          <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-end">
+            <motion.div variants={STAGGER_ITEM_VARIANTS}>
+              <PowderyBadge variant="rose">
+                Wagon 02 • Prestations & Tarifs
+              </PowderyBadge>
+              <h2 className="mt-2 font-serif text-3xl font-semibold text-[#1C191A] sm:text-4xl">
+                Nos modèles d’extensions de cils
+              </h2>
+              <p className="mt-1 max-w-xl text-sm text-[#786B6E]">
+                Touchez une carte pour la sélectionner ou ouvrir ses conditions
+                dans le tiroir 3D, puis lancez votre réservation.
+              </p>
+            </motion.div>
+
+            {/* Filtres de catégories avec pilule glissante layoutId */}
+            <motion.div
+              variants={STAGGER_ITEM_VARIANTS}
+              className="inline-flex self-start rounded-full border border-[#F3E1E6] bg-white p-1 shadow-powdery"
+            >
+              {(
+                [
+                  { key: 'ALL', label: 'Toutes (5)' },
+                  { key: 'FULL_SET', label: 'Poses complètes' },
+                  { key: 'REFILL', label: 'Remplissage' },
+                ] as const
+              ).map((tab) => {
+                const isActive = categoryFilter === tab.key;
+                return (
+                  <button
+                    key={tab.key}
+                    type="button"
+                    onClick={() => setCategoryFilter(tab.key)}
+                    className={cn(
+                      'relative rounded-full px-3.5 py-1.5 text-xs font-medium transition-colors duration-150 tabular-nums',
+                      isActive
+                        ? 'text-[#1C191A] font-semibold'
+                        : 'text-[#786B6E]'
+                    )}
+                  >
+                    {isActive && (
+                      <motion.span
+                        layoutId="category-filter-pill"
+                        transition={HIGH_INTENSITY_SPRING}
+                        className="pointer-events-none absolute inset-0 rounded-full border border-[#D88B99] bg-[#F9EBEF]"
+                      />
+                    )}
+                    <span className="relative z-10">{tab.label}</span>
+                  </button>
+                );
+              })}
+            </motion.div>
+          </div>
+
+          {/* Bandeau de la pose actuellement sélectionnée (Morphing preview) */}
+          <AnimatePresence mode="popLayout">
+            {highlightedService && (
+              <motion.div
+                key={highlightedService.id}
+                initial={{
+                  opacity: 0,
+                  y: 14,
+                  scale: 0.96,
+                  filter: 'blur(6px)',
+                }}
+                animate={{
+                  opacity: 1,
+                  y: 0,
+                  scale: 1,
+                  filter: 'blur(0px)',
+                }}
+                exit={{
+                  opacity: 0,
+                  y: -10,
+                  scale: 0.96,
+                  filter: 'blur(6px)',
+                }}
+                transition={HIGH_INTENSITY_SPRING}
+                className="mt-6 flex flex-col justify-between gap-4 rounded-[24px] border border-[#D88B99] bg-white p-5 shadow-powderyLg sm:flex-row sm:items-center"
+              >
+                <div className="flex items-center gap-4">
+                  <div className="relative h-14 w-14 shrink-0 overflow-hidden rounded-2xl border border-[#D88B99] bg-[#F9EBEF] shadow-powdery">
+                    <img
+                      src={highlightedService.imageUrl}
+                      alt={highlightedService.name}
+                      className="h-full w-full object-cover object-center"
+                    />
+                    <span className="absolute bottom-0.5 right-0.5 rounded-md bg-white/95 px-1 text-[10px] font-bold text-[#B36270] tabular-nums">
+                      {highlightedService.durationMinutes}m
+                    </span>
+                  </div>
+                  <div>
+                    <p className="text-[11px] font-semibold uppercase tracking-wider text-[#B36270]">
+                      Pose sélectionnée pour votre réservation
+                    </p>
+                    <h3 className="font-serif text-2xl font-semibold text-[#1C191A]">
+                      {highlightedService.name} —{' '}
+                      <span className="tabular-nums text-[#C47482]">
+                        {formatXof(highlightedService.priceXof)}
+                      </span>
+                    </h3>
+                  </div>
+                </div>
+
+                <ShimmerBookingButton
+                  href={`/reserver?service=${encodeURIComponent(highlightedService.slug)}`}
+                  label="Réserver cette pose"
+                  sublabel={`Acompte : ${formatXof(highlightedService.depositXof)}`}
+                />
+              </motion.div>
+            )}
+          </AnimatePresence>
+
+          {/* Grille des prestations avec anneau layoutId à ressort dynamique */}
+          <div className="mt-6 grid grid-cols-1 gap-5 md:grid-cols-2">
+            <AnimatePresence mode="popLayout">
+              {filteredServices.map((service) => {
+                const isSelected = highlightedService?.id === service.id;
+                return (
+                  <motion.article
+                    key={service.id}
+                    layout
+                    initial={{
+                      opacity: 0,
+                      y: 18,
+                      scale: 0.95,
+                      filter: 'blur(6px)',
+                    }}
+                    animate={{
+                      opacity: 1,
+                      y: 0,
+                      scale: 1,
+                      filter: 'blur(0px)',
+                    }}
+                    exit={{
+                      opacity: 0,
+                      scale: 0.94,
+                      filter: 'blur(6px)',
+                    }}
+                    transition={HIGH_INTENSITY_SPRING}
+                    onClick={() => setHighlightedService(service)}
+                    className={cn(
+                      'relative flex cursor-pointer flex-col justify-between rounded-[26px] border bg-white p-6 shadow-powdery transition-transform duration-150 ease-emil-out active:scale-[0.985]',
+                      isSelected ? 'border-[#D88B99]' : 'border-[#F3E1E6]'
+                    )}
+                  >
+                  {isSelected && (
+                    <motion.div
+                      layoutId="train-selected-service-ring"
+                      transition={HIGH_INTENSITY_SPRING}
+                      className="pointer-events-none absolute inset-0 rounded-[26px] border-2 border-[#D88B99] bg-[#FDF8F9]/40"
+                    />
+                  )}
+
+                  <div className="relative z-10">
+                    {/* Visuel photo macro de la pose d'extensions de cils */}
+                    <div className="group relative mb-4 h-48 w-full overflow-hidden rounded-[20px] border border-[#F3E1E6] bg-[#FDF8F9]">
+                      <img
+                        src={service.imageUrl}
+                        alt={service.name}
+                        loading="lazy"
+                        className="h-full w-full object-cover object-center transition-transform duration-500 ease-emil-out hover:scale-[1.03]"
+                      />
+                      <div className="absolute inset-x-3 top-3 flex items-center justify-between gap-2">
+                        <span className="rounded-full border border-[#F3E1E6] bg-white/95 px-3 py-1 text-[11px] font-semibold uppercase tracking-wider text-[#B36270] backdrop-blur-sm">
+                          {service.category === 'REFILL'
+                            ? 'Entretien & Suivi'
+                            : 'Pose Complète'}
+                        </span>
+                        <span className="inline-flex items-center gap-1 rounded-full border border-[#F3E1E6] bg-white/95 px-3 py-1 text-xs font-medium text-[#1C191A] tabular-nums backdrop-blur-sm">
+                          <Clock
+                            className="h-3.5 w-3.5 text-[#D88B99]"
+                            strokeWidth={1.5}
+                          />
+                          {service.durationMinutes} min
+                        </span>
+                      </div>
+                    </div>
+
+                    <div className="mt-2 flex items-baseline justify-between gap-4">
+                      <h3 className="font-serif text-2xl font-semibold text-[#1C191A]">
+                        {service.name}
+                      </h3>
+                      <div className="text-right tabular-nums">
+                        <p className="text-lg font-bold text-[#1C191A]">
+                          {formatXof(service.priceXof)}
+                        </p>
+                        <p className="text-[11px] text-[#786B6E]">
+                          Acompte : {formatXof(service.depositXof)}
+                        </p>
+                      </div>
+                    </div>
+
+                    <p className="mt-3 text-sm leading-relaxed text-[#786B6E]">
+                      {service.shortDescription}
+                    </p>
+
+                    <div className="mt-4 flex flex-wrap gap-2">
+                      {service.naturalLashesOnly ? (
+                        <PowderyBadge variant="rose">
+                          <Sparkles
+                            className="h-3.5 w-3.5 text-[#D88B99]"
+                            strokeWidth={1.5}
+                          />
+                          Sur cils naturels uniquement
+                        </PowderyBadge>
+                      ) : (
+                        <PowderyBadge variant="rose">
+                          Pose du studio uniquement
+                        </PowderyBadge>
+                      )}
+
+                      {service.refillAccepted && (
+                        <PowderyBadge variant="sage">
+                          <CheckCircle2
+                            className="h-3.5 w-3.5"
+                            strokeWidth={1.5}
+                          />
+                          Remplissage accepté (≤ 21 j)
+                        </PowderyBadge>
+                      )}
+                    </div>
+
+                    {service.refillConditions && (
+                      <div className="mt-4 rounded-2xl border border-[#F3E1E6] bg-[#FDF8F9] p-3.5 text-xs leading-relaxed text-[#786B6E]">
+                        <strong className="text-[#1C191A]">Conditions : </strong>
+                        {service.refillConditions}
+                      </div>
+                    )}
+                  </div>
+
+                  <div className="relative z-10 mt-6 flex flex-col gap-2.5 sm:flex-row">
+                    <TactileButton
+                      variant="secondary"
+                      className="sm:flex-1"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setDrawerService(service);
+                      }}
+                    >
+                      <Info
+                        className="h-4 w-4 text-[#D88B99]"
+                        strokeWidth={1.5}
+                      />
+                      <span>Conditions en 3D</span>
+                    </TactileButton>
+
+                    <TactileButton
+                      variant="primary"
+                      className="sm:flex-1"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        router.push(
+                          `/reserver?service=${encodeURIComponent(service.slug)}`
+                        );
+                      }}
+                    >
+                      <span>Choisir ce créneau</span>
+                      <ArrowRight className="h-4 w-4" strokeWidth={1.5} />
+                    </TactileButton>
+                  </div>
+                </motion.article>
+              );
+            })}
+            </AnimatePresence>
+          </div>
+        </motion.div>
+      </section>
+
+      {/* =====================================================================
+          WAGON 03 — À SAVOIR AVANT DE VENIR (#a-savoir)
+         ===================================================================== */}
+      <section id="a-savoir" className="scroll-mt-24 bg-white py-14 sm:py-20">
+        <motion.div
+          variants={STAGGER_CONTAINER_VARIANTS}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: '-60px' }}
+          className="mx-auto max-w-5xl px-4 sm:px-6"
+        >
+          <motion.div variants={STAGGER_ITEM_VARIANTS} className="max-w-2xl">
+            <PowderyBadge variant="rose">
+              Wagon 03 • À savoir avant de venir
+            </PowderyBadge>
+            <h2 className="mt-2 font-serif text-3xl font-semibold text-[#1C191A] sm:text-4xl">
+              Les règles d’or de votre rendez-vous
+            </h2>
+            <p className="mt-1 text-sm leading-relaxed text-[#786B6E]">
+              Une organisation douce, claire et ponctuelle pour respecter votre
+              regard ainsi que mon planning d’études.
+            </p>
+          </motion.div>
+
+          <motion.div
+            variants={STAGGER_ITEM_VARIANTS}
+            className="mt-8 grid grid-cols-1 items-center gap-6 overflow-hidden rounded-[26px] border border-[#F3E1E6] bg-[#FDF8F9] p-5 shadow-powdery md:grid-cols-12 sm:p-6"
+          >
+            <div className="relative h-56 overflow-hidden rounded-2xl border border-[#F3E1E6] bg-white md:col-span-5 sm:h-64">
+              <img
+                src="/images/studio-ambiance.jpg"
+                alt="Intérieur calme et hygiénique du studio privé TON ESPACE BEAUTÉ à Dakar"
+                loading="lazy"
+                className="h-full w-full object-cover object-center"
+              />
+            </div>
+            <div className="space-y-3 md:col-span-7">
+              <PowderyBadge variant="sage">
+                <ShieldCheck className="h-3.5 w-3.5" strokeWidth={1.5} />
+                Cadre privé, calme & hygiène irréprochable
+              </PowderyBadge>
+              <h3 className="font-serif text-2xl font-semibold text-[#1C191A] sm:text-3xl">
+                Un cocon dédié à la beauté de votre regard à Dakar
+              </h3>
+              <p className="text-sm leading-relaxed text-[#786B6E]">
+                Chaque séance inclut un temps de désinfection complète du
+                matériel et du lit de pose entre deux clientes. Pour préserver
+                cette sérénité et la ponctualité de mes études, merci de prendre
+                connaissance des 4 règles ci-dessous avant de réserver.
+              </p>
+            </div>
+          </motion.div>
+
+          <div className="mt-6 grid grid-cols-1 gap-4 md:grid-cols-2">
+            <motion.article
+              variants={STAGGER_ITEM_VARIANTS}
+              className="rounded-[24px] border border-[#F3E1E6] bg-[#FDF8F9] p-6 shadow-powdery"
+            >
+              <div className="flex items-center gap-3">
+                <span className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-[#F3E1E6] bg-white text-[#D88B99]">
+                  <MapPin className="h-5 w-5" strokeWidth={1.5} />
+                </span>
+                <h3 className="font-serif text-2xl font-semibold text-[#1C191A]">
+                  1. Zone & Adresse confidentielle
+                </h3>
+              </div>
+              <p className="mt-3 text-sm leading-relaxed text-[#786B6E]">
+                Situé à <strong className="text-[#1C191A]">Dakar (Mermoz / Sacré-Cœur)</strong>.
+                Pour votre tranquillité et la sécurité du studio,{' '}
+                <strong className="text-[#1C191A]">
+                  l’adresse exacte est masquée sur le site et envoyée uniquement
+                  après validation de votre acompte
+                </strong>
+                .
+              </p>
+            </motion.article>
+
+            <motion.article
+              variants={STAGGER_ITEM_VARIANTS}
+              className="rounded-[24px] border border-[#F3E1E6] bg-white p-6 shadow-powdery"
+            >
+              <div className="flex items-center gap-3">
+                <span className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-[#F3E1E6] bg-[#FDF8F9] text-[#D88B99]">
+                  <Sparkles className="h-5 w-5" strokeWidth={1.5} />
+                </span>
+                <h3 className="font-serif text-2xl font-semibold text-[#1C191A]">
+                  2. Préparation des cils
+                </h3>
+              </div>
+              <p className="mt-3 text-sm leading-relaxed text-[#786B6E]">
+                Venez les <strong className="text-[#1C191A]">yeux 100 % démaquillés</strong>,
+                sans mascara ni corps gras depuis 24h, et venez seule. Les poses
+                complètes se font sur cils naturels uniquement (aucun remplissage
+                sur pose extérieure).
+              </p>
+            </motion.article>
+
+            <motion.article
+              variants={STAGGER_ITEM_VARIANTS}
+              className="rounded-[24px] border border-[#F3E1E6] bg-white p-6 shadow-powdery"
+            >
+              <div className="flex items-center gap-3">
+                <span className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-[#F3E1E6] bg-[#FDF8F9] text-[#D88B99]">
+                  <Clock className="h-5 w-5" strokeWidth={1.5} />
+                </span>
+                <h3 className="font-serif text-2xl font-semibold text-[#1C191A]">
+                  3. Règles de retard & Annulation
+                </h3>
+              </div>
+              <p className="mt-3 text-sm leading-relaxed text-[#786B6E] tabular-nums">
+                Réservation au moins <strong className="text-[#1C191A]">24 à 48h à l’avance</strong>.
+                Au-delà de <strong className="text-[#1C191A]">15 minutes de retard</strong>,
+                la séance est annulée pour ne pas impacter la cliente suivante ni
+                mes cours. Tout report se demande au moins 24h avant.
+              </p>
+            </motion.article>
+
+            <motion.article
+              variants={STAGGER_ITEM_VARIANTS}
+              className="rounded-[24px] border border-[#F3E1E6] bg-[#FDF8F9] p-6 shadow-powdery"
+            >
+              <div className="flex items-center gap-3">
+                <span className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-[#F3E1E6] bg-white text-[#D88B99]">
+                  <Wallet className="h-5 w-5" strokeWidth={1.5} />
+                </span>
+                <h3 className="font-serif text-2xl font-semibold text-[#1C191A]">
+                  4. Politique d’acompte Wave / OM
+                </h3>
+              </div>
+              <p className="mt-3 text-sm leading-relaxed text-[#786B6E] tabular-nums">
+                Acompte de <strong className="text-[#1C191A]">4 000 à 7 000 FCFA</strong> déduit
+                du total. Non remboursable si annulation à moins de 24h ou retard
+                &gt; 15 min ; reportable 1 fois en prévenant 24h avant ; 100 %
+                remboursé si l’annulation vient de la praticienne.
+              </p>
+            </motion.article>
+          </div>
+        </motion.div>
+      </section>
+
+      {/* =====================================================================
+          WAGON 04 — AVIS CLIENTES VÉRIFIÉS (#avis)
+         ===================================================================== */}
+      <section
+        id="avis"
+        className="scroll-mt-24 border-y border-[#F3E1E6] bg-[#FDF8F9] py-14 sm:py-20"
+      >
+        <motion.div
+          variants={STAGGER_CONTAINER_VARIANTS}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: '-60px' }}
+          className="mx-auto max-w-5xl px-4 sm:px-6"
+        >
+          <motion.div
+            variants={STAGGER_ITEM_VARIANTS}
+            className="flex flex-col justify-between gap-4 sm:flex-row sm:items-end"
+          >
+            <div>
+              <PowderyBadge variant="sage">
+                <ShieldCheck className="h-3.5 w-3.5" strokeWidth={1.5} />
+                Wagon 04 • Avis 100 % authentiques post-prestation
+              </PowderyBadge>
+              <h2 className="mt-2 font-serif text-3xl font-semibold text-[#1C191A] sm:text-4xl">
+                Ce qu’elles pensent de leur pose
+              </h2>
+              <p className="mt-1 text-sm text-[#786B6E]">
+                Chaque avis provient d’un lien personnel unique envoyé sur
+                WhatsApp uniquement après une prestation terminée.
+              </p>
+            </div>
+
+            <div className="inline-flex items-center gap-2 self-start rounded-2xl border border-[#F3E1E6] bg-white px-4 py-2.5 shadow-powdery tabular-nums">
+              <Star className="h-5 w-5 fill-[#D88B99] text-[#D88B99]" />
+              <span className="font-serif text-2xl font-bold text-[#1C191A]">
+                {averageRating.toFixed(1)} / 5
+              </span>
+              <span className="text-xs text-[#786B6E]">
+                ({totalReviews} avis)
+              </span>
+            </div>
+          </motion.div>
+
+          <div className="mt-8 grid grid-cols-1 gap-4 md:grid-cols-3">
+            {reviews.map((review) => (
+              <motion.article
+                key={review.id}
+                variants={STAGGER_ITEM_VARIANTS}
+                className="flex flex-col justify-between rounded-[24px] border border-[#F3E1E6] bg-white p-6 shadow-powdery"
+              >
+                <div>
+                  <div className="flex items-center justify-between gap-2">
+                    <div className="flex items-center gap-1">
+                      {Array.from({ length: 5 }).map((_, idx) => (
+                        <Star
+                          key={idx}
+                          className={
+                            idx < review.rating
+                              ? 'h-4 w-4 fill-[#D88B99] text-[#D88B99]'
+                              : 'h-4 w-4 text-[#F3E1E6]'
+                          }
+                          strokeWidth={1.5}
+                        />
+                      ))}
+                    </div>
+                    <span className="rounded-full bg-[#F9EBEF] px-2.5 py-0.5 text-[11px] font-medium text-[#B36270]">
+                      {review.serviceNameSnap}
+                    </span>
+                  </div>
+
+                  <p className="mt-4 text-sm leading-relaxed text-[#1C191A]">
+                    « {review.comment} »
+                  </p>
+                </div>
+
+                <div className="mt-5 flex items-center justify-between border-t border-[#F3E1E6] pt-3 text-xs text-[#786B6E]">
+                  <span className="font-semibold text-[#1C191A]">
+                    {review.publicDisplayName}
+                  </span>
+                  <span>
+                    {formatDakarDateLong(review.submittedAtIso.slice(0, 10))}
+                  </span>
+                </div>
+              </motion.article>
+            ))}
+          </div>
+        </motion.div>
+      </section>
+
+      {/* =====================================================================
+          WAGON 05 — CONTACT RAPIDE & DERNIER APPEL À L'ACTION (#contact)
+         ===================================================================== */}
+      <section id="contact" className="scroll-mt-24 bg-white py-14 sm:py-20">
+        <motion.div
+          variants={STAGGER_CONTAINER_VARIANTS}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: '-60px' }}
+          className="mx-auto max-w-4xl px-4 sm:px-6"
+        >
+          <motion.div variants={STAGGER_ITEM_VARIANTS} className="text-center">
+            <PowderyBadge variant="rose">
+              Wagon 05 • Contact & Horaires
+            </PowderyBadge>
+            <h2 className="mt-2 font-serif text-3xl font-semibold text-[#1C191A] sm:text-4xl">
+              Une question avant votre réservation ?
+            </h2>
+            <p className="mx-auto mt-1 max-w-lg text-sm text-[#786B6E]">
+              Écrivez-moi directement sur WhatsApp ou Instagram pour toute
+              question hors réservation, ou bloquez votre créneau en ligne.
+            </p>
+          </motion.div>
+
+          <div className="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-2">
+            <motion.a
+              variants={STAGGER_ITEM_VARIANTS}
+              href={whatsappContactUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hover-lift flex items-center justify-between rounded-[24px] border border-[#F3E1E6] bg-[#FDF8F9] p-6 shadow-powdery transition-transform duration-150 active:scale-[0.98]"
+            >
+              <div className="flex items-center gap-3.5">
+                <span className="inline-flex h-12 w-12 items-center justify-center rounded-full bg-[#EBF5F0] text-[#2E7D5B]">
+                  <MessageCircle className="h-5 w-5" strokeWidth={1.5} />
+                </span>
+                <div>
+                  <h3 className="font-serif text-xl font-semibold text-[#1C191A]">
+                    WhatsApp Direct
+                  </h3>
+                  <p className="text-xs text-[#786B6E] tabular-nums">
+                    {settings.whatsappPhone}
+                  </p>
+                </div>
+              </div>
+              <ArrowRight
+                className="h-4 w-4 text-[#2E7D5B]"
+                strokeWidth={1.5}
+              />
+            </motion.a>
+
+            <motion.a
+              variants={STAGGER_ITEM_VARIANTS}
+              href={instagramUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hover-lift flex items-center justify-between rounded-[24px] border border-[#F3E1E6] bg-[#FDF8F9] p-6 shadow-powdery transition-transform duration-150 active:scale-[0.98]"
+            >
+              <div className="flex items-center gap-3.5">
+                <span className="inline-flex h-12 w-12 items-center justify-center rounded-full bg-[#F9EBEF] text-[#B36270]">
+                  <Instagram className="h-5 w-5" strokeWidth={1.5} />
+                </span>
+                <div>
+                  <h3 className="font-serif text-xl font-semibold text-[#1C191A]">
+                    Instagram
+                  </h3>
+                  <p className="text-xs text-[#786B6E]">
+                    {settings.instagramHandle}
+                  </p>
+                </div>
+              </div>
+              <ArrowRight
+                className="h-4 w-4 text-[#B36270]"
+                strokeWidth={1.5}
+              />
+            </motion.a>
+          </div>
+
+          <motion.div
+            variants={STAGGER_ITEM_VARIANTS}
+            className="mt-8 flex justify-center"
+          >
+            <ShimmerBookingButton
+              href={
+                highlightedService
+                  ? `/reserver?service=${encodeURIComponent(highlightedService.slug)}`
+                  : '/reserver'
+              }
+              label="Réserver mon rendez-vous maintenant"
+              sublabel="Accès direct au calendrier des créneaux ouverts"
+            />
+          </motion.div>
+        </motion.div>
+      </section>
+
+      {/* Drawer immersif Vaul avec échelle 3D d'arrière-plan */}
+      <ServiceConditionsDrawer
+        service={drawerService}
+        open={drawerService !== null}
+        onOpenChange={(isOpen) => {
+          if (!isOpen) setDrawerService(null);
+        }}
+        onSelectService={(srv) =>
+          router.push(`/reserver?service=${encodeURIComponent(srv.slug)}`)
+        }
+      />
+
+      {/* Barre d'action flottante sur Android / iOS toujours présente pendant le scroll des wagons */}
+      <StickyAndroidBookingBar
+        selectedServiceName={highlightedService?.name}
+        selectedServiceSlug={highlightedService?.slug}
+        selectedServicePriceFormatted={
+          highlightedService
+            ? formatXof(highlightedService.priceXof)
+            : undefined
+        }
+      />
+    </div>
+  );
+}
+

@@ -1,0 +1,197 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+enum ServiceCategory {
+  FULL_SET
+  REFILL
+}
+
+enum BookingStatus {
+  PENDING_DEPOSIT
+  CONFIRMED
+  COMPLETED
+  CANCELLED
+  EXPIRED
+}
+
+enum DepositStatus {
+  PENDING
+  SUBMITTED_WHATSAPP
+  CONFIRMED
+  REFUNDED
+  FORFEITED
+}
+
+enum PaymentMethod {
+  WAVE
+  ORANGE_MONEY
+}
+
+enum BlackoutType {
+  EXAM_PERIOD
+  MANUAL_BLOCK
+  HOLIDAY
+}
+
+enum ReviewDisplayFormat {
+  FIRST_NAME
+  FIRST_NAME_INITIAL
+}
+
+enum ReviewModerationStatus {
+  INVITED
+  PENDING_MODERATION
+  APPROVED
+  REJECTED
+}
+
+model StudioSettings {
+  id                   String   @id @default("default")
+  studioName           String   @default("TON ESPACE BEAUTÉ")
+  tagline              String   @default("Extensions de cils sur-mesure dans un cadre doux, calme et intimiste.")
+  zoneLabel            String   @default("Dakar — Mermoz / Sacré-Cœur (adresse exacte envoyée dès confirmation)")
+  exactAddress         String   @default("Mermoz Pyrotechnie, Villa n°24 (Porte rose poudré, 1er étage), Dakar")
+  whatsappPhone        String   @default("+221770000000")
+  wavePhone            String   @default("+221770000000")
+  orangeMoneyPhone     String   @default("+221770000000")
+  instagramHandle      String   @default("@tonespacebeaute")
+  timezone             String   @default("Africa/Dakar")
+  minNoticeHours       Int      @default(24) // Délai minimum (24h à 48h à l'avance)
+  defaultBufferMinutes Int      @default(20) // Marge par défaut entre 2 clientes (15 à 30 min)
+  slotHoldMinutes      Int      @default(20) // Durée du verrouillage temporaire pendant le paiement d'acompte
+  maxAdvanceDays       Int      @default(30) // Nombre de jours ouverts à la réservation
+  slotIntervalMinutes  Int      @default(30) // Pas de génération des créneaux (ex: 30 min)
+  examModeActive       Boolean  @default(false) // Interrupteur global Mode Examens (/admin)
+  examModeMessage      String?  @default("Les réservations sont temporairement suspendues pour période d'examens. De nouveaux créneaux seront ouverts très vite.")
+  updatedAt            DateTime @updatedAt
+}
+
+model Service {
+  id                String          @id @default(cuid())
+  slug              String          @unique
+  name              String
+  category          ServiceCategory @default(FULL_SET)
+  shortDescription  String
+  fullDescription   String?
+  priceXof          Int             // Tarif total en FCFA (entier strict, zéro Float)
+  depositXof        Int             // Acompte requis en FCFA (entier strict)
+  durationMinutes   Int             // Durée estimée de la pose en minutes
+  bufferMinutes     Int             @default(20) // Temps de nettoyage/préparation après la pose (15-30 min)
+  naturalLashesOnly Boolean         @default(true) // Badge : "Sur cils naturels uniquement"
+  refillAccepted    Boolean         @default(true) // Badge : "Remplissage accepté"
+  refillConditions  String?         // Conditions précises du remplissage (ex: max 21 jours, min 40% restants, pose réalisée au studio)
+  prepInstructions  String?         // Consignes spécifiques avant de venir
+  imageUrl          String
+  displayOrder      Int             @default(0)
+  isActive          Boolean         @default(true)
+  createdAt         DateTime        @default(now())
+  updatedAt         DateTime        @updatedAt
+
+  bookings Booking[]
+
+  @@index([isActive, displayOrder])
+}
+
+model WeeklySchedule {
+  id        String   @id @default(cuid())
+  dayOfWeek Int      // 0 = Dimanche, 1 = Lundi, ..., 6 = Samedi
+  startTime String   // Format "HH:mm" en heure locale Africa/Dakar (ex: "14:30")
+  endTime   String   // Format "HH:mm" en heure locale Africa/Dakar (ex: "19:30")
+  label     String?  // Ex: "Après-midi sans cours" ou "Journée continue samedi"
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([dayOfWeek, isActive])
+}
+
+model BlackoutPeriod {
+  id        String       @id @default(cuid())
+  title     String       // Ex: "Partiels Semestre 1", "Créneau fermé manuellement"
+  type      BlackoutType @default(MANUAL_BLOCK)
+  startAt   DateTime     // UTC
+  endAt     DateTime     // UTC
+  isAllDay  Boolean      @default(false)
+  reason    String?
+  createdAt DateTime     @default(now())
+  updatedAt DateTime     @updatedAt
+
+  @@index([startAt, endAt])
+  @@index([type, startAt])
+}
+
+model Booking {
+  id                 String        @id @default(cuid())
+  referenceCode      String        @unique // Ex: "TEB-4829"
+  serviceId          String
+  service            Service       @relation(fields: [serviceId], references: [id], onDelete: Restrict)
+
+  // Informations cliente (Étape 4 du Wizard)
+  clientName         String
+  clientPhone        String        // Normalisé au format +221XXXXXXXXX
+  clientInstagram    String?
+  clientNotes        String?
+  agreedToRules      Boolean       @default(true)
+
+  // Horodatage du créneau & marge anti-retard (Règle métier n°3 & n°5)
+  dateKey            String        // "YYYY-MM-DD" en fuseau Africa/Dakar
+  startTimeLabel     String        // "HH:mm" en fuseau Africa/Dakar
+  endTimeLabel       String        // "HH:mm" fin de prestation en fuseau Africa/Dakar
+  startAt            DateTime      // Début exact en UTC
+  endAt              DateTime      // Fin de la prestation en UTC (startAt + durationMinutes)
+  bufferEndAt        DateTime      // Fin de l'occupation réelle (endAt + bufferMinutes)
+
+  // Montants figés au moment de la réservation (Int FCFA)
+  totalPriceXof      Int
+  depositAmountXof   Int
+  paymentMethod      PaymentMethod @default(WAVE)
+  depositStatus      DepositStatus @default(PENDING)
+  depositConfirmedAt DateTime?
+
+  // Statut & Verrouillage Anti-Doublon
+  status             BookingStatus @default(PENDING_DEPOSIT)
+  lockedUntil        DateTime?     // Verrou temporaire actif pendant l'étape 5 (paiement acompte)
+  completedAt        DateTime?     // Déclenché via le bouton "Prestation terminée" (/admin)
+  cancelledAt        DateTime?
+  cancellationReason String?
+
+  createdAt          DateTime      @default(now())
+  updatedAt          DateTime      @updatedAt
+
+  review             Review?
+
+  @@index([dateKey, status])
+  @@index([startAt, bufferEndAt, status])
+  @@index([status, lockedUntil])
+  @@index([clientPhone])
+}
+
+model Review {
+  id                String                 @id @default(cuid())
+  bookingId         String                 @unique
+  booking           Booking                @relation(fields: [bookingId], references: [id], onDelete: Cascade)
+  token             String                 @unique // Jeton cryptographique unique pour /avis/[token]
+  rating            Int?                   // 1 à 5 étoiles (validé par Zod à la soumission)
+  comment           String?                // "Qu'as-tu pensé de ta prestation ?"
+  displayFormat     ReviewDisplayFormat    @default(FIRST_NAME_INITIAL)
+  publicDisplayName String?                // Ex: "Khadija" ou "Khadija D."
+  serviceNameSnap   String                 // Nom de la pose figé pour affichage rapide sur /avis
+  consentGiven      Boolean                @default(false) // Case d'accord obligatoire avant publication
+  moderationStatus  ReviewModerationStatus @default(INVITED)
+  moderationNote    String?
+  submittedAt       DateTime?
+  moderatedAt       DateTime?
+  expiresAt         DateTime               // Expiration du lien d'invitation
+  createdAt         DateTime               @default(now())
+  updatedAt         DateTime               @updatedAt
+
+  @@index([moderationStatus, submittedAt])
+}
+
