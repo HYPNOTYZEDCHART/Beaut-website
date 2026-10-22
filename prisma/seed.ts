@@ -15,6 +15,9 @@ async function main(): Promise<void> {
   await prisma.studioSettings.upsert({
     where: { id: 'default' },
     update: {
+      whatsappPhone: '+221773956966',
+      wavePhone: '+221773956966',
+      orangeMoneyPhone: '+221773956966',
       promoModeActive: false,
       promoPriceXof: 15000,
       promoBannerMessage:

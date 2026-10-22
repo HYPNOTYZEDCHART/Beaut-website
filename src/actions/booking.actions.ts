@@ -102,9 +102,13 @@ export async function createBookingAndLockSlotAction(
       };
     }
     const now = new Date();
+    const maxRetries = 3;
+    let lastError: unknown = null;
 
-    const result = await prisma.$transaction(
-      async (tx) => {
+    for (let attempt = 1; attempt <= maxRetries; attempt += 1) {
+      try {
+        const result = await prisma.$transaction(
+          async (tx) => {
         // 1. Expirer automatiquement les anciens verrous d'acompte dépassés
         await tx.booking.updateMany({
           where: {
@@ -292,7 +296,26 @@ export async function createBookingAndLockSlotAction(
       }
     );
 
-    return { success: true, data: result };
+        return { success: true, data: result };
+      } catch (err: unknown) {
+        lastError = err;
+        const isConflict =
+          (err && typeof err === 'object' && 'code' in err && (err as { code: string }).code === 'P2034') ||
+          (err instanceof Error &&
+            (err.message.includes('write conflict') ||
+              err.message.includes('deadlock') ||
+              err.message.includes('serialization failure')));
+
+        if (isConflict && attempt < maxRetries) {
+          const delay = attempt * 80 + Math.floor(Math.random() * 60);
+          await new Promise((resolve) => setTimeout(resolve, delay));
+          continue;
+        }
+        throw err;
+      }
+    }
+
+    throw lastError;
   } catch (error: unknown) {
     const message =
       error instanceof Error

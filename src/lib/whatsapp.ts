@@ -24,9 +24,15 @@ export function normalizeSenegalPhone(rawPhone: string): string {
 
 /**
  * Extrait uniquement les chiffres du numéro pour l'URL https://wa.me/<digits>
+ * Préfixe automatiquement avec 221 si un numéro sénégalais à 9 chiffres est fourni.
  */
 export function toWaMePhoneDigits(phone: string): string {
-  return phone.replace(/\D/g, '');
+  try {
+    const normalized = normalizeSenegalPhone(phone);
+    return normalized.replace(/\D/g, '');
+  } catch {
+    return phone.replace(/\D/g, '');
+  }
 }
 
 /**

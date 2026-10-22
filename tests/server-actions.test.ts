@@ -56,7 +56,7 @@ describe('SERVER ACTIONS & TRANSACTION ACID — Cycle de Vie Complet Réservatio
     );
     assert.ok(candidateDay, 'Un jour avec plusieurs créneaux doit être disponible');
 
-    const candidateSlot = candidateDay.slots[candidateDay.slots.length - 1]; // Dernier créneau de la journée
+    const candidateSlot = candidateDay.slots[0]; // Premier créneau libre
     assert.ok(candidateSlot);
 
     const bookingResult = await createBookingAndLockSlotAction({
