@@ -314,8 +314,7 @@ export function LongScrollTrainExperience({
                 Nos modèles d’extensions de cils
               </h2>
               <p className="mt-1 max-w-xl text-sm text-[#786B6E]">
-                Touchez une carte pour la sélectionner ou ouvrir ses conditions
-                dans le tiroir 3D, puis lancez votre réservation.
+                Sélectionnez une pose pour voir ses détails, puis réservez votre créneau en toute simplicité.
               </p>
             </motion.div>
 
@@ -578,7 +577,7 @@ export function LongScrollTrainExperience({
                         className="h-4 w-4 text-[#D88B99]"
                         strokeWidth={1.5}
                       />
-                      <span>Conditions en 3D</span>
+                      <span>Détails de la pose</span>
                     </TactileButton>
 
                     <TactileButton

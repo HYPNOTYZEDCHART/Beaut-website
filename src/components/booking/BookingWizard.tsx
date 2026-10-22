@@ -720,8 +720,7 @@ export function BookingWizard({
                 variants={STEP_CASCADE_ITEM}
                 className="mt-1 text-sm text-[#786B6E]"
               >
-                Touchez un modèle pour le sélectionner (la carte se transformera
-                dans votre récapitulatif) ou ouvrez ses conditions en 3D.
+                Choisissez votre pose d’extensions de cils parmi nos créations signatures.
               </motion.p>
 
               <div className="mt-6 space-y-3.5">
@@ -855,7 +854,7 @@ export function BookingWizard({
                             className="inline-flex items-center gap-1 rounded-full border border-[#F3E1E6] bg-white px-3 py-1 text-xs font-medium text-[#B36270] transition-transform duration-150 ease-emil-out active:scale-[0.96]"
                           >
                             <Info className="h-3.5 w-3.5" strokeWidth={1.5} />
-                            <span>Conditions</span>
+                            <span>Détails</span>
                           </button>
                         </div>
                       </motion.div>
