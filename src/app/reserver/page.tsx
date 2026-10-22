@@ -2,7 +2,7 @@ import React from 'react';
 import { loadVitrineData } from '@/lib/catalog-fallback';
 import { BookingWizard } from '@/components/booking/BookingWizard';
 
-export const dynamic = 'force-dynamic';
+export const revalidate = 60;
 
 interface ReserverPageProps {
   searchParams: Promise<{ service?: string }>;

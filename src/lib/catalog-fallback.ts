@@ -190,22 +190,42 @@ export const FALLBACK_REVIEWS: PublicReviewDTO[] = [
   },
 ];
 
-export async function loadVitrineData(): Promise<{
+export interface VitrineData {
   settings: PublicStudioSettingsDTO;
   services: ServiceCatalogItemDTO[];
   reviews: PublicReviewDTO[];
   averageRating: number;
   totalReviews: number;
-}> {
+}
+
+let vitrineMemoryCache: {
+  data: VitrineData;
+  timestamp: number;
+} | null = null;
+
+const CACHE_TTL_MS = 60_000; // 60 secondes de cache mémoire ultra-rapide
+
+export function invalidateVitrineCache(): void {
+  vitrineMemoryCache = null;
+}
+
+export async function loadVitrineData(forceFresh = false): Promise<VitrineData> {
+  const now = Date.now();
+  if (!forceFresh && vitrineMemoryCache && now - vitrineMemoryCache.timestamp < CACHE_TTL_MS) {
+    return vitrineMemoryCache.data;
+  }
+
   const dbOnline = await isDatabaseReachableFast();
   if (!dbOnline) {
-    return {
+    const fallbackData: VitrineData = {
       settings: FALLBACK_STUDIO_SETTINGS,
       services: FALLBACK_SERVICES,
       reviews: FALLBACK_REVIEWS,
       averageRating: 5.0,
       totalReviews: FALLBACK_REVIEWS.length,
     };
+    vitrineMemoryCache = { data: fallbackData, timestamp: now };
+    return fallbackData;
   }
 
   const [catalogRes, reviewsRes] = await Promise.all([
@@ -237,12 +257,23 @@ export async function loadVitrineData(): Promise<{
       ? reviewsRes.data.stats.totalApproved
       : FALLBACK_REVIEWS.length;
 
-  return {
+  const result: VitrineData = {
     settings,
     services,
     reviews,
     averageRating,
     totalReviews,
   };
+
+  vitrineMemoryCache = { data: result, timestamp: now };
+  return result;
+}
+
+export async function loadContactSettings(): Promise<PublicStudioSettingsDTO> {
+  if (vitrineMemoryCache && Date.now() - vitrineMemoryCache.timestamp < CACHE_TTL_MS) {
+    return vitrineMemoryCache.data.settings;
+  }
+  const full = await loadVitrineData();
+  return full.settings;
 }
 

@@ -10,7 +10,7 @@ import {
 } from 'lucide-react';
 import { loadVitrineData } from '@/lib/catalog-fallback';
 
-export const dynamic = 'force-dynamic';
+export const revalidate = 60;
 
 export default async function ASavoirPage() {
   const { settings } = await loadVitrineData();

@@ -4,7 +4,7 @@ import { Calendar, Info } from 'lucide-react';
 import { loadVitrineData } from '@/lib/catalog-fallback';
 import { PrestationsClientList } from '@/components/vitrine/PrestationsClientList';
 
-export const dynamic = 'force-dynamic';
+export const revalidate = 60;
 
 export default async function PrestationsPage() {
   const { services } = await loadVitrineData();

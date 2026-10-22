@@ -1,13 +1,13 @@
 import React from 'react';
 import Link from 'next/link';
 import { MessageCircle, Instagram, Calendar, Clock } from 'lucide-react';
-import { loadVitrineData } from '@/lib/catalog-fallback';
+import { loadContactSettings } from '@/lib/catalog-fallback';
 import { buildGeneralContactWhatsAppUrl } from '@/lib/whatsapp';
 
-export const dynamic = 'force-dynamic';
+export const revalidate = 60;
 
 export default async function ContactPage() {
-  const { settings } = await loadVitrineData();
+  const settings = await loadContactSettings();
   const whatsappUrl = buildGeneralContactWhatsAppUrl(settings.whatsappPhone);
   const cleanInsta = settings.instagramHandle.replace(/^@/, '');
   const instagramUrl = `https://instagram.com/${cleanInsta}`;

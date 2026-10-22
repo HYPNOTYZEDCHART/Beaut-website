@@ -5,7 +5,7 @@ import { loadVitrineData } from '@/lib/catalog-fallback';
 import { formatDakarDateLong } from '@/lib/whatsapp';
 import { PowderyBadge } from '@/components/ui/PowderyBadge';
 
-export const dynamic = 'force-dynamic';
+export const revalidate = 60;
 
 export default async function AvisPage() {
   const { reviews, averageRating, totalReviews } = await loadVitrineData();

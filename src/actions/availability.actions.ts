@@ -4,6 +4,7 @@ import crypto from 'node:crypto';
 import { BlackoutType } from '@prisma/client';
 import { z } from 'zod';
 import { isDatabaseReachableFast, prisma } from '@/lib/prisma';
+import { revalidatePath } from 'next/cache';
 import {
   AvailabilityCalendarResult,
   computeAvailabilityCalendar,
@@ -11,6 +12,15 @@ import {
   addDaysToDateKey,
   buildDakarDateTime,
 } from '@/lib/slot-engine';
+import { invalidateVitrineCache } from '@/lib/catalog-fallback';
+
+function safeRevalidatePath(path: string) {
+  try {
+    revalidatePath(path);
+  } catch {
+    // Ignore in CLI test environment
+  }
+}
 
 export type ActionResult<T> =
   | { success: true; data: T }
@@ -162,6 +172,11 @@ export async function verifyAdminPinOrThrow(pin: string): Promise<void> {
 }
 
 async function getOrCreateStudioSettings() {
+  const existing = await prisma.studioSettings.findUnique({
+    where: { id: 'default' },
+  });
+  if (existing) return existing;
+
   return prisma.studioSettings.upsert({
     where: { id: 'default' },
     update: {},
@@ -421,6 +436,11 @@ export async function toggleExamModeAction(
       },
     });
 
+    invalidateVitrineCache();
+    safeRevalidatePath('/');
+    safeRevalidatePath('/reserver');
+    safeRevalidatePath('/admin');
+
     return {
       success: true,
       data: {
@@ -574,6 +594,12 @@ export async function updatePromoModeAction(
       },
     });
 
+    invalidateVitrineCache();
+    safeRevalidatePath('/');
+    safeRevalidatePath('/prestations');
+    safeRevalidatePath('/reserver');
+    safeRevalidatePath('/admin');
+
     return {
       success: true,
       data: {
@@ -638,6 +664,12 @@ export async function updateServicePricingAction(
         depositXof: true,
       },
     });
+
+    invalidateVitrineCache();
+    safeRevalidatePath('/');
+    safeRevalidatePath('/prestations');
+    safeRevalidatePath('/reserver');
+    safeRevalidatePath('/admin');
 
     return {
       success: true,

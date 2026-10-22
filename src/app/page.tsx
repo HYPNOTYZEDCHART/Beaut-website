@@ -2,7 +2,7 @@ import React from 'react';
 import { loadVitrineData } from '@/lib/catalog-fallback';
 import { LongScrollTrainExperience } from '@/components/vitrine/LongScrollTrainExperience';
 
-export const dynamic = 'force-dynamic';
+export const revalidate = 60;
 
 export default async function HomePage() {
   const { settings, services, reviews, averageRating, totalReviews } =

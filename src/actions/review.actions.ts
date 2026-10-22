@@ -12,6 +12,7 @@ import {
   ActionResult,
   verifyAdminPinOrThrow,
 } from '@/actions/availability.actions';
+import { invalidateVitrineCache } from '@/lib/catalog-fallback';
 
 function safeRevalidatePath(path: string) {
   try {
@@ -385,6 +386,7 @@ export async function moderateReviewAction(
       select: { id: true, moderationStatus: true },
     });
 
+    invalidateVitrineCache();
     safeRevalidatePath('/avis');
     safeRevalidatePath('/');
     safeRevalidatePath('/admin');
