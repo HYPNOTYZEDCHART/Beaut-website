@@ -6,6 +6,7 @@ import { toast } from 'sonner';
 import {
   Lock,
   Calendar,
+  Clock,
   GraduationCap,
   Star,
   CheckCircle2,
@@ -17,6 +18,7 @@ import {
   ShieldCheck,
   Sparkles,
   Tag,
+  LogOut,
 } from 'lucide-react';
 import {
   BlackoutPeriodDTO,
@@ -59,70 +61,6 @@ interface AdminDashboardClientProps {
   initialServices: ServiceCatalogItemDTO[];
 }
 
-const DEMO_BOOKINGS: AdminBookingItemDTO[] = [
-  {
-    id: 'demo-b1',
-    referenceCode: 'TEB-4821',
-    clientName: 'Fatou Bintou Fall',
-    clientPhone: '+221771112233',
-    clientInstagram: '@fatoub.fall',
-    clientNotes: 'Première pose, yeux sensibles',
-    serviceName: 'Pose Mixte',
-    dateKey: '2026-10-24',
-    startTimeLabel: '14:30',
-    endTimeLabel: '16:45',
-    totalPriceXof: 18000,
-    depositAmountXof: 5000,
-    paymentMethod: 'WAVE',
-    depositStatus: 'SUBMITTED_WHATSAPP',
-    status: 'PENDING_DEPOSIT',
-    reviewToken: null,
-    createdAtIso: '2026-10-21T16:00:00.000Z',
-  },
-  {
-    id: 'demo-b2',
-    referenceCode: 'TEB-3910',
-    clientName: 'Aïssatou Ndiaye',
-    clientPhone: '+221778889900',
-    clientInstagram: '@aissatou.nd',
-    clientNotes: null,
-    serviceName: 'Volume Léger (Soft Russe)',
-    dateKey: '2026-10-23',
-    startTimeLabel: '14:30',
-    endTimeLabel: '17:00',
-    totalPriceXof: 20000,
-    depositAmountXof: 5000,
-    paymentMethod: 'WAVE',
-    depositStatus: 'CONFIRMED',
-    status: 'CONFIRMED',
-    reviewToken: null,
-    createdAtIso: '2026-10-20T14:00:00.000Z',
-  },
-];
-
-const DEMO_REVIEWS: AdminReviewItemDTO[] = [
-  {
-    id: 'demo-r1',
-    rating: 5,
-    comment:
-      'Pose super douce et très naturelle, l’accueil est top et ponctuel !',
-    publicDisplayName: 'Aminata S.',
-    serviceNameSnap: 'Pose Cil à Cil',
-    moderationStatus: 'PENDING_MODERATION',
-    submittedAtIso: '2026-10-21T15:30:00.000Z',
-  },
-  {
-    id: 'demo-r2',
-    rating: 5,
-    comment:
-      'Accueil hyper doux, la pose mixte est ultra légère et tient parfaitement après deux semaines.',
-    publicDisplayName: 'Aïssatou N.',
-    serviceNameSnap: 'Pose Mixte',
-    moderationStatus: 'APPROVED',
-    submittedAtIso: '2026-10-10T18:00:00.000Z',
-  },
-];
-
 export function AdminDashboardClient({
   initialSettings,
   initialServices,
@@ -132,9 +70,8 @@ export function AdminDashboardClient({
   const [activeTab, setActiveTab] = useState<AdminTab>('bookings');
 
   // Données
-  const [bookings, setBookings] =
-    useState<AdminBookingItemDTO[]>(DEMO_BOOKINGS);
-  const [reviews, setReviews] = useState<AdminReviewItemDTO[]>(DEMO_REVIEWS);
+  const [bookings, setBookings] = useState<AdminBookingItemDTO[]>([]);
+  const [reviews, setReviews] = useState<AdminReviewItemDTO[]>([]);
   const [servicesList, setServicesList] =
     useState<ServiceCatalogItemDTO[]>(initialServices);
   const [isLoadingData, setIsLoadingData] = useState<boolean>(false);
@@ -152,23 +89,21 @@ export function AdminDashboardClient({
       'Offre de lancement : toutes nos poses d’extensions sont actuellement à 15 000 FCFA !'
   );
   const [isSavingPromo, setIsSavingPromo] = useState<boolean>(false);
-  const [savingServiceId, setSavingServiceId] = useState<string | null>(null);
   const [isSavingAllServices, setIsSavingAllServices] = useState<boolean>(false);
 
   const [editingServices, setEditingServices] = useState<
     Record<
       string,
-      { priceXof: number; regularPriceXof: number | ''; depositXof: number }
+      { priceXof: number; depositXof: number }
     >
   >(() => {
     const map: Record<
       string,
-      { priceXof: number; regularPriceXof: number | ''; depositXof: number }
+      { priceXof: number; depositXof: number }
     > = {};
     for (const s of initialServices) {
       map[s.id] = {
-        priceXof: s.regularPriceXof ?? s.priceXof,
-        regularPriceXof: s.regularPriceXof ?? '',
+        priceXof: s.priceXof,
         depositXof: s.depositXof,
       };
     }
@@ -185,13 +120,8 @@ export function AdminDashboardClient({
   );
   const [isSavingExamMode, setIsSavingExamMode] = useState<boolean>(false);
 
-  // Formulaire de fermeture rapide d'un créneau
-  const [blockTitle, setBlockTitle] = useState<string>(
-    'Créneau fermé (Révisions / Cours)'
-  );
-  const [blockType, setBlockType] = useState<'MANUAL_BLOCK' | 'EXAM_PERIOD'>(
-    'MANUAL_BLOCK'
-  );
+  // Fermetures rapides de créneaux
+  const [blockTitle, setBlockTitle] = useState<string>('');
   const [blockDateKey, setBlockDateKey] = useState<string>(() =>
     new Date().toISOString().slice(0, 10)
   );
@@ -228,23 +158,15 @@ export function AdminDashboardClient({
     }
 
     if (bRes.success) {
-      setBookings(bRes.data.data.length > 0 ? bRes.data.data : DEMO_BOOKINGS);
+      setBookings(bRes.data.data);
       setIsUnlocked(true);
-    } else if (bRes.error.includes('Code PIN')) {
-      toast.error(bRes.error);
+    } else {
+      toast.error(bRes.error || 'Code PIN incorrect.');
       setIsUnlocked(false);
       return;
-    } else {
-      // Fallback démo si BDD locale hors-ligne et PIN = 2210
-      if (pinToUse.trim() === '2210') {
-        setIsUnlocked(true);
-      } else {
-        toast.error(bRes.error);
-        return;
-      }
     }
 
-    if (rRes.success && rRes.data.data.length > 0) {
+    if (rRes.success) {
       setReviews(rRes.data.data);
     }
   }, []);
@@ -260,12 +182,19 @@ export function AdminDashboardClient({
   async function handleUnlockSubmit(e: React.FormEvent) {
     e.preventDefault();
     if (!adminPin.trim()) {
-      toast.error('Saisis ton code PIN praticienne.');
+      toast.error('Veuillez saisir votre code PIN.');
       return;
     }
     window.sessionStorage.setItem('teb_admin_pin', adminPin.trim());
     await refreshAllAdminData(adminPin.trim());
   }
+
+  const handleLockAdmin = () => {
+    window.sessionStorage.removeItem('teb_admin_pin');
+    setAdminPin('');
+    setIsUnlocked(false);
+    toast.success('Espace gérante verrouillé.');
+  };
 
   async function handleConfirmDeposit(booking: AdminBookingItemDTO) {
     setBusyId(booking.id);
@@ -293,36 +222,6 @@ export function AdminDashboardClient({
         '_blank',
         'noopener,noreferrer'
       );
-      return;
-    }
-
-    // Mode démo hors-ligne
-    if (booking.id.startsWith('demo-')) {
-      setBookings((prev) =>
-        prev.map((item) =>
-          item.id === booking.id
-            ? {
-                ...item,
-                status: 'CONFIRMED',
-                depositStatus: 'CONFIRMED',
-              }
-            : item
-        )
-      );
-      const fallbackWa = buildBookingConfirmedWhatsAppUrl({
-        clientPhone: booking.clientPhone,
-        clientName: booking.clientName,
-        referenceCode: booking.referenceCode,
-        serviceName: booking.serviceName,
-        dateKey: booking.dateKey,
-        startTimeLabel: booking.startTimeLabel,
-        depositAmountXof: booking.depositAmountXof,
-        remainingAmountXof: booking.totalPriceXof - booking.depositAmountXof,
-        exactAddress:
-          'Mermoz Pyrotechnie, Villa n°24 (Porte rose poudré, 1er étage), Dakar',
-      });
-      toast.success('Acompte validé ! Ouverture de WhatsApp avec l’adresse exacte.');
-      window.open(fallbackWa, '_blank', 'noopener,noreferrer');
       return;
     }
 
@@ -358,32 +257,6 @@ export function AdminDashboardClient({
       return;
     }
 
-    // Mode démo hors-ligne
-    if (booking.id.startsWith('demo-')) {
-      const demoToken = 'demo-token';
-      setBookings((prev) =>
-        prev.map((item) =>
-          item.id === booking.id
-            ? {
-                ...item,
-                status: 'COMPLETED',
-                reviewToken: demoToken,
-              }
-            : item
-        )
-      );
-      const fallbackWa = buildReviewRequestWhatsAppUrl({
-        clientPhone: booking.clientPhone,
-        clientName: booking.clientName,
-        serviceName: booking.serviceName,
-        reviewToken: demoToken,
-        appBaseUrl: window.location.origin,
-      });
-      toast.success('Prestation terminée ! Envoi du lien d’avis sur WhatsApp.');
-      window.open(fallbackWa, '_blank', 'noopener,noreferrer');
-      return;
-    }
-
     toast.error(res.error);
   }
 
@@ -392,11 +265,11 @@ export function AdminDashboardClient({
     const res = await cancelBookingAction({
       adminPin,
       bookingId: booking.id,
-      reason: 'Annulé depuis le téléphone de la praticienne',
+      reason: 'Annulé depuis l’espace gérante',
     });
     setBusyId(null);
 
-    if (res.success || booking.id.startsWith('demo-')) {
+    if (res.success) {
       setBookings((prev) =>
         prev.map((item) =>
           item.id === booking.id ? { ...item, status: 'CANCELLED' } : item
@@ -447,11 +320,12 @@ export function AdminDashboardClient({
 
     const startAtIso = `${blockDateKey}T${blockStartTime}:00.000Z`;
     const endAtIso = `${blockDateKey}T${blockEndTime}:00.000Z`;
+    const finalTitle = blockTitle.trim() || 'Indisponible (Fermeture manuelle)';
 
     const res = await createBlackoutPeriodAction({
       adminPin,
-      title: blockTitle.trim(),
-      type: blockType,
+      title: finalTitle,
+      type: 'MANUAL_BLOCK',
       startAtIso,
       endAtIso,
       isAllDay: false,
@@ -460,13 +334,14 @@ export function AdminDashboardClient({
 
     if (res.success) {
       setBlackoutPeriods((prev) => [res.data, ...prev]);
+      setBlockTitle('');
       toast.success(
-        `Créneau du ${formatDakarDateLong(blockDateKey)} (${blockStartTime}–${blockEndTime}) fermé avec succès.`
+        `Créneau du ${formatDakarDateLong(blockDateKey)} (${blockStartTime}–${blockEndTime}) bloqué avec succès.`
       );
       return;
     }
 
-    toast.error(res.error || 'Impossible de fermer ce créneau.');
+    toast.error(res.error || 'Impossible de bloquer ce créneau.');
   }
 
   async function handleDeleteBlackoutPeriod(blackoutId: string) {
@@ -542,52 +417,6 @@ export function AdminDashboardClient({
     toast.error(res.error);
   }
 
-  async function handleSaveServicePricing(serviceId: string) {
-    const edit = editingServices[serviceId];
-    if (!edit) return;
-
-    const price = Number(edit.priceXof);
-    const deposit = Number(edit.depositXof);
-
-    if (isNaN(price) || price < 1000) {
-      toast.error("Le tarif total doit être d'au moins 1 000 FCFA.");
-      return;
-    }
-    if (isNaN(deposit) || deposit < 1000) {
-      toast.error("L'acompte est obligatoire pour valider une réservation (minimum 1 000 FCFA).");
-      return;
-    }
-    if (deposit > price) {
-      toast.error("L'acompte ne peut pas être supérieur au tarif total de la prestation.");
-      return;
-    }
-
-    setSavingServiceId(serviceId);
-
-    const regPrice =
-      edit.regularPriceXof === '' ? null : Number(edit.regularPriceXof);
-
-    const res = await updateServicePricingAction({
-      adminPin,
-      serviceId,
-      priceXof: price,
-      regularPriceXof: regPrice,
-      depositXof: deposit,
-    });
-    setSavingServiceId(null);
-
-    if (res.success) {
-      toast.success('Tarif et acompte enregistrés avec succès !');
-      const catRes = await getCatalogAndSettingsAction();
-      if (catRes.success) {
-        setServicesList(catRes.data.services);
-      }
-      return;
-    }
-
-    toast.error(res.error);
-  }
-
   async function handleSaveAllServicesPricing() {
     setIsSavingAllServices(true);
     try {
@@ -611,14 +440,11 @@ export function AdminDashboardClient({
           return;
         }
 
-        const regPrice =
-          edit.regularPriceXof === '' ? null : Number(edit.regularPriceXof);
-
         const res = await updateServicePricingAction({
           adminPin,
           serviceId: service.id,
           priceXof: price,
-          regularPriceXof: regPrice,
+          regularPriceXof: null,
           depositXof: deposit,
         });
 
@@ -640,22 +466,21 @@ export function AdminDashboardClient({
 
   if (!isUnlocked) {
     return (
-      <div className="mx-auto max-w-md px-4 py-14 sm:px-6">
+      <div className="mx-auto max-w-md px-4 py-16 sm:px-6">
         <form
           onSubmit={handleUnlockSubmit}
-          className="rounded-[28px] border border-[#F3E1E6] bg-white p-7 shadow-powderyLg space-y-5 text-center"
+          className="rounded-[28px] border border-[#F3E1E6] bg-white p-8 shadow-powderyLg space-y-6 text-center"
         >
-          <span className="mx-auto inline-flex h-12 w-12 items-center justify-center rounded-full bg-[#F9EBEF] text-[#B36270]">
-            <Lock className="h-5 w-5" strokeWidth={1.5} />
+          <span className="mx-auto inline-flex h-14 w-14 items-center justify-center rounded-full bg-[#F9EBEF] text-[#B36270]">
+            <Lock className="h-6 w-6" strokeWidth={1.5} />
           </span>
 
           <div>
             <h1 className="font-serif text-3xl font-semibold text-[#1C191A]">
-              Espace Praticienne
+              Espace Gérante
             </h1>
-            <p className="mt-1 text-xs text-[#786B6E]">
-              Entrez votre code PIN pour gérer vos acomptes, vos créneaux et le
-              Mode Examens depuis votre téléphone (PIN par défaut : 2210).
+            <p className="mt-1.5 text-xs text-[#786B6E]">
+              Veuillez saisir votre code d’accès pour gérer les réservations, les tarifs et le calendrier du studio.
             </p>
           </div>
 
@@ -664,46 +489,70 @@ export function AdminDashboardClient({
             inputMode="numeric"
             enterKeyHint="done"
             required
-            placeholder="Code PIN (ex: 2210)"
+            autoFocus
+            placeholder="••••"
             value={adminPin}
             onChange={(e) => setAdminPin(e.target.value)}
-            className="min-h-12 w-full rounded-2xl border border-[#F3E1E6] bg-[#FDF8F9] px-4 py-3 text-center text-lg font-bold tracking-widest text-[#1C191A] tabular-nums focus:border-[#D88B99] focus:bg-white focus:outline-none"
+            className="min-h-12 w-full rounded-2xl border border-[#F3E1E6] bg-[#FDF8F9] px-4 py-3 text-center text-xl font-bold tracking-widest text-[#1C191A] tabular-nums focus:border-[#D88B99] focus:bg-white focus:outline-none"
           />
 
           <TactileButton type="submit" fullWidth isLoading={isLoadingData}>
-            Déverrouiller mon planning
+            Déverrouiller le studio
           </TactileButton>
         </form>
       </div>
     );
   }
 
+  const pendingDepositsCount = bookings.filter(
+    (b) => b.status === 'PENDING_DEPOSIT'
+  ).length;
+
   return (
     <div className="mx-auto max-w-4xl px-4 py-8 sm:px-6">
-      {/* En-tête mobile Back-Office */}
-      <div className="flex flex-wrap items-center justify-between gap-3 rounded-[24px] border border-[#F3E1E6] bg-white p-5 shadow-powdery">
+      {/* En-tête Back-Office */}
+      <div className="flex flex-wrap items-center justify-between gap-4 rounded-[24px] border border-[#F3E1E6] bg-white p-5 shadow-powdery sm:p-6">
         <div>
-          <div className="flex items-center gap-2">
+          <div className="flex flex-wrap items-center gap-2">
             <PowderyBadge variant={examModeActive ? 'amber' : 'sage'}>
-              {examModeActive ? 'Mode Examens Actif' : 'Planning Ouvert'}
+              {examModeActive
+                ? 'Studio en pause'
+                : 'Studio ouvert aux réservations'}
             </PowderyBadge>
+            {pendingDepositsCount > 0 && (
+              <PowderyBadge variant="rose">
+                {pendingDepositsCount} acompte{pendingDepositsCount > 1 ? 's' : ''} à vérifier
+              </PowderyBadge>
+            )}
           </div>
           <h1 className="mt-1.5 font-serif text-2xl font-semibold text-[#1C191A] sm:text-3xl">
-            Gestion Mobile • DIAMA EYELASH EXTENSIONS
+            Studio Diama • Espace Gérante
           </h1>
         </div>
 
-        <TactileButton
-          variant="secondary"
-          isLoading={isLoadingData}
-          onClick={() => void refreshAllAdminData(adminPin)}
-        >
-          <RefreshCw className="h-4 w-4 text-[#D88B99]" strokeWidth={1.5} />
-          <span>Actualiser</span>
-        </TactileButton>
+        <div className="flex items-center gap-2">
+          <TactileButton
+            variant="secondary"
+            className="px-3.5 py-2 text-xs"
+            isLoading={isLoadingData}
+            onClick={() => void refreshAllAdminData(adminPin)}
+          >
+            <RefreshCw className="h-4 w-4 text-[#D88B99]" strokeWidth={1.5} />
+            <span className="hidden sm:inline">Actualiser</span>
+          </TactileButton>
+
+          <TactileButton
+            variant="ghost"
+            className="px-3.5 py-2 text-xs text-[#786B6E] hover:text-[#B36270]"
+            onClick={handleLockAdmin}
+          >
+            <LogOut className="h-4 w-4" strokeWidth={1.5} />
+            <span>Verrouiller</span>
+          </TactileButton>
+        </div>
       </div>
 
-      {/* Navigation par onglets avec layoutId (emil-design-eng) */}
+      {/* Navigation par onglets */}
       <div className="mt-5 grid grid-cols-2 gap-2 rounded-2xl border border-[#F3E1E6] bg-white p-1.5 shadow-powdery sm:grid-cols-4">
         {(
           [
@@ -714,13 +563,13 @@ export function AdminDashboardClient({
             },
             {
               key: 'pricing',
-              label: 'Tarifs & Promos',
+              label: 'Tarifs & Offres',
               icon: Tag,
             },
             {
               key: 'exams',
-              label: 'Examens & Créneaux',
-              icon: GraduationCap,
+              label: 'Planning & Pauses',
+              icon: Clock,
             },
             {
               key: 'reviews',
@@ -758,128 +607,142 @@ export function AdminDashboardClient({
         })}
       </div>
 
-      {/* ONGLET 1 : AGENDA, VALIDATION D'ACOMPTE EN 1 CLIC & BOUTON « PRESTATION TERMINÉE » */}
+      {/* ONGLET 1 : RENDEZ-VOUS */}
       {activeTab === 'bookings' && (
         <div className="mt-6 space-y-4">
-          {bookings.map((booking) => (
-            <article
-              key={booking.id}
-              className="rounded-[24px] border border-[#F3E1E6] bg-white p-5 shadow-powdery space-y-4"
-            >
-              <div className="flex flex-wrap items-start justify-between gap-2">
-                <div>
-                  <div className="flex flex-wrap items-center gap-2">
-                    <span className="text-xs font-bold text-[#B36270] tabular-nums">
-                      {booking.referenceCode}
-                    </span>
-                    {booking.status === 'PENDING_DEPOSIT' && (
-                      <PowderyBadge variant="amber">
-                        Acompte à vérifier ({formatXof(booking.depositAmountXof)})
-                      </PowderyBadge>
-                    )}
-                    {booking.status === 'CONFIRMED' && (
-                      <PowderyBadge variant="sage">
-                        Confirmé • Acompte reçu
-                      </PowderyBadge>
-                    )}
-                    {booking.status === 'COMPLETED' && (
-                      <PowderyBadge variant="rose">
-                        Prestation terminée
-                      </PowderyBadge>
-                    )}
-                    {booking.status === 'CANCELLED' && (
-                      <PowderyBadge variant="neutral">Annulé</PowderyBadge>
-                    )}
+          {bookings.length === 0 ? (
+            <div className="rounded-[24px] border border-dashed border-[#F3E1E6] bg-white p-12 text-center space-y-3 shadow-powdery">
+              <span className="mx-auto inline-flex h-12 w-12 items-center justify-center rounded-full bg-[#F9EBEF] text-[#B36270]">
+                <Calendar className="h-6 w-6" strokeWidth={1.5} />
+              </span>
+              <h3 className="font-serif text-xl font-semibold text-[#1C191A]">
+                Aucun rendez-vous pour le moment
+              </h3>
+              <p className="mx-auto max-w-sm text-xs text-[#786B6E] leading-relaxed">
+                Les prochaines réservations effectuées par vos clientes apparaîtront ici automatiquement avec leur acompte et coordonnées.
+              </p>
+            </div>
+          ) : (
+            bookings.map((booking) => (
+              <article
+                key={booking.id}
+                className="rounded-[24px] border border-[#F3E1E6] bg-white p-5 shadow-powdery space-y-4"
+              >
+                <div className="flex flex-wrap items-start justify-between gap-2">
+                  <div>
+                    <div className="flex flex-wrap items-center gap-2">
+                      <span className="text-xs font-bold text-[#B36270] tabular-nums">
+                        {booking.referenceCode}
+                      </span>
+                      {booking.status === 'PENDING_DEPOSIT' && (
+                        <PowderyBadge variant="amber">
+                          Acompte à vérifier ({formatXof(booking.depositAmountXof)})
+                        </PowderyBadge>
+                      )}
+                      {booking.status === 'CONFIRMED' && (
+                        <PowderyBadge variant="sage">
+                          Confirmé • Acompte reçu
+                        </PowderyBadge>
+                      )}
+                      {booking.status === 'COMPLETED' && (
+                        <PowderyBadge variant="rose">
+                          Prestation terminée
+                        </PowderyBadge>
+                      )}
+                      {booking.status === 'CANCELLED' && (
+                        <PowderyBadge variant="neutral">Annulé</PowderyBadge>
+                      )}
+                    </div>
+
+                    <h2 className="mt-2 font-serif text-2xl font-semibold text-[#1C191A]">
+                      {booking.clientName} • {booking.serviceName}
+                    </h2>
+                    <p className="text-xs text-[#786B6E] tabular-nums">
+                      {formatDakarDateLong(booking.dateKey)} de{' '}
+                      <strong>{booking.startTimeLabel}</strong> à{' '}
+                      {booking.endTimeLabel} • Tél : {booking.clientPhone}
+                    </p>
                   </div>
 
-                  <h2 className="mt-2 font-serif text-2xl font-semibold text-[#1C191A]">
-                    {booking.clientName} • {booking.serviceName}
-                  </h2>
-                  <p className="text-xs text-[#786B6E] tabular-nums">
-                    {formatDakarDateLong(booking.dateKey)} de{' '}
-                    <strong>{booking.startTimeLabel}</strong> à{' '}
-                    {booking.endTimeLabel} • Tél : {booking.clientPhone}
-                  </p>
+                  <div className="text-right text-xs tabular-nums">
+                    <p className="font-semibold text-[#1C191A]">
+                      Total : {formatXof(booking.totalPriceXof)}
+                    </p>
+                    <p className="text-[#786B6E]">
+                      Via {booking.paymentMethod === 'WAVE' ? 'Wave' : 'Orange Money'}
+                    </p>
+                  </div>
                 </div>
 
-                <div className="text-right text-xs tabular-nums">
-                  <p className="font-semibold text-[#1C191A]">
-                    Total : {formatXof(booking.totalPriceXof)}
+                {booking.clientNotes && (
+                  <p className="rounded-xl border border-[#F3E1E6] bg-[#FDF8F9] px-3.5 py-2 text-xs text-[#786B6E]">
+                    <strong className="text-[#1C191A]">Note cliente :</strong>{' '}
+                    {booking.clientNotes}
                   </p>
-                  <p className="text-[#786B6E]">
-                    Via {booking.paymentMethod === 'WAVE' ? 'Wave' : 'Orange Money'}
-                  </p>
-                </div>
-              </div>
-
-              {booking.clientNotes && (
-                <p className="rounded-xl border border-[#F3E1E6] bg-[#FDF8F9] px-3.5 py-2 text-xs text-[#786B6E]">
-                  <strong className="text-[#1C191A]">Note cliente :</strong>{' '}
-                  {booking.clientNotes}
-                </p>
-              )}
-
-              {/* Boutons d'action 1-clic depuis le téléphone */}
-              <div className="flex flex-col gap-2.5 border-t border-[#F3E1E6] pt-4 sm:flex-row">
-                {booking.status === 'PENDING_DEPOSIT' && (
-                  <TactileButton
-                    variant="primary"
-                    isLoading={busyId === booking.id}
-                    onClick={() => void handleConfirmDeposit(booking)}
-                    className="sm:flex-1"
-                  >
-                    <CheckCircle2 className="h-4 w-4" strokeWidth={1.5} />
-                    <span>Valider l’acompte (1 clic + WhatsApp)</span>
-                  </TactileButton>
                 )}
 
-                {booking.status === 'CONFIRMED' && (
-                  <TactileButton
-                    variant="dark"
-                    isLoading={busyId === booking.id}
-                    onClick={() =>
-                      void handleCompleteAndSendReviewLink(booking)
-                    }
-                    className="sm:flex-1"
-                  >
-                    <Sparkles
-                      className="h-4 w-4 text-[#D88B99]"
-                      strokeWidth={1.5}
-                    />
-                    <span>Prestation terminée • Envoyer lien d’avis</span>
-                  </TactileButton>
-                )}
-
-                {booking.status === 'COMPLETED' && (
-                  <TactileButton
-                    variant="secondary"
-                    onClick={() =>
-                      void handleCompleteAndSendReviewLink(booking)
-                    }
-                    className="sm:flex-1"
-                  >
-                    <MessageCircle
-                      className="h-4 w-4 text-[#2E7D5B]"
-                      strokeWidth={1.5}
-                    />
-                    <span>Renvoyer le lien d’avis WhatsApp</span>
-                  </TactileButton>
-                )}
-
-                {booking.status !== 'CANCELLED' &&
-                  booking.status !== 'COMPLETED' && (
+                {/* Boutons d'action clairs */}
+                <div className="flex flex-col gap-2.5 border-t border-[#F3E1E6] pt-4 sm:flex-row">
+                  {booking.status === 'PENDING_DEPOSIT' && (
                     <TactileButton
-                      variant="ghost"
+                      variant="primary"
                       isLoading={busyId === booking.id}
-                      onClick={() => void handleCancelBooking(booking)}
+                      onClick={() => void handleConfirmDeposit(booking)}
+                      className="sm:flex-1"
                     >
-                      <XCircle className="h-4 w-4" strokeWidth={1.5} />
-                      <span>Libérer ce créneau</span>
+                      <CheckCircle2 className="h-4 w-4" strokeWidth={1.5} />
+                      <span>Confirmer l’acompte</span>
                     </TactileButton>
                   )}
-              </div>
-            </article>
-          ))}
+
+                  {booking.status === 'CONFIRMED' && (
+                    <TactileButton
+                      variant="dark"
+                      isLoading={busyId === booking.id}
+                      onClick={() =>
+                        void handleCompleteAndSendReviewLink(booking)
+                      }
+                      className="sm:flex-1"
+                    >
+                      <Sparkles
+                        className="h-4 w-4 text-[#D88B99]"
+                        strokeWidth={1.5}
+                      />
+                      <span>Clôturer la prestation</span>
+                    </TactileButton>
+                  )}
+
+                  {booking.status === 'COMPLETED' && (
+                    <TactileButton
+                      variant="secondary"
+                      onClick={() =>
+                        void handleCompleteAndSendReviewLink(booking)
+                      }
+                      className="sm:flex-1"
+                    >
+                      <MessageCircle
+                        className="h-4 w-4 text-[#2E7D5B]"
+                        strokeWidth={1.5}
+                      />
+                      <span>Renvoyer lien d’avis WhatsApp</span>
+                    </TactileButton>
+                  )}
+
+                  {booking.status !== 'CANCELLED' &&
+                    booking.status !== 'COMPLETED' && (
+                      <TactileButton
+                        variant="ghost"
+                        isLoading={busyId === booking.id}
+                        onClick={() => void handleCancelBooking(booking)}
+                      >
+                        <XCircle className="h-4 w-4" strokeWidth={1.5} />
+                        <span>Annuler ce créneau</span>
+                      </TactileButton>
+                    )}
+                </div>
+              </article>
+            ))
+          )}
         </div>
       )}
 
@@ -903,8 +766,7 @@ export function AdminDashboardClient({
                 </h2>
                 <p className="mt-1 max-w-xl text-xs text-[#786B6E]">
                   Bascule instantanément toutes les poses complètes au prix promo
-                  indiqué et affiche la bannière d’annonce en haut du site avec
-                  le prix barré.
+                  indiqué et affiche la bannière d’annonce en haut du site.
                 </p>
               </div>
 
@@ -953,20 +815,21 @@ export function AdminDashboardClient({
                 </div>
 
                 <div>
-                  <label className="block text-xs font-semibold text-[#1C191A]">
-                    Statut Actuel
-                  </label>
+                  <span className="block text-xs font-semibold text-[#1C191A]">
+                    Statut en ligne
+                  </span>
                   <p className="text-[11px] text-[#786B6E]">
                     Impact direct sur le calendrier et les réservations.
                   </p>
-                  <div className="mt-1.5 flex h-[42px] items-center rounded-xl border border-[#F3E1E6] bg-[#FDF8F9] px-3.5 text-xs text-[#786B6E]">
+                  <div className="mt-1.5 flex min-h-[42px] items-center rounded-xl bg-[#FDF8F9] px-3.5 py-2 text-xs">
                     {promoModeActive ? (
                       <span className="font-semibold text-[#B36270]">
-                        ✓ Toutes les poses complètes sont à{' '}
-                        {formatXof(promoPriceXof)}
+                        ✓ Offre active : Poses complètes à {formatXof(promoPriceXof)}
                       </span>
                     ) : (
-                      <span>Les tarifs individuels hors promo s’appliquent</span>
+                      <span className="text-[#786B6E]">
+                        Tarifs individuels standards appliqués
+                      </span>
                     )}
                   </div>
                 </div>
@@ -1035,11 +898,9 @@ export function AdminDashboardClient({
             <div className="mt-6 space-y-4">
               {servicesList.map((service) => {
                 const edit = editingServices[service.id] ?? {
-                  priceXof: service.regularPriceXof ?? service.priceXof,
-                  regularPriceXof: service.regularPriceXof ?? '',
+                  priceXof: service.priceXof,
                   depositXof: service.depositXof,
                 };
-                const isSaving = savingServiceId === service.id;
 
                 return (
                   <div
@@ -1071,7 +932,7 @@ export function AdminDashboardClient({
                       </div>
                     </div>
 
-                    <div className="flex flex-wrap items-center gap-3">
+                    <div className="flex flex-wrap items-center gap-4">
                       <div>
                         <label className="block text-[10px] font-semibold uppercase tracking-wider text-[#786B6E]">
                           Prix Total (FCFA) *
@@ -1081,6 +942,9 @@ export function AdminDashboardClient({
                           step={500}
                           min={1000}
                           value={edit.priceXof}
+                          onKeyDown={(e) => {
+                            if (e.key === 'Enter') handleSaveAllServicesPricing();
+                          }}
                           onChange={(e) =>
                             setEditingServices((prev) => ({
                               ...prev,
@@ -1090,7 +954,7 @@ export function AdminDashboardClient({
                               },
                             }))
                           }
-                          className="mt-1 w-28 rounded-lg border border-[#F3E1E6] bg-white px-2.5 py-1.5 text-xs font-semibold tabular-nums text-[#1C191A] focus:border-[#D88B99] focus:outline-none"
+                          className="mt-1 w-32 rounded-lg border border-[#F3E1E6] bg-white px-3 py-1.5 text-xs font-semibold tabular-nums text-[#1C191A] focus:border-[#D88B99] focus:outline-none"
                         />
                       </div>
 
@@ -1103,6 +967,9 @@ export function AdminDashboardClient({
                           step={500}
                           min={1000}
                           value={edit.depositXof}
+                          onKeyDown={(e) => {
+                            if (e.key === 'Enter') handleSaveAllServicesPricing();
+                          }}
                           onChange={(e) =>
                             setEditingServices((prev) => ({
                               ...prev,
@@ -1112,44 +979,8 @@ export function AdminDashboardClient({
                               },
                             }))
                           }
-                          className="mt-1 w-28 rounded-lg border border-[#D88B99] bg-white px-2.5 py-1.5 text-xs font-semibold tabular-nums text-[#1C191A] focus:border-[#B36270] focus:outline-none"
+                          className="mt-1 w-32 rounded-lg border border-[#D88B99] bg-white px-3 py-1.5 text-xs font-semibold tabular-nums text-[#1C191A] focus:border-[#B36270] focus:outline-none"
                         />
-                      </div>
-
-                      <div>
-                        <label className="block text-[10px] font-semibold uppercase tracking-wider text-[#786B6E]">
-                          Prix Barré (Ref)
-                        </label>
-                        <input
-                          type="number"
-                          step={500}
-                          placeholder="Optionnel"
-                          value={edit.regularPriceXof}
-                          onChange={(e) =>
-                            setEditingServices((prev) => ({
-                              ...prev,
-                              [service.id]: {
-                                ...edit,
-                                regularPriceXof:
-                                  e.target.value === ''
-                                    ? ''
-                                    : Number(e.target.value),
-                              },
-                            }))
-                          }
-                          className="mt-1 w-24 rounded-lg border border-[#F3E1E6] bg-white px-2.5 py-1.5 text-xs font-semibold tabular-nums text-[#1C191A] focus:border-[#D88B99] focus:outline-none"
-                        />
-                      </div>
-
-                      <div className="pt-4 sm:pt-0">
-                        <TactileButton
-                          variant="secondary"
-                          className="min-h-9 px-4 py-1 text-xs"
-                          isLoading={isSaving}
-                          onClick={() => handleSaveServicePricing(service.id)}
-                        >
-                          Enregistrer
-                        </TactileButton>
                       </div>
                     </div>
                   </div>
@@ -1169,33 +1000,33 @@ export function AdminDashboardClient({
                 className="w-full sm:w-auto min-h-10 px-5 py-2 text-xs"
               >
                 <Sparkles className="h-4 w-4" />
-                <span>Enregistrer tous les tarifs & acomptes</span>
+                <span>Enregistrer la grille tarifaire</span>
               </TactileButton>
             </div>
           </div>
         </div>
       )}
 
-      {/* ONGLET 3 : MODE EXAMENS & FERMETURE RAPIDE D'UN CRÉNEAU */}
+      {/* ONGLET 3 : PLANNING & PAUSES */}
       {activeTab === 'exams' && (
         <div className="mt-6 space-y-6">
-          {/* Carte 1 : Activation du Mode Examens en 1 clic */}
+          {/* Carte 1 : Pause Temporaire du Studio */}
           <section className="rounded-[24px] border border-[#F3E1E6] bg-white p-6 shadow-powdery space-y-4">
             <div className="flex items-start justify-between gap-4">
               <div>
                 <PowderyBadge variant={examModeActive ? 'amber' : 'sage'}>
                   <GraduationCap className="h-3.5 w-3.5" strokeWidth={1.5} />
                   {examModeActive
-                    ? 'Mode Examens Activé'
-                    : 'Mode Examens Désactivé'}
+                    ? 'Studio en Pause'
+                    : 'Studio Ouvert aux Réservations'}
                 </PowderyBadge>
                 <h2 className="mt-2 font-serif text-2xl font-semibold text-[#1C191A]">
-                  Pause Période d’Examens
+                  Pause Temporaire des Réservations
                 </h2>
                 <p className="mt-1 text-xs leading-relaxed text-[#786B6E]">
-                  Activez cet interrupteur pendant vos révisions ou partiels
-                  pour fermer temporairement toutes les prises de rendez-vous en
-                  ligne sans perdre votre configuration.
+                  Activez cet interrupteur pendant vos révisions, examens ou congés
+                  pour suspendre temporairement la prise de rendez-vous en ligne
+                  sans perdre votre configuration.
                 </p>
               </div>
             </div>
@@ -1205,7 +1036,7 @@ export function AdminDashboardClient({
                 htmlFor="examMessage"
                 className="block text-xs font-semibold uppercase tracking-wider text-[#1C191A]"
               >
-                Message affiché aux clientes pendant les examens
+                Message d’annonce affiché aux clientes sur le site
               </label>
               <textarea
                 id="examMessage"
@@ -1222,68 +1053,29 @@ export function AdminDashboardClient({
                 isLoading={isSavingExamMode}
                 onClick={() => void handleToggleExamMode(!examModeActive)}
               >
-                <GraduationCap className="h-4 w-4" strokeWidth={1.5} />
+                <Clock className="h-4 w-4" strokeWidth={1.5} />
                 <span>
                   {examModeActive
-                    ? 'Désactiver le Mode Examens (Réouvrir le planning)'
-                    : 'Activer le Mode Examens en 1 clic'}
+                    ? 'Rouvrir les réservations du studio'
+                    : 'Mettre le studio en pause'}
                 </span>
               </TactileButton>
             </div>
           </section>
 
-          {/* Carte 2 : Fermeture rapide d'un créneau ou d'une journée */}
+          {/* Carte 2 : Bloquer rapidement un créneau ou une journée */}
           <form
             onSubmit={handleQuickCloseSlot}
             className="rounded-[24px] border border-[#F3E1E6] bg-white p-6 shadow-powdery space-y-4"
           >
-            <h2 className="font-serif text-2xl font-semibold text-[#1C191A]">
-              Fermer rapidement un créneau ou une date
-            </h2>
-            <p className="text-xs text-[#786B6E]">
-              Un cours déplacé ou un imprévu ? Bloquez immédiatement une plage
-              horaire pour qu’elle n’apparaisse plus dans le calendrier.
-            </p>
-
-            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-              <div>
-                <label
-                  htmlFor="blockTitle"
-                  className="block text-xs font-semibold uppercase tracking-wider text-[#1C191A]"
-                >
-                  Motif (interne)
-                </label>
-                <input
-                  id="blockTitle"
-                  type="text"
-                  required
-                  value={blockTitle}
-                  onChange={(e) => setBlockTitle(e.target.value)}
-                  className="mt-1.5 min-h-12 w-full rounded-2xl border border-[#F3E1E6] bg-[#FDF8F9] px-4 py-2.5 text-base text-[#1C191A]"
-                />
-              </div>
-
-              <div>
-                <label
-                  htmlFor="blockType"
-                  className="block text-xs font-semibold uppercase tracking-wider text-[#1C191A]"
-                >
-                  Type de fermeture
-                </label>
-                <select
-                  id="blockType"
-                  value={blockType}
-                  onChange={(e) =>
-                    setBlockType(
-                      e.target.value as 'MANUAL_BLOCK' | 'EXAM_PERIOD'
-                    )
-                  }
-                  className="mt-1.5 min-h-12 w-full rounded-2xl border border-[#F3E1E6] bg-[#FDF8F9] px-4 py-2.5 text-base text-[#1C191A]"
-                >
-                  <option value="MANUAL_BLOCK">Créneau fermé manuellement</option>
-                  <option value="EXAM_PERIOD">Journée d’examen / Partiel</option>
-                </select>
-              </div>
+            <div>
+              <h2 className="font-serif text-2xl font-semibold text-[#1C191A]">
+                Bloquer un créneau ou une date
+              </h2>
+              <p className="mt-1 text-xs text-[#786B6E]">
+                Un imprévu ou un cours déplacé ? Bloquez directement une plage
+                horaire pour qu’elle n’apparaisse plus dans le calendrier.
+              </p>
             </div>
 
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-3 tabular-nums">
@@ -1292,7 +1084,7 @@ export function AdminDashboardClient({
                   htmlFor="blockDate"
                   className="block text-xs font-semibold uppercase tracking-wider text-[#1C191A]"
                 >
-                  Date
+                  Date *
                 </label>
                 <input
                   id="blockDate"
@@ -1309,7 +1101,7 @@ export function AdminDashboardClient({
                   htmlFor="blockStart"
                   className="block text-xs font-semibold uppercase tracking-wider text-[#1C191A]"
                 >
-                  Heure de début
+                  Heure de début *
                 </label>
                 <input
                   id="blockStart"
@@ -1326,7 +1118,7 @@ export function AdminDashboardClient({
                   htmlFor="blockEnd"
                   className="block text-xs font-semibold uppercase tracking-wider text-[#1C191A]"
                 >
-                  Heure de fin
+                  Heure de fin *
                 </label>
                 <input
                   id="blockEnd"
@@ -1339,24 +1131,43 @@ export function AdminDashboardClient({
               </div>
             </div>
 
+            <div>
+              <label
+                htmlFor="blockTitle"
+                className="block text-xs font-semibold uppercase tracking-wider text-[#1C191A]"
+              >
+                Motif (optionnel / usage interne)
+              </label>
+              <input
+                id="blockTitle"
+                type="text"
+                placeholder="Ex : Révisions, Rendez-vous personnel, Cours"
+                value={blockTitle}
+                onChange={(e) => setBlockTitle(e.target.value)}
+                className="mt-1.5 min-h-12 w-full rounded-2xl border border-[#F3E1E6] bg-[#FDF8F9] px-4 py-2.5 text-base text-[#1C191A]"
+              />
+            </div>
+
             <TactileButton type="submit" isLoading={isCreatingBlock}>
               <PlusCircle className="h-4 w-4" strokeWidth={1.5} />
-              <span>Fermer ce créneau maintenant</span>
+              <span>Bloquer ce créneau maintenant</span>
             </TactileButton>
           </form>
 
           {/* Carte 3 : Liste des fermetures actives et réouverture */}
           <section className="rounded-[24px] border border-[#F3E1E6] bg-white p-6 shadow-powdery space-y-4">
-            <h2 className="font-serif text-2xl font-semibold text-[#1C191A]">
-              Créneaux et dates actuellement fermés ({blackoutPeriods.length})
-            </h2>
-            <p className="text-xs text-[#786B6E]">
-              Ces plages horaires sont immédiatement bloquées et masquées du calendrier de réservation. Vous pouvez les rouvrir à tout moment d&apos;un simple clic.
-            </p>
+            <div>
+              <h2 className="font-serif text-2xl font-semibold text-[#1C191A]">
+                Créneaux actuellement bloqués ({blackoutPeriods.length})
+              </h2>
+              <p className="mt-1 text-xs text-[#786B6E]">
+                Ces plages horaires sont masquées du calendrier de réservation. Vous pouvez les rouvrir à tout moment d&apos;un simple clic.
+              </p>
+            </div>
 
             {blackoutPeriods.length === 0 ? (
               <div className="rounded-2xl border border-dashed border-[#F3E1E6] bg-[#FDF8F9] p-6 text-center text-xs text-[#786B6E]">
-                Aucun créneau fermé manuellement pour le moment. Votre calendrier de réservation est entièrement accessible selon votre planning habituel.
+                Aucun créneau bloqué manuellement pour le moment. Votre calendrier de réservation est entièrement accessible selon votre planning habituel.
               </div>
             ) : (
               <div className="space-y-3">
@@ -1371,8 +1182,8 @@ export function AdminDashboardClient({
                     >
                       <div className="space-y-1">
                         <div className="flex items-center gap-2">
-                          <PowderyBadge variant={b.type === 'EXAM_PERIOD' ? 'amber' : 'rose'}>
-                            {b.type === 'EXAM_PERIOD' ? 'Examens' : 'Fermeture manuelle'}
+                          <PowderyBadge variant="rose">
+                            Indisponible
                           </PowderyBadge>
                           <span className="font-serif text-base font-semibold text-[#1C191A]">
                             {b.title}
@@ -1401,96 +1212,108 @@ export function AdminDashboardClient({
         </div>
       )}
 
-      {/* ONGLET 3 : MODÉRATION DES AVIS CLIENTES */}
+      {/* ONGLET 4 : MODÉRATION DES AVIS CLIENTES */}
       {activeTab === 'reviews' && (
         <div className="mt-6 space-y-4">
-          <div className="rounded-2xl border border-[#F3E1E6] bg-[#FDF8F9] p-4 flex items-start gap-3 text-xs text-[#786B6E]">
-            <ShieldAlert
-              className="mt-0.5 h-4 w-4 shrink-0 text-[#D88B99]"
-              strokeWidth={1.5}
-            />
-            <span>
-              Vérifiez chaque avis reçu avant publication pour éviter tout faux
-              avis, propos déplacé ou donnée personnelle (numéro, adresse)
-              publiée par erreur.
+          <div className="rounded-2xl border border-[#F3E1E6] bg-white p-4 flex flex-wrap items-center justify-between gap-3 text-xs text-[#786B6E] shadow-powdery">
+            <div className="flex items-center gap-2">
+              <ShieldCheck className="h-4 w-4 text-[#C47482]" strokeWidth={1.5} />
+              <span>Modérez et validez chaque retour d’expérience avant son affichage officiel sur le site.</span>
+            </div>
+            <span className="font-semibold text-[#1C191A] tabular-nums">
+              {reviews.filter((r) => r.moderationStatus === 'PENDING_MODERATION').length} en attente
             </span>
           </div>
 
-          {reviews.map((rev) => (
-            <article
-              key={rev.id}
-              className="rounded-[24px] border border-[#F3E1E6] bg-white p-5 shadow-powdery space-y-3"
-            >
-              <div className="flex flex-wrap items-center justify-between gap-2">
-                <div className="flex items-center gap-2">
-                  <span className="font-semibold text-sm text-[#1C191A]">
-                    {rev.publicDisplayName ?? 'Cliente'}
-                  </span>
-                  <span className="text-xs text-[#786B6E]">
-                    • {rev.serviceNameSnap}
-                  </span>
+          {reviews.length === 0 ? (
+            <div className="rounded-[24px] border border-dashed border-[#F3E1E6] bg-white p-12 text-center space-y-3 shadow-powdery">
+              <span className="mx-auto inline-flex h-12 w-12 items-center justify-center rounded-full bg-[#F9EBEF] text-[#B36270]">
+                <Star className="h-6 w-6" strokeWidth={1.5} />
+              </span>
+              <h3 className="font-serif text-xl font-semibold text-[#1C191A]">
+                Aucun avis client pour le moment
+              </h3>
+              <p className="mx-auto max-w-sm text-xs text-[#786B6E] leading-relaxed">
+                Les avis laissés par vos clientes après leur séance apparaîtront ici pour modération.
+              </p>
+            </div>
+          ) : (
+            reviews.map((rev) => (
+              <article
+                key={rev.id}
+                className="rounded-[24px] border border-[#F3E1E6] bg-white p-5 shadow-powdery space-y-3"
+              >
+                <div className="flex flex-wrap items-center justify-between gap-2">
+                  <div className="flex items-center gap-2">
+                    <span className="font-semibold text-sm text-[#1C191A]">
+                      {rev.publicDisplayName ?? 'Cliente'}
+                    </span>
+                    <span className="text-xs text-[#786B6E]">
+                      • {rev.serviceNameSnap}
+                    </span>
+                  </div>
+
+                  <PowderyBadge
+                    variant={
+                      rev.moderationStatus === 'APPROVED'
+                        ? 'sage'
+                        : rev.moderationStatus === 'REJECTED'
+                          ? 'neutral'
+                          : 'amber'
+                    }
+                  >
+                    {rev.moderationStatus === 'APPROVED'
+                      ? 'Publié'
+                      : rev.moderationStatus === 'REJECTED'
+                        ? 'Masqué / Rejeté'
+                        : 'En attente de validation'}
+                  </PowderyBadge>
                 </div>
 
-                <PowderyBadge
-                  variant={
-                    rev.moderationStatus === 'APPROVED'
-                      ? 'sage'
-                      : rev.moderationStatus === 'REJECTED'
-                        ? 'neutral'
-                        : 'amber'
-                  }
-                >
-                  {rev.moderationStatus === 'APPROVED'
-                    ? 'Publié'
-                    : rev.moderationStatus === 'REJECTED'
-                      ? 'Masqué / Rejeté'
-                      : 'En attente de validation'}
-                </PowderyBadge>
-              </div>
+                <div className="flex items-center gap-1">
+                  {Array.from({ length: 5 }).map((_, idx) => (
+                    <Star
+                      key={idx}
+                      className={
+                        idx < (rev.rating ?? 5)
+                          ? 'h-4 w-4 fill-[#D88B99] text-[#D88B99]'
+                          : 'h-4 w-4 text-[#F3E1E6]'
+                      }
+                      strokeWidth={1.5}
+                    />
+                  ))}
+                </div>
 
-              <div className="flex items-center gap-1">
-                {Array.from({ length: 5 }).map((_, idx) => (
-                  <Star
-                    key={idx}
-                    className={
-                      idx < (rev.rating ?? 5)
-                        ? 'h-4 w-4 fill-[#D88B99] text-[#D88B99]'
-                        : 'h-4 w-4 text-[#F3E1E6]'
-                    }
-                    strokeWidth={1.5}
-                  />
-                ))}
-              </div>
+                <p className="text-sm leading-relaxed text-[#1C191A]">
+                  « {rev.comment} »
+                </p>
 
-              <p className="text-sm leading-relaxed text-[#1C191A]">
-                « {rev.comment} »
-              </p>
+                <div className="flex flex-wrap gap-2.5 border-t border-[#F3E1E6] pt-3">
+                  {rev.moderationStatus !== 'APPROVED' && (
+                    <TactileButton
+                      variant="primary"
+                      isLoading={busyId === rev.id}
+                      onClick={() => void handleModerateReview(rev.id, 'APPROVED')}
+                    >
+                      <CheckCircle2 className="h-4 w-4" strokeWidth={1.5} />
+                      <span>Valider & Publier</span>
+                    </TactileButton>
+                  )}
 
-              <div className="flex flex-wrap gap-2.5 border-t border-[#F3E1E6] pt-3">
-                {rev.moderationStatus !== 'APPROVED' && (
-                  <TactileButton
-                    variant="primary"
-                    isLoading={busyId === rev.id}
-                    onClick={() => void handleModerateReview(rev.id, 'APPROVED')}
-                  >
-                    <CheckCircle2 className="h-4 w-4" strokeWidth={1.5} />
-                    <span>Valider & Publier</span>
-                  </TactileButton>
-                )}
-
-                {rev.moderationStatus !== 'REJECTED' && (
-                  <TactileButton
-                    variant="secondary"
-                    isLoading={busyId === rev.id}
-                    onClick={() => void handleModerateReview(rev.id, 'REJECTED')}
-                  >
-                    <XCircle className="h-4 w-4" strokeWidth={1.5} />
-                    <span>Masquer cet avis</span>
-                  </TactileButton>
-                )}
-              </div>
-            </article>
-          ))}
+                  {rev.moderationStatus !== 'REJECTED' && (
+                    <TactileButton
+                      variant="secondary"
+                      isLoading={busyId === rev.id}
+                      onClick={() => void handleModerateReview(rev.id, 'REJECTED')}
+                    >
+                      <XCircle className="h-4 w-4" strokeWidth={1.5} />
+                      <span>Masquer cet avis</span>
+                    </TactileButton>
+                  )}
+                </div>
+              </article>
+            ))
+          )}
         </div>
       )}
     </div>

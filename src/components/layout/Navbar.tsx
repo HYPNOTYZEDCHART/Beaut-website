@@ -1,8 +1,8 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
 import { Calendar } from 'lucide-react';
 import { cn } from '@/lib/cn';
@@ -23,8 +23,39 @@ const HIGH_INTENSITY_SPRING = {
 };
 
 export function Navbar() {
+  const router = useRouter();
   const pathname = usePathname();
   const [activeWagon, setActiveWagon] = useState<string>('accueil');
+  const clickCountRef = useRef(0);
+  const lastClickTimeRef = useRef(0);
+
+  const handleLogoClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    const now = Date.now();
+    // Tolérance de 800ms entre deux clics consécutifs
+    if (now - lastClickTimeRef.current < 800) {
+      clickCountRef.current += 1;
+    } else {
+      clickCountRef.current = 1;
+    }
+    lastClickTimeRef.current = now;
+
+    // Au 3ème clic rapide : redirection secrète vers la page admin
+    if (clickCountRef.current >= 3) {
+      e.preventDefault();
+      clickCountRef.current = 0;
+      if (typeof window !== 'undefined' && 'vibrate' in navigator) {
+        try {
+          navigator.vibrate([40, 30, 60]);
+        } catch {
+          // ignore
+        }
+      }
+      router.push('/admin');
+      return;
+    }
+
+    setActiveWagon('accueil');
+  };
 
   useEffect(() => {
     if (pathname !== '/') return;
@@ -76,8 +107,8 @@ export function Navbar() {
       <div className="mx-auto flex max-w-5xl items-center justify-between px-4 py-3 sm:px-6">
         <Link
           href="/#accueil"
-          onClick={() => setActiveWagon('accueil')}
-          className="group inline-flex items-center gap-2.5 font-serif text-lg font-semibold tracking-wider text-[#1C191A] sm:text-xl"
+          onClick={handleLogoClick}
+          className="group inline-flex select-none touch-manipulation items-center gap-2.5 font-serif text-lg font-semibold tracking-wider text-[#1C191A] sm:text-xl"
         >
           <span className="inline-flex h-9 w-10 items-center justify-center overflow-hidden rounded-xl border border-[#F3E1E6] bg-[#FAF7F5] p-0.5 shadow-powdery transition-transform duration-150 ease-emil-out group-active:scale-[0.96]">
             <img
