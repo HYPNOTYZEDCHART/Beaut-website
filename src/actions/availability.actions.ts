@@ -457,6 +457,63 @@ export async function toggleExamModeAction(
   }
 }
 
+export interface BlackoutPeriodDTO {
+  id: string;
+  title: string;
+  type: BlackoutType;
+  startAtIso: string;
+  endAtIso: string;
+  isAllDay: boolean;
+  reason: string | null;
+  createdAtIso: string;
+}
+
+const listBlackoutSchema = z
+  .object({
+    adminPin: z.string().min(1),
+  })
+  .strict();
+
+/**
+ * Back-Office (/admin) : Liste les fermetures manuelles et périodes d'examens actives.
+ */
+export async function listBlackoutPeriodsAction(
+  rawInput: z.infer<typeof listBlackoutSchema>
+): Promise<ActionResult<BlackoutPeriodDTO[]>> {
+  try {
+    const input = listBlackoutSchema.parse(rawInput);
+    await verifyAdminPinOrThrow(input.adminPin);
+    if (!(await isDatabaseReachableFast())) {
+      return { success: true, data: [] };
+    }
+
+    const periods = await prisma.blackoutPeriod.findMany({
+      orderBy: { startAt: 'desc' },
+      take: 50,
+    });
+
+    return {
+      success: true,
+      data: periods.map((p) => ({
+        id: p.id,
+        title: p.title,
+        type: p.type,
+        startAtIso: p.startAt.toISOString(),
+        endAtIso: p.endAt.toISOString(),
+        isAllDay: p.isAllDay,
+        reason: p.reason,
+        createdAtIso: p.createdAt.toISOString(),
+      })),
+    };
+  } catch (error: unknown) {
+    const message =
+      error instanceof Error
+        ? error.message
+        : 'Impossible de charger les fermetures.';
+    return { success: false, error: message };
+  }
+}
+
 const createBlackoutSchema = z
   .object({
     adminPin: z.string().min(1),
@@ -474,7 +531,7 @@ const createBlackoutSchema = z
  */
 export async function createBlackoutPeriodAction(
   rawInput: z.infer<typeof createBlackoutSchema>
-): Promise<ActionResult<{ id: string }>> {
+): Promise<ActionResult<BlackoutPeriodDTO>> {
   try {
     const input = createBlackoutSchema.parse(rawInput);
     await verifyAdminPinOrThrow(input.adminPin);
@@ -504,10 +561,25 @@ export async function createBlackoutPeriodAction(
         isAllDay: input.isAllDay,
         reason: input.reason ?? null,
       },
-      select: { id: true },
     });
 
-    return { success: true, data: { id: created.id } };
+    invalidateVitrineCache();
+    safeRevalidatePath('/reserver');
+    safeRevalidatePath('/admin');
+
+    return {
+      success: true,
+      data: {
+        id: created.id,
+        title: created.title,
+        type: created.type,
+        startAtIso: created.startAt.toISOString(),
+        endAtIso: created.endAt.toISOString(),
+        isAllDay: created.isAllDay,
+        reason: created.reason,
+        createdAtIso: created.createdAt.toISOString(),
+      },
+    };
   } catch (error: unknown) {
     const message =
       error instanceof Error
@@ -537,6 +609,10 @@ export async function deleteBlackoutPeriodAction(
     await prisma.blackoutPeriod.delete({
       where: { id: input.blackoutId },
     });
+
+    invalidateVitrineCache();
+    safeRevalidatePath('/reserver');
+    safeRevalidatePath('/admin');
 
     return { success: true, data: { deletedId: input.blackoutId } };
   } catch (error: unknown) {

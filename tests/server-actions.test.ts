@@ -1,7 +1,12 @@
 import { describe, it } from 'node:test';
 import assert from 'node:assert/strict';
 import { prisma } from '../src/lib/prisma';
-import { getServiceAvailabilityAction } from '../src/actions/availability.actions';
+import {
+  createBlackoutPeriodAction,
+  deleteBlackoutPeriodAction,
+  getServiceAvailabilityAction,
+  listBlackoutPeriodsAction,
+} from '../src/actions/availability.actions';
 import {
   createBookingAndLockSlotAction,
   confirmBookingDepositAction,
@@ -99,6 +104,42 @@ describe('SERVER ACTIONS & TRANSACTION ACID — Cycle de Vie Complet Réservatio
       duplicateResult.error ?? '',
       /Ce créneau vient tout juste d’être réservé|n’est plus disponible/,
       'Message d erreur explicite sur le créneau déjà pris'
+    );
+  });
+
+  it('3. Fermeture rapide de créneau (Blackout), liste et réouverture immédiate', async () => {
+    // 1. Créer une fermeture manuelle pour un créneau test
+    const blockRes = await createBlackoutPeriodAction({
+      adminPin,
+      title: 'Révisions Urgentes Test',
+      type: 'MANUAL_BLOCK',
+      startAtIso: '2026-11-15T14:30:00.000Z',
+      endAtIso: '2026-11-15T19:30:00.000Z',
+      isAllDay: false,
+    });
+    assert.strictEqual(blockRes.success, true);
+    assert.ok(blockRes.data.id);
+
+    // 2. Vérifier que la fermeture apparaît dans listBlackoutPeriodsAction
+    const listRes = await listBlackoutPeriodsAction({ adminPin });
+    assert.strictEqual(listRes.success, true);
+    const found = listRes.data.find((b) => b.id === blockRes.data.id);
+    assert.ok(found, 'La fermeture doit être listée pour la gérante');
+    assert.strictEqual(found.title, 'Révisions Urgentes Test');
+
+    // 3. Rouvrir le créneau (suppression de la fermeture)
+    const delRes = await deleteBlackoutPeriodAction({
+      adminPin,
+      blackoutId: blockRes.data.id,
+    });
+    assert.strictEqual(delRes.success, true);
+
+    // 4. Vérifier que la fermeture n'apparaît plus
+    const listAfterRes = await listBlackoutPeriodsAction({ adminPin });
+    assert.strictEqual(listAfterRes.success, true);
+    assert.strictEqual(
+      listAfterRes.data.some((b) => b.id === blockRes.data.id),
+      false
     );
   });
 

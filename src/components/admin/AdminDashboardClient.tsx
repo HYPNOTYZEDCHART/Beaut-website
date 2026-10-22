@@ -19,8 +19,11 @@ import {
   Tag,
 } from 'lucide-react';
 import {
+  BlackoutPeriodDTO,
   createBlackoutPeriodAction,
+  deleteBlackoutPeriodAction,
   getCatalogAndSettingsAction,
+  listBlackoutPeriodsAction,
   PublicStudioSettingsDTO,
   ServiceCatalogItemDTO,
   toggleExamModeAction,
@@ -195,13 +198,16 @@ export function AdminDashboardClient({
   const [blockStartTime, setBlockStartTime] = useState<string>('14:30');
   const [blockEndTime, setBlockEndTime] = useState<string>('19:30');
   const [isCreatingBlock, setIsCreatingBlock] = useState<boolean>(false);
+  const [blackoutPeriods, setBlackoutPeriods] = useState<BlackoutPeriodDTO[]>([]);
+  const [deletingBlockId, setDeletingBlockId] = useState<string | null>(null);
 
   const refreshAllAdminData = useCallback(async (pinToUse: string) => {
     setIsLoadingData(true);
-    const [bRes, rRes, cRes] = await Promise.all([
+    const [bRes, rRes, cRes, bkRes] = await Promise.all([
       listAdminBookingsAction({ adminPin: pinToUse, page: 1, limit: 30 }),
       listAdminReviewsAction({ adminPin: pinToUse, page: 1, limit: 30 }),
       getCatalogAndSettingsAction(),
+      listBlackoutPeriodsAction({ adminPin: pinToUse }),
     ]);
     setIsLoadingData(false);
 
@@ -215,6 +221,10 @@ export function AdminDashboardClient({
         setPromoBannerMessage(cRes.data.settings.promoBannerMessage);
       }
       setExamModeActive(cRes.data.settings.examModeActive);
+    }
+
+    if (bkRes.success) {
+      setBlackoutPeriods(bkRes.data);
     }
 
     if (bRes.success) {
@@ -449,13 +459,31 @@ export function AdminDashboardClient({
     setIsCreatingBlock(false);
 
     if (res.success) {
-      toast.success('Créneau fermé avec succès dans le calendrier.');
+      setBlackoutPeriods((prev) => [res.data, ...prev]);
+      toast.success(
+        `Créneau du ${formatDakarDateLong(blockDateKey)} (${blockStartTime}–${blockEndTime}) fermé avec succès.`
+      );
       return;
     }
 
-    toast.success(
-      `Créneau du ${formatDakarDateLong(blockDateKey)} (${blockStartTime}–${blockEndTime}) verrouillé.`
-    );
+    toast.error(res.error || 'Impossible de fermer ce créneau.');
+  }
+
+  async function handleDeleteBlackoutPeriod(blackoutId: string) {
+    setDeletingBlockId(blackoutId);
+    const res = await deleteBlackoutPeriodAction({
+      adminPin,
+      blackoutId,
+    });
+    setDeletingBlockId(null);
+
+    if (res.success) {
+      setBlackoutPeriods((prev) => prev.filter((b) => b.id !== blackoutId));
+      toast.success('Le créneau a été réouvert avec succès dans le calendrier.');
+      return;
+    }
+
+    toast.error(res.error || 'Impossible de réouvrir ce créneau.');
   }
 
   async function handleModerateReview(
@@ -1316,6 +1344,60 @@ export function AdminDashboardClient({
               <span>Fermer ce créneau maintenant</span>
             </TactileButton>
           </form>
+
+          {/* Carte 3 : Liste des fermetures actives et réouverture */}
+          <section className="rounded-[24px] border border-[#F3E1E6] bg-white p-6 shadow-powdery space-y-4">
+            <h2 className="font-serif text-2xl font-semibold text-[#1C191A]">
+              Créneaux et dates actuellement fermés ({blackoutPeriods.length})
+            </h2>
+            <p className="text-xs text-[#786B6E]">
+              Ces plages horaires sont immédiatement bloquées et masquées du calendrier de réservation. Vous pouvez les rouvrir à tout moment d&apos;un simple clic.
+            </p>
+
+            {blackoutPeriods.length === 0 ? (
+              <div className="rounded-2xl border border-dashed border-[#F3E1E6] bg-[#FDF8F9] p-6 text-center text-xs text-[#786B6E]">
+                Aucun créneau fermé manuellement pour le moment. Votre calendrier de réservation est entièrement accessible selon votre planning habituel.
+              </div>
+            ) : (
+              <div className="space-y-3">
+                {blackoutPeriods.map((b) => {
+                  const startDate = b.startAtIso.slice(0, 10);
+                  const startTime = b.startAtIso.slice(11, 16);
+                  const endTime = b.endAtIso.slice(11, 16);
+                  return (
+                    <div
+                      key={b.id}
+                      className="flex flex-col gap-3 rounded-2xl border border-[#F3E1E6] bg-[#FDF8F9] p-4 sm:flex-row sm:items-center sm:justify-between"
+                    >
+                      <div className="space-y-1">
+                        <div className="flex items-center gap-2">
+                          <PowderyBadge variant={b.type === 'EXAM_PERIOD' ? 'amber' : 'rose'}>
+                            {b.type === 'EXAM_PERIOD' ? 'Examens' : 'Fermeture manuelle'}
+                          </PowderyBadge>
+                          <span className="font-serif text-base font-semibold text-[#1C191A]">
+                            {b.title}
+                          </span>
+                        </div>
+                        <p className="text-xs text-[#786B6E]">
+                          {formatDakarDateLong(startDate)} • <span className="font-medium text-[#1C191A]">{startTime} – {endTime}</span>
+                        </p>
+                      </div>
+
+                      <TactileButton
+                        variant="secondary"
+                        isLoading={deletingBlockId === b.id}
+                        onClick={() => void handleDeleteBlackoutPeriod(b.id)}
+                        className="text-xs px-3 py-2"
+                      >
+                        <XCircle className="h-4 w-4 text-[#D88B99]" strokeWidth={1.5} />
+                        <span>Rouvrir ce créneau</span>
+                      </TactileButton>
+                    </div>
+                  );
+                })}
+              </div>
+            )}
+          </section>
         </div>
       )}
 
