@@ -17,7 +17,7 @@ async function main(): Promise<void> {
     update: {},
     create: {
       id: 'default',
-      studioName: 'TON ESPACE BEAUTÉ',
+      studioName: 'DIAMA EYELASH EXTENSIONS',
       tagline:
         'Extensions de cils sur-mesure dans un cadre doux, calme et intimiste.',
       zoneLabel:
@@ -27,7 +27,7 @@ async function main(): Promise<void> {
       whatsappPhone: '+221776852146',
       wavePhone: '+221776852146',
       orangeMoneyPhone: '+221776852146',
-      instagramHandle: '@tonespacebeaute',
+      instagramHandle: '@diamaeyelashextensions',
       timezone: 'Africa/Dakar',
       minNoticeHours: 24,
       defaultBufferMinutes: 20,
@@ -141,7 +141,7 @@ async function main(): Promise<void> {
       naturalLashesOnly: false,
       refillAccepted: true,
       refillConditions:
-        'Exclusivement réservé aux poses réalisées chez TON ESPACE BEAUTÉ datant de moins de 21 jours avec au moins 40 % des extensions restantes. Au-delà, une dépose + nouvelle pose complète sera facturée.',
+        'Exclusivement réservé aux poses réalisées chez DIAMA EYELASH EXTENSIONS datant de moins de 21 jours avec au moins 40 % des extensions restantes. Au-delà, une dépose + nouvelle pose complète sera facturée.',
       prepInstructions:
         'Brossage et nettoyage au shampoing cils avant le rendez-vous. Aucune pose extérieure n’est remplie.',
       imageUrl: '/images/services/remplissage.jpg',

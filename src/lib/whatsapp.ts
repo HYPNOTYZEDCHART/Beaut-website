@@ -85,7 +85,7 @@ export function buildDepositProofWhatsAppUrl(params: {
   const formattedDate = formatDakarDateLong(params.dateKey);
 
   const message = [
-    `Bonjour TON ESPACE BEAUTÉ 🌸`,
+    `Bonjour DIAMA EYELASH EXTENSIONS 🌸`,
     ``,
     `Je viens de réserver mon créneau et je t'envoie ma preuve d'acompte :`,
     `• Référence : *${params.referenceCode}*`,
@@ -119,7 +119,7 @@ export function buildBookingConfirmedWhatsAppUrl(params: {
   const message = [
     `Coucou ${params.clientName} 🌸`,
     ``,
-    `Ton acompte de *${formatXof(params.depositAmountXof)}* est bien reçu ! Ton rendez-vous chez *TON ESPACE BEAUTÉ* est officiellement confirmé :`,
+    `Ton acompte de *${formatXof(params.depositAmountXof)}* est bien reçu ! Ton rendez-vous chez *DIAMA EYELASH EXTENSIONS* est officiellement confirmé :`,
     `• Référence : *${params.referenceCode}*`,
     `• Pose : *${params.serviceName}*`,
     `• Créneau : *${formattedDate} à ${params.startTimeLabel}*`,
@@ -152,7 +152,7 @@ export function buildReviewRequestWhatsAppUrl(params: {
   const message = [
     `Coucou ${params.clientName} 🌸`,
     ``,
-    `Merci encore pour ta confiance aujourd'hui pour ta *${params.serviceName}* chez *TON ESPACE BEAUTÉ* !`,
+    `Merci encore pour ta confiance aujourd'hui pour ta *${params.serviceName}* chez *DIAMA EYELASH EXTENSIONS* !`,
     `Si tu as 30 secondes, ton avis m'aiderait énormément. Voici ton lien personnel sécurisé :`,
     `${reviewUrl}`,
     ``,
@@ -168,6 +168,6 @@ export function buildReviewRequestWhatsAppUrl(params: {
 export function buildGeneralContactWhatsAppUrl(
   studioWhatsappPhone: string
 ): string {
-  const message = `Bonjour TON ESPACE BEAUTÉ 🌸 J'ai une question concernant une prestation :`;
+  const message = `Bonjour DIAMA EYELASH EXTENSIONS 🌸 J'ai une question concernant une prestation :`;
   return buildWhatsAppUrl(studioWhatsappPhone, message);
 }

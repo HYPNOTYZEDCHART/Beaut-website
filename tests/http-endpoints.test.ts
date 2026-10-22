@@ -5,7 +5,7 @@ describe('HTTP ENDPOINTS & ASSETS — Audit Réseau Réel sur Serveur Localhost:
   const baseUrl = 'http://localhost:3000';
 
   const htmlRoutes = [
-    { path: '/', expectedSnippet: 'TON ESPACE BEAUTÉ' },
+    { path: '/', expectedSnippet: 'DIAMA EYELASH EXTENSIONS' },
     { path: '/reserver', expectedSnippet: 'Réservez votre créneau' },
     { path: '/prestations', expectedSnippet: 'Prestations' },
     { path: '/a-savoir', expectedSnippet: 'À savoir' },
@@ -44,7 +44,7 @@ describe('HTTP ENDPOINTS & ASSETS — Audit Réseau Réel sur Serveur Localhost:
       'Doit être un type manifest JSON'
     );
     const json = await response.json();
-    assert.strictEqual(json.name, 'TON ESPACE BEAUTÉ — Extensions de Cils Dakar');
+    assert.strictEqual(json.name, 'DIAMA EYELASH EXTENSIONS — Dakar');
     assert.strictEqual(json.start_url, '/');
     assert.strictEqual(json.theme_color, '#FDF8F9');
   });

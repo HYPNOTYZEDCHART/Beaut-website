@@ -7,7 +7,7 @@ interface LashLogoMarkProps {
 }
 
 /**
- * Emblème officiel "TON ESPACE BEAUTÉ" (courbure de cils sur-mesure cil par cil avec cil central rose poudré).
+ * Emblème officiel "DIAMA EYELASH EXTENSIONS" (courbure de cils sur-mesure cil par cil avec cil central rose poudré).
  * Utilisable comme logo dans la Navbar, le Footer et dans l'écrin Hero (`LashIllustrationCard`).
  */
 export function LashLogoMark({

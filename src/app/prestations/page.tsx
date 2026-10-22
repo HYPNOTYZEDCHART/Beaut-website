@@ -39,7 +39,7 @@ export default async function PrestationsPage() {
             />
             <div>
               <h2 className="font-serif text-xl font-semibold text-[#1C191A]">
-                Première visite chez TON ESPACE BEAUTÉ ?
+                Première visite chez DIAMA EYELASH EXTENSIONS ?
               </h2>
               <p className="mt-1 text-sm text-[#786B6E]">
                 Consultez les consignes de préparation des cils et notre politique

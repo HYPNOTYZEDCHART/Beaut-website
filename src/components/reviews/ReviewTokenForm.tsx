@@ -287,7 +287,7 @@ export function ReviewTokenForm({ invitation }: ReviewTokenFormProps) {
         />
         <span>
           J’accepte que mon avis et ma note soient publiés sur le site{' '}
-          <strong>TON ESPACE BEAUTÉ</strong> avec le format de prénom choisi
+          <strong>DIAMA EYELASH EXTENSIONS</strong> avec le format de prénom choisi
           ci-dessus.
         </span>
       </motion.label>

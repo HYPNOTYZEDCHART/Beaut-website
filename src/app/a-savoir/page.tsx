@@ -36,7 +36,7 @@ export default async function ASavoirPage() {
           <div className="relative h-56 w-full overflow-hidden rounded-2xl border border-[#F3E1E6] bg-white sm:h-72">
             <img
               src="/images/studio-ambiance.jpg"
-              alt="Intérieur calme et hygiénique du studio privé TON ESPACE BEAUTÉ à Dakar"
+              alt="Intérieur calme et hygiénique du studio privé DIAMA EYELASH EXTENSIONS à Dakar"
               className="h-full w-full object-cover object-center"
             />
           </div>

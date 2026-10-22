@@ -16,7 +16,7 @@ export function Footer() {
           </span>
           <div>
             <p className="font-serif text-lg font-semibold tracking-wider text-[#1C191A]">
-              TON ESPACE BEAUTÉ
+              DIAMA EYELASH EXTENSIONS
             </p>
             <p className="mt-0.5 text-xs text-[#786B6E]">
               Diama • Extensions de cils sur-mesure à Dakar • Sur rendez-vous uniquement.

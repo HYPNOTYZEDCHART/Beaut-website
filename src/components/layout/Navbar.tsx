@@ -86,7 +86,7 @@ export function Navbar() {
               className="h-full w-full object-contain"
             />
           </span>
-          <span>TON ESPACE BEAUTÉ</span>
+          <span>DIAMA EYELASH EXTENSIONS</span>
         </Link>
 
         {/* Navigation Desktop par wagons avec glissement layoutId */}

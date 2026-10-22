@@ -54,14 +54,14 @@ enum ReviewModerationStatus {
 
 model StudioSettings {
   id                   String   @id @default("default")
-  studioName           String   @default("TON ESPACE BEAUTÉ")
+  studioName           String   @default("DIAMA EYELASH EXTENSIONS")
   tagline              String   @default("Extensions de cils sur-mesure dans un cadre doux, calme et intimiste.")
   zoneLabel            String   @default("Dakar — Mermoz / Sacré-Cœur (adresse exacte envoyée dès confirmation)")
   exactAddress         String   @default("Mermoz Pyrotechnie, Villa n°24 (Porte rose poudré, 1er étage), Dakar")
   whatsappPhone        String   @default("+221776852146")
   wavePhone            String   @default("+221776852146")
   orangeMoneyPhone     String   @default("+221776852146")
-  instagramHandle      String   @default("@tonespacebeaute")
+  instagramHandle      String   @default("@diamaeyelashextensions")
   timezone             String   @default("Africa/Dakar")
   minNoticeHours       Int      @default(24) // Délai minimum (24h à 48h à l'avance)
   defaultBufferMinutes Int      @default(20) // Marge par défaut entre 2 clientes (15 à 30 min)

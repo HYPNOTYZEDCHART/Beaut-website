@@ -2,8 +2,8 @@ import type { MetadataRoute } from 'next';
 
 export default function manifest(): MetadataRoute.Manifest {
   return {
-    name: 'TON ESPACE BEAUTÉ — Extensions de Cils Dakar',
-    short_name: 'Espace Beauté',
+    name: 'DIAMA EYELASH EXTENSIONS — Dakar',
+    short_name: 'Diama Lashes',
     description:
       'Réservation d’extensions de cils sur-mesure à Dakar. Choix de prestation, créneaux en direct et acompte sécurisé Wave / Orange Money.',
     start_url: '/',

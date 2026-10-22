@@ -20,7 +20,7 @@ export default async function ContactPage() {
             Une question particulière ?
           </p>
           <h1 className="mt-1 font-serif text-3xl font-semibold text-[#1C191A] sm:text-4xl">
-            Contacter TON ESPACE BEAUTÉ
+            Contacter DIAMA EYELASH EXTENSIONS
           </h1>
           <p className="mx-auto mt-2 max-w-lg text-sm leading-relaxed text-[#786B6E]">
             Pour réserver un créneau, utilisez directement le calendrier en ligne

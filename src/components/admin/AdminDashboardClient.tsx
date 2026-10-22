@@ -480,7 +480,7 @@ export function AdminDashboardClient({
             </PowderyBadge>
           </div>
           <h1 className="mt-1.5 font-serif text-2xl font-semibold text-[#1C191A] sm:text-3xl">
-            Gestion Mobile • TON ESPACE BEAUTÉ
+            Gestion Mobile • DIAMA EYELASH EXTENSIONS
           </h1>
         </div>
 
