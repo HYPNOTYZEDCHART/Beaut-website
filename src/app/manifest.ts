@@ -2,14 +2,14 @@ import type { MetadataRoute } from 'next';
 
 export default function manifest(): MetadataRoute.Manifest {
   return {
-    name: 'TON ESPACE BEAUTÉ — Administration',
+    name: 'TON ESPACE BEAUTÉ — Extensions de Cils Dakar',
     short_name: 'Espace Beauté',
     description:
-      'Gestion mobile des réservations, acomptes Wave/OM, Mode Examens et modération des avis.',
-    start_url: '/admin',
+      'Réservation d’extensions de cils sur-mesure à Dakar. Choix de prestation, créneaux en direct et acompte sécurisé Wave / Orange Money.',
+    start_url: '/',
     display: 'standalone',
-    background_color: '#FFFFFF',
-    theme_color: '#FFFFFF',
+    background_color: '#FDF8F9',
+    theme_color: '#FDF8F9',
     icons: [
       {
         src: '/icon',

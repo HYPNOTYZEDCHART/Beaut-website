@@ -1,12 +1,15 @@
 export type PaymentMethodType = 'WAVE' | 'ORANGE_MONEY';
 
-const SENEGAL_PHONE_DIGITS_REGEX = /^(?:221)?(7[05678]\d{7})$/;
+const SENEGAL_PHONE_DIGITS_REGEX = /^(?:00221|221)?(7[05678]\d{7})$/;
 
 /**
  * Normalise un numéro de téléphone sénégalais au format E.164 (+2217XXXXXXXX).
  */
 export function normalizeSenegalPhone(rawPhone: string): string {
-  const digitsOnly = rawPhone.replace(/\D/g, '');
+  let digitsOnly = rawPhone.replace(/\D/g, '');
+  if (digitsOnly.startsWith('00')) {
+    digitsOnly = digitsOnly.slice(2);
+  }
   const match = SENEGAL_PHONE_DIGITS_REGEX.exec(digitsOnly);
   if (match && match[1]) {
     return `+221${match[1]}`;
