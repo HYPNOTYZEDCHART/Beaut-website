@@ -512,9 +512,6 @@ export function BookingWizard({
                     alt={selectedService.name}
                     className="h-full w-full object-cover object-center"
                   />
-                  <span className="absolute bottom-0.5 right-0.5 rounded bg-white/95 px-1 text-[9px] font-bold text-[#B36270] tabular-nums">
-                    {selectedService.durationMinutes}m
-                  </span>
                 </motion.div>
                 <div className="min-w-0">
                   <motion.h3
@@ -773,9 +770,6 @@ export function BookingWizard({
                                 loading="lazy"
                                 className="h-full w-full object-cover object-center"
                               />
-                              <span className="absolute bottom-1 right-1 rounded-md bg-white/95 px-1.5 py-0.5 text-[10px] font-bold text-[#B36270] tabular-nums">
-                                {srv.durationMinutes}m
-                              </span>
                             </motion.div>
                             <div>
                               <div className="flex items-center gap-2">

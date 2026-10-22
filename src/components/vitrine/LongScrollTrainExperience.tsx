@@ -391,9 +391,6 @@ export function LongScrollTrainExperience({
                       alt={highlightedService.name}
                       className="h-full w-full object-cover object-center"
                     />
-                    <span className="absolute bottom-0.5 right-0.5 rounded-md bg-white/95 px-1 text-[10px] font-bold text-[#B36270] tabular-nums">
-                      {highlightedService.durationMinutes}m
-                    </span>
                   </div>
                   <div>
                     <div className="flex items-center gap-2">
@@ -487,7 +484,7 @@ export function LongScrollTrainExperience({
                         loading="lazy"
                         className="h-full w-full object-cover object-center transition-transform duration-500 ease-emil-out hover:scale-[1.03]"
                       />
-                      <div className="absolute inset-x-3 top-3 flex items-center justify-between gap-2">
+                      <div className="absolute inset-x-3 top-3 flex items-center gap-2">
                         <div className="flex items-center gap-1.5">
                           <span className="rounded-full border border-[#F3E1E6] bg-white/95 px-3 py-1 text-[11px] font-semibold uppercase tracking-wider text-[#B36270] backdrop-blur-sm">
                             {service.category === 'REFILL'
@@ -500,13 +497,6 @@ export function LongScrollTrainExperience({
                             </span>
                           )}
                         </div>
-                        <span className="inline-flex items-center gap-1 rounded-full border border-[#F3E1E6] bg-white/95 px-3 py-1 text-xs font-medium text-[#1C191A] tabular-nums backdrop-blur-sm">
-                          <Clock
-                            className="h-3.5 w-3.5 text-[#D88B99]"
-                            strokeWidth={1.5}
-                          />
-                          {service.durationMinutes} min
-                        </span>
                       </div>
                     </div>
 

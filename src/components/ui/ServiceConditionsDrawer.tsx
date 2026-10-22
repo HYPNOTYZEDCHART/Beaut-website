@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { Drawer } from 'vaul';
-import { Clock, Sparkles, CheckCircle2, Info, X } from 'lucide-react';
+import { Sparkles, CheckCircle2, Info, X } from 'lucide-react';
 import { ServiceCatalogItemDTO } from '@/actions/availability.actions';
 import { formatXof } from '@/lib/whatsapp';
 import { PowderyBadge } from '@/components/ui/PowderyBadge';
@@ -38,11 +38,6 @@ export function ServiceConditionsDrawer({
               <Drawer.Description className="mt-0.5 flex items-center gap-3 text-sm text-[#786B6E] tabular-nums">
                 <span className="font-semibold text-[#1C191A]">
                   {formatXof(service.priceXof)}
-                </span>
-                <span>•</span>
-                <span className="inline-flex items-center gap-1">
-                  <Clock className="h-3.5 w-3.5 text-[#D88B99]" strokeWidth={1.5} />
-                  {service.durationMinutes} min
                 </span>
               </Drawer.Description>
             </div>
