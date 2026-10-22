@@ -274,7 +274,7 @@ async function generateClientPdfGuide() {
     .font('Helvetica-Bold')
     .fontSize(9.5)
     .fillColor(colors.primary)
-    .text('NUMÉRO OFFICIEL POUR LE TRANSFERT D’ACOMPTE (WAVE & ORANGE MONEY)', 60, payCardY + 10);
+    .text('NUMÉRO OFFICIEL POUR LE TRANSFERT D’ACOMPTE (WAVE & MAX IT)', 60, payCardY + 10);
 
   doc
     .font('Helvetica-Bold')
@@ -287,7 +287,7 @@ async function generateClientPdfGuide() {
     .fontSize(8)
     .fillColor(colors.secondary)
     .text(
-      'Après avoir effectué votre transfert Wave ou Orange Money, cliquez sur le bouton WhatsApp sur la page de confirmation du site pour envoyer la capture d’écran de votre transaction.',
+      'Après avoir effectué votre transfert sur l’application Wave ou Max it, cliquez sur le bouton WhatsApp sur le site pour transmettre automatiquement votre capture d’écran avec votre référence.',
       60,
       payCardY + 44,
       { width: 475 }

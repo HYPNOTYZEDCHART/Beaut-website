@@ -305,7 +305,7 @@ export function BookingWizard({
     try {
       await navigator.clipboard.writeText(cleanPhone);
       toast.success(
-        `Numéro (${phone}) et montant (${formatXof(lockedBooking.depositAmountXof)}) copiés ! Collez-les dans ${method === 'WAVE' ? 'Wave' : 'Orange Money'}.`
+        `Numéro (${phone}) et montant (${formatXof(lockedBooking.depositAmountXof)}) copiés ! Collez-les dans ${method === 'WAVE' ? 'Wave' : 'Max it'}.`
       );
     } catch {
       toast.info(
@@ -319,7 +319,8 @@ export function BookingWizard({
     if (method === 'WAVE') {
       window.location.href = 'wave://';
     } else {
-      window.location.href = 'tel:*144#';
+      // Déclenche l'application officielle Max it (Orange Sénégal)
+      window.location.href = 'sn.orange.maxit://';
     }
   }
 
@@ -1240,7 +1241,7 @@ export function BookingWizard({
                             <span className="relative z-10">
                               {method === 'WAVE'
                                 ? 'Wave Sénégal'
-                                : 'Orange Money'}
+                                : 'Max it (Orange Money)'}
                             </span>
                           </button>
                         );
@@ -1368,14 +1369,14 @@ export function BookingWizard({
                 </div>
               </motion.div>
 
-              {/* Smart Pay Mobile Card : Wave ou Orange Money */}
+              {/* Smart Pay Mobile Card : Wave ou Max it */}
               <motion.div
                 variants={STEP_CASCADE_ITEM}
                 className="mt-5 rounded-2xl border border-[#F3E1E6] bg-white p-5 shadow-sm space-y-4"
               >
                 <div className="flex items-center justify-between">
                   <span className="text-xs font-semibold uppercase tracking-wider text-[#786B6E]">
-                    Mode sélectionné : {paymentMethod === 'WAVE' ? 'Wave Mobile' : 'Orange Money'}
+                    Mode sélectionné : {paymentMethod === 'WAVE' ? 'Wave Mobile' : 'Max it (Orange Money)'}
                   </span>
                   <span className="rounded-full bg-[#FDF4E7] px-2.5 py-0.5 text-[11px] font-semibold text-[#B4690E]">
                     Acompte : {formatXof(lockedBooking.depositAmountXof)}
@@ -1398,14 +1399,14 @@ export function BookingWizard({
                     <span>
                       {paymentMethod === 'WAVE'
                         ? 'Ouvrir l’application Wave pour payer'
-                        : 'Lancer Orange Money (#144#)'}
+                        : 'Ouvrir l’application Max it pour payer'}
                     </span>
                     <ExternalLink className="h-3.5 w-3.5 opacity-80" strokeWidth={2} />
                   </button>
 
                   <div className="flex items-center justify-between rounded-xl border border-[#F3E1E6] bg-[#FDF8F9] px-3.5 py-2.5 text-xs">
                     <span className="text-[#786B6E]">
-                      Numéro officiel ({paymentMethod === 'WAVE' ? 'Wave' : 'OM'}) :{' '}
+                      Numéro officiel ({paymentMethod === 'WAVE' ? 'Wave' : 'Max it'}) :{' '}
                       <strong className="text-[#1C191A]">
                         {paymentMethod === 'WAVE'
                           ? lockedBooking.wavePhone
@@ -1419,7 +1420,7 @@ export function BookingWizard({
                           paymentMethod === 'WAVE'
                             ? lockedBooking.wavePhone
                             : lockedBooking.orangeMoneyPhone,
-                          paymentMethod === 'WAVE' ? 'Wave' : 'Orange Money'
+                          paymentMethod === 'WAVE' ? 'Wave' : 'Max it'
                         )
                       }
                       className="inline-flex items-center gap-1 font-semibold text-[#B36270] hover:underline"
@@ -1680,7 +1681,7 @@ export function BookingWizard({
                     </div>
                     <div className="flex justify-between">
                       <span className="text-[#786B6E]">
-                        Numéro Orange Money
+                        Numéro Max it (Orange)
                       </span>
                       <span className="font-semibold text-[#1C191A]">
                         {lockedBooking.orangeMoneyPhone}

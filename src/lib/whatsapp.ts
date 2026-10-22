@@ -87,7 +87,7 @@ export function buildDepositProofWhatsAppUrl(params: {
   paymentMethod: PaymentMethodType;
 }): string {
   const methodLabel =
-    params.paymentMethod === 'WAVE' ? 'Wave' : 'Orange Money';
+    params.paymentMethod === 'WAVE' ? 'Wave' : 'Max it (Orange Money)';
   const formattedDate = formatDakarDateLong(params.dateKey);
 
   const message = [
