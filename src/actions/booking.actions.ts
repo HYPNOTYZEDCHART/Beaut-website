@@ -226,6 +226,13 @@ export async function createBookingAndLockSlotAction(
           now.getTime() + settings.slotHoldMinutes * 60_000
         );
 
+        const effectivePriceXof =
+          settings.promoModeActive &&
+          service.category === 'FULL_SET' &&
+          Boolean(settings.promoPriceXof)
+            ? (settings.promoPriceXof ?? service.priceXof)
+            : service.priceXof;
+
         const createdBooking = await tx.booking.create({
           data: {
             referenceCode,
@@ -241,7 +248,7 @@ export async function createBookingAndLockSlotAction(
             startAt: new Date(verifiedSlot.startAtIso),
             endAt: new Date(verifiedSlot.endAtIso),
             bufferEndAt: new Date(verifiedSlot.bufferEndAtIso),
-            totalPriceXof: service.priceXof,
+            totalPriceXof: effectivePriceXof,
             depositAmountXof: service.depositXof,
             paymentMethod: input.paymentMethod,
             depositStatus: DepositStatus.PENDING,

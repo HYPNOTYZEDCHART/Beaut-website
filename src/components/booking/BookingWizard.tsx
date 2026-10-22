@@ -379,6 +379,24 @@ export function BookingWizard({
   return (
     <LayoutGroup>
       <div className="mx-auto max-w-3xl px-4 py-8 sm:px-6 sm:py-12">
+        {/* Rappel Promo Active dans le Tunnel de Réservation */}
+        {settings.promoModeActive && !settings.examModeActive && (
+          <div className="mb-4 flex items-center justify-between gap-3 rounded-2xl border border-[#F3C5CE] bg-[#FDF2F4] px-4 py-3 text-xs sm:text-sm text-[#9E3E53]">
+            <div className="flex items-center gap-2">
+              <span className="inline-flex h-5 items-center rounded-full bg-[#E57B8F] px-2 text-[10px] font-bold uppercase tracking-wider text-white shadow-sm">
+                Offre Promo
+              </span>
+              <span className="font-medium">
+                {settings.promoBannerMessage ??
+                  'Toutes les poses complètes sont en promotion à 15 000 FCFA'}
+              </span>
+            </div>
+            <span className="hidden font-bold sm:inline tabular-nums">
+              {formatXof(settings.promoPriceXof ?? 15000)}
+            </span>
+          </div>
+        )}
+
         {/* En-tête du tunnel avec barre d'étapes animée et MORPHING intégral de la carte prestation */}
         <div className="mb-8 rounded-[26px] border border-[#F3E1E6] bg-white p-5 shadow-powdery">
           <div className="flex items-center justify-between text-xs font-medium text-[#786B6E] tabular-nums">
@@ -721,21 +739,47 @@ export function BookingWizard({
                           </div>
 
                           <div className="shrink-0 text-right tabular-nums">
-                            <motion.span
-                              layoutId={`morph-service-price-${srv.id}`}
-                              transition={HIGH_SPRING}
-                              className="inline-block rounded-full border border-[#F3E1E6] bg-white px-3 py-1 text-sm font-bold text-[#1C191A]"
-                            >
-                              {formatXof(srv.priceXof)}
-                            </motion.span>
+                            {srv.isPromoActive &&
+                            srv.regularPriceXof &&
+                            srv.regularPriceXof > srv.priceXof ? (
+                              <div>
+                                <span className="line-through text-xs font-normal text-[#A89A9D] mr-1.5">
+                                  {formatXof(srv.regularPriceXof)}
+                                </span>
+                                <motion.span
+                                  layoutId={`morph-service-price-${srv.id}`}
+                                  transition={HIGH_SPRING}
+                                  className="inline-block rounded-full border border-[#D88B99] bg-[#FDF2F4] px-3 py-1 text-sm font-bold text-[#C47482]"
+                                >
+                                  {formatXof(srv.priceXof)}
+                                </motion.span>
+                                <span className="mt-0.5 block text-[10px] font-bold uppercase tracking-wider text-[#B36270]">
+                                  Offre Promo
+                                </span>
+                              </div>
+                            ) : (
+                              <motion.span
+                                layoutId={`morph-service-price-${srv.id}`}
+                                transition={HIGH_SPRING}
+                                className="inline-block rounded-full border border-[#F3E1E6] bg-white px-3 py-1 text-sm font-bold text-[#1C191A]"
+                              >
+                                {formatXof(srv.priceXof)}
+                              </motion.span>
+                            )}
                             <p className="mt-1 text-[11px] text-[#786B6E]">
-                              Acompte {formatXof(srv.depositXof)}
+                              Acompte obligatoire : {formatXof(srv.depositXof)}
                             </p>
                           </div>
                         </div>
 
                         <div className="relative z-10 mt-3.5 flex flex-wrap items-center justify-between gap-2">
                           <div className="flex flex-wrap gap-1.5">
+                            {srv.isPromoActive && (
+                              <PowderyBadge variant="rose">
+                                <Sparkles className="h-3.5 w-3.5 text-[#D88B99]" strokeWidth={1.5} />
+                                Offre Promo • {formatXof(srv.priceXof)}
+                              </PowderyBadge>
+                            )}
                             {srv.naturalLashesOnly && (
                               <PowderyBadge variant="rose">
                                 Sur cils naturels uniquement

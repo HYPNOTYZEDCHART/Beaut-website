@@ -15,9 +15,9 @@ export const FALLBACK_STUDIO_SETTINGS: PublicStudioSettingsDTO = {
     'Extensions de cils sur-mesure dans un cadre doux, calme et intimiste.',
   zoneLabel:
     'Dakar — Mermoz / Sacré-Cœur (adresse exacte communiquée dès confirmation)',
-  whatsappPhone: '+221776852146',
-  wavePhone: '+221776852146',
-  orangeMoneyPhone: '+221776852146',
+  whatsappPhone: '+221773956966',
+  wavePhone: '+221773956966',
+  orangeMoneyPhone: '+221773956966',
   instagramHandle: '@diamaeyelashextensions',
   timezone: 'Africa/Dakar',
   minNoticeHours: 24,
@@ -26,6 +26,10 @@ export const FALLBACK_STUDIO_SETTINGS: PublicStudioSettingsDTO = {
   maxAdvanceDays: 30,
   examModeActive: false,
   examModeMessage: null,
+  promoModeActive: false,
+  promoPriceXof: 15000,
+  promoBannerMessage:
+    'Offre de lancement : toutes nos poses d’extensions sont actuellement en promotion !',
 };
 
 export const FALLBACK_SERVICES: ServiceCatalogItemDTO[] = [
@@ -38,7 +42,10 @@ export const FALLBACK_SERVICES: ServiceCatalogItemDTO[] = [
       'Un effet mascara naturel, élégant et aérien qui sublime le regard sans l’alourdir.',
     fullDescription:
       'Application minutieuse d’une extension sur chaque cil naturel isolé. Idéal pour une première pose ou un rendu chic au quotidien.',
-    priceXof: 15000,
+    priceXof: 14000,
+    regularPriceXof: 14000,
+    effectivePriceXof: 14000,
+    isPromoActive: false,
     depositXof: 5000,
     durationMinutes: 120,
     bufferMinutes: 20,
@@ -60,7 +67,10 @@ export const FALLBACK_SERVICES: ServiceCatalogItemDTO[] = [
       'L’équilibre subtil entre la définition du cil à cil et la douceur texturée du volume.',
     fullDescription:
       'Alliance harmonieuse d’extensions cil à cil et d’éventails de volume léger pour combler les zones clairsemées tout en gardant un résultat doux.',
-    priceXof: 18000,
+    priceXof: 15000,
+    regularPriceXof: 15000,
+    effectivePriceXof: 15000,
+    isPromoActive: false,
     depositXof: 5000,
     durationMinutes: 135,
     bufferMinutes: 20,
@@ -76,13 +86,16 @@ export const FALLBACK_SERVICES: ServiceCatalogItemDTO[] = [
   {
     id: 'srv-volume-leger',
     slug: 'volume-leger',
-    name: 'Volume Léger (Soft Russe)',
+    name: 'Volume Russe',
     category: 'FULL_SET',
     shortDescription:
       'Un regard fourni, soyeux et vaporeux tout en finesse, parfait de jour comme de soirée.',
     fullDescription:
       'Bouquets faits main ultra-légers (2D à 3D) offrant une ligne de cils dense et aérienne sans jamais fatiguer vos cils naturels.',
-    priceXof: 20000,
+    priceXof: 15000,
+    regularPriceXof: 15000,
+    effectivePriceXof: 15000,
+    isPromoActive: false,
     depositXof: 5000,
     durationMinutes: 150,
     bufferMinutes: 25,
@@ -98,14 +111,17 @@ export const FALLBACK_SERVICES: ServiceCatalogItemDTO[] = [
   {
     id: 'srv-volume-intense',
     slug: 'volume-intense',
-    name: 'Volume Intense',
+    name: 'Mega Volume',
     category: 'FULL_SET',
     shortDescription:
       'Un résultat profond, sophistiqué et haute couture pour un regard intensément habillé.',
     fullDescription:
       'Éventails denses et ultra-souples (4D à 6D) travaillés sur-mesure selon la morphologie de vos yeux pour une courbure et une intensité maximales.',
-    priceXof: 25000,
-    depositXof: 7000,
+    priceXof: 15000,
+    regularPriceXof: 16000,
+    effectivePriceXof: 15000,
+    isPromoActive: true,
+    depositXof: 5000,
     durationMinutes: 165,
     bufferMinutes: 30,
     naturalLashesOnly: true,
@@ -126,7 +142,10 @@ export const FALLBACK_SERVICES: ServiceCatalogItemDTO[] = [
       'Entretien complet de votre pose pour retrouver une ligne fraîche, nette et parfaitement fournie.',
     fullDescription:
       'Nettoyage doux, retrait des extensions ayant poussé et pose de nouveaux bouquets pour redonner tout son éclat à votre pose initiale.',
-    priceXof: 12000,
+    priceXof: 10000,
+    regularPriceXof: 10000,
+    effectivePriceXof: 10000,
+    isPromoActive: false,
     depositXof: 4000,
     durationMinutes: 90,
     bufferMinutes: 20,

@@ -4,16 +4,14 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "prisma generate && next build",
     "start": "next start",
     "typecheck": "tsc --noEmit",
     "test": "tsx --test tests/slot-engine.test.ts tests/whatsapp.test.ts tests/supabase-orm.test.ts tests/server-actions.test.ts tests/http-endpoints.test.ts",
     "db:validate": "prisma validate",
     "db:generate": "prisma generate",
-    "db:seed": "tsx prisma/seed.ts"
-  },
-  "prisma": {
-    "seed": "tsx prisma/seed.ts"
+    "db:seed": "tsx prisma/seed.ts",
+    "postinstall": "prisma generate"
   },
   "dependencies": {
     "@prisma/client": "^6.5.0",

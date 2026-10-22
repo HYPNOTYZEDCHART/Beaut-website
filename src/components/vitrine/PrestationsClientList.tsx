@@ -46,11 +46,18 @@ export function PrestationsClientList({
                   className="h-full w-full object-cover object-center transition-transform duration-500 ease-emil-out group-hover:scale-[1.03]"
                 />
                 <div className="absolute inset-x-3 top-3 flex items-center justify-between gap-2">
-                  <span className="rounded-full border border-[#F3E1E6] bg-white/95 px-3 py-1 text-[11px] font-semibold uppercase tracking-wider text-[#B36270] backdrop-blur-sm">
-                    {service.category === 'REFILL'
-                      ? 'Entretien & Suivi'
-                      : 'Pose Complète'}
-                  </span>
+                  <div className="flex items-center gap-1.5">
+                    <span className="rounded-full border border-[#F3E1E6] bg-white/95 px-3 py-1 text-[11px] font-semibold uppercase tracking-wider text-[#B36270] backdrop-blur-sm">
+                      {service.category === 'REFILL'
+                        ? 'Entretien & Suivi'
+                        : 'Pose Complète'}
+                    </span>
+                    {service.isPromoActive && (
+                      <span className="rounded-full border border-[#E57B8F]/30 bg-[#E57B8F] px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-white shadow-sm backdrop-blur-sm">
+                        Promo
+                      </span>
+                    )}
+                  </div>
                   <span className="inline-flex items-center gap-1 rounded-full border border-[#F3E1E6] bg-white/95 px-3 py-1 text-xs font-medium text-[#1C191A] tabular-nums backdrop-blur-sm">
                     <Clock
                       className="h-3.5 w-3.5 text-[#D88B99]"
@@ -67,9 +74,22 @@ export function PrestationsClientList({
                   {service.name}
                 </h3>
                 <div className="text-right tabular-nums">
-                  <p className="text-lg font-semibold text-[#1C191A]">
-                    {formatXof(service.priceXof)}
-                  </p>
+                  {service.isPromoActive &&
+                  service.regularPriceXof &&
+                  service.regularPriceXof > service.priceXof ? (
+                    <div>
+                      <span className="line-through text-xs font-normal text-[#A89A9D] mr-1.5">
+                        {formatXof(service.regularPriceXof)}
+                      </span>
+                      <span className="text-lg font-bold text-[#C47482]">
+                        {formatXof(service.priceXof)}
+                      </span>
+                    </div>
+                  ) : (
+                    <p className="text-lg font-semibold text-[#1C191A]">
+                      {formatXof(service.priceXof)}
+                    </p>
+                  )}
                   <p className="text-[11px] text-[#786B6E]">
                     Acompte : {formatXof(service.depositXof)}
                   </p>

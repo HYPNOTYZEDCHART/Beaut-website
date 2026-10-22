@@ -14,12 +14,18 @@ import {
   RefreshCw,
   PlusCircle,
   ShieldAlert,
+  ShieldCheck,
   Sparkles,
+  Tag,
 } from 'lucide-react';
 import {
   createBlackoutPeriodAction,
+  getCatalogAndSettingsAction,
   PublicStudioSettingsDTO,
+  ServiceCatalogItemDTO,
   toggleExamModeAction,
+  updatePromoModeAction,
+  updateServicePricingAction,
 } from '@/actions/availability.actions';
 import {
   AdminBookingItemDTO,
@@ -43,10 +49,11 @@ import { cn } from '@/lib/cn';
 import { PowderyBadge } from '@/components/ui/PowderyBadge';
 import { TactileButton } from '@/components/ui/TactileButton';
 
-type AdminTab = 'bookings' | 'exams' | 'reviews';
+type AdminTab = 'bookings' | 'pricing' | 'exams' | 'reviews';
 
 interface AdminDashboardClientProps {
   initialSettings: PublicStudioSettingsDTO;
+  initialServices: ServiceCatalogItemDTO[];
 }
 
 const DEMO_BOOKINGS: AdminBookingItemDTO[] = [
@@ -115,6 +122,7 @@ const DEMO_REVIEWS: AdminReviewItemDTO[] = [
 
 export function AdminDashboardClient({
   initialSettings,
+  initialServices,
 }: AdminDashboardClientProps) {
   const [adminPin, setAdminPin] = useState<string>('');
   const [isUnlocked, setIsUnlocked] = useState<boolean>(false);
@@ -124,8 +132,45 @@ export function AdminDashboardClient({
   const [bookings, setBookings] =
     useState<AdminBookingItemDTO[]>(DEMO_BOOKINGS);
   const [reviews, setReviews] = useState<AdminReviewItemDTO[]>(DEMO_REVIEWS);
+  const [servicesList, setServicesList] =
+    useState<ServiceCatalogItemDTO[]>(initialServices);
   const [isLoadingData, setIsLoadingData] = useState<boolean>(false);
   const [busyId, setBusyId] = useState<string | null>(null);
+
+  // Mode Promo Globale & Tarifs
+  const [promoModeActive, setPromoModeActive] = useState<boolean>(
+    initialSettings.promoModeActive
+  );
+  const [promoPriceXof, setPromoPriceXof] = useState<number>(
+    initialSettings.promoPriceXof ?? 15000
+  );
+  const [promoBannerMessage, setPromoBannerMessage] = useState<string>(
+    initialSettings.promoBannerMessage ??
+      'Offre de lancement : toutes nos poses d’extensions sont actuellement à 15 000 FCFA !'
+  );
+  const [isSavingPromo, setIsSavingPromo] = useState<boolean>(false);
+  const [savingServiceId, setSavingServiceId] = useState<string | null>(null);
+  const [isSavingAllServices, setIsSavingAllServices] = useState<boolean>(false);
+
+  const [editingServices, setEditingServices] = useState<
+    Record<
+      string,
+      { priceXof: number; regularPriceXof: number | ''; depositXof: number }
+    >
+  >(() => {
+    const map: Record<
+      string,
+      { priceXof: number; regularPriceXof: number | ''; depositXof: number }
+    > = {};
+    for (const s of initialServices) {
+      map[s.id] = {
+        priceXof: s.regularPriceXof ?? s.priceXof,
+        regularPriceXof: s.regularPriceXof ?? '',
+        depositXof: s.depositXof,
+      };
+    }
+    return map;
+  });
 
   // Mode Examens & Fermetures rapides
   const [examModeActive, setExamModeActive] = useState<boolean>(
@@ -153,11 +198,24 @@ export function AdminDashboardClient({
 
   const refreshAllAdminData = useCallback(async (pinToUse: string) => {
     setIsLoadingData(true);
-    const [bRes, rRes] = await Promise.all([
+    const [bRes, rRes, cRes] = await Promise.all([
       listAdminBookingsAction({ adminPin: pinToUse, page: 1, limit: 30 }),
       listAdminReviewsAction({ adminPin: pinToUse, page: 1, limit: 30 }),
+      getCatalogAndSettingsAction(),
     ]);
     setIsLoadingData(false);
+
+    if (cRes.success) {
+      setServicesList(cRes.data.services);
+      setPromoModeActive(cRes.data.settings.promoModeActive);
+      if (cRes.data.settings.promoPriceXof) {
+        setPromoPriceXof(cRes.data.settings.promoPriceXof);
+      }
+      if (cRes.data.settings.promoBannerMessage) {
+        setPromoBannerMessage(cRes.data.settings.promoBannerMessage);
+      }
+      setExamModeActive(cRes.data.settings.examModeActive);
+    }
 
     if (bRes.success) {
       setBookings(bRes.data.data.length > 0 ? bRes.data.data : DEMO_BOOKINGS);
@@ -429,6 +487,129 @@ export function AdminDashboardClient({
     toast.error(res.error);
   }
 
+  async function handleSavePromoMode(e: React.FormEvent) {
+    e.preventDefault();
+    setIsSavingPromo(true);
+    const res = await updatePromoModeAction({
+      adminPin,
+      active: promoModeActive,
+      promoPriceXof: Number(promoPriceXof),
+      promoBannerMessage: promoBannerMessage.trim(),
+    });
+    setIsSavingPromo(false);
+
+    if (res.success) {
+      toast.success(
+        promoModeActive
+          ? `Mode promo activé : ${formatXof(promoPriceXof)} sur toutes les poses complètes !`
+          : 'Mode promo désactivé. Tarifs réguliers rétablis.'
+      );
+      const catRes = await getCatalogAndSettingsAction();
+      if (catRes.success) {
+        setServicesList(catRes.data.services);
+      }
+      return;
+    }
+
+    toast.error(res.error);
+  }
+
+  async function handleSaveServicePricing(serviceId: string) {
+    const edit = editingServices[serviceId];
+    if (!edit) return;
+
+    const price = Number(edit.priceXof);
+    const deposit = Number(edit.depositXof);
+
+    if (isNaN(price) || price < 1000) {
+      toast.error("Le tarif total doit être d'au moins 1 000 FCFA.");
+      return;
+    }
+    if (isNaN(deposit) || deposit < 1000) {
+      toast.error("L'acompte est obligatoire pour valider une réservation (minimum 1 000 FCFA).");
+      return;
+    }
+    if (deposit > price) {
+      toast.error("L'acompte ne peut pas être supérieur au tarif total de la prestation.");
+      return;
+    }
+
+    setSavingServiceId(serviceId);
+
+    const regPrice =
+      edit.regularPriceXof === '' ? null : Number(edit.regularPriceXof);
+
+    const res = await updateServicePricingAction({
+      adminPin,
+      serviceId,
+      priceXof: price,
+      regularPriceXof: regPrice,
+      depositXof: deposit,
+    });
+    setSavingServiceId(null);
+
+    if (res.success) {
+      toast.success('Tarif et acompte enregistrés avec succès !');
+      const catRes = await getCatalogAndSettingsAction();
+      if (catRes.success) {
+        setServicesList(catRes.data.services);
+      }
+      return;
+    }
+
+    toast.error(res.error);
+  }
+
+  async function handleSaveAllServicesPricing() {
+    setIsSavingAllServices(true);
+    try {
+      for (const service of servicesList) {
+        const edit = editingServices[service.id];
+        if (!edit) continue;
+
+        const price = Number(edit.priceXof);
+        const deposit = Number(edit.depositXof);
+
+        if (isNaN(price) || price < 1000) {
+          toast.error(`Tarif total invalide pour ${service.name}.`);
+          return;
+        }
+        if (isNaN(deposit) || deposit < 1000) {
+          toast.error(`L'acompte est obligatoire pour ${service.name} (minimum 1 000 FCFA).`);
+          return;
+        }
+        if (deposit > price) {
+          toast.error(`L'acompte de ${service.name} ne peut pas dépasser son prix total.`);
+          return;
+        }
+
+        const regPrice =
+          edit.regularPriceXof === '' ? null : Number(edit.regularPriceXof);
+
+        const res = await updateServicePricingAction({
+          adminPin,
+          serviceId: service.id,
+          priceXof: price,
+          regularPriceXof: regPrice,
+          depositXof: deposit,
+        });
+
+        if (!res.success) {
+          toast.error(`Erreur pour ${service.name} : ${res.error}`);
+          return;
+        }
+      }
+
+      toast.success('Tous les tarifs et acomptes ont été mis à jour avec succès !');
+      const catRes = await getCatalogAndSettingsAction();
+      if (catRes.success) {
+        setServicesList(catRes.data.services);
+      }
+    } finally {
+      setIsSavingAllServices(false);
+    }
+  }
+
   if (!isUnlocked) {
     return (
       <div className="mx-auto max-w-md px-4 py-14 sm:px-6">
@@ -495,13 +676,18 @@ export function AdminDashboardClient({
       </div>
 
       {/* Navigation par onglets avec layoutId (emil-design-eng) */}
-      <div className="mt-5 grid grid-cols-3 gap-2 rounded-2xl border border-[#F3E1E6] bg-white p-1.5 shadow-powdery">
+      <div className="mt-5 grid grid-cols-2 gap-2 rounded-2xl border border-[#F3E1E6] bg-white p-1.5 shadow-powdery sm:grid-cols-4">
         {(
           [
             {
               key: 'bookings',
               label: 'Rendez-vous',
               icon: Calendar,
+            },
+            {
+              key: 'pricing',
+              label: 'Tarifs & Promos',
+              icon: Tag,
             },
             {
               key: 'exams',
@@ -669,7 +855,300 @@ export function AdminDashboardClient({
         </div>
       )}
 
-      {/* ONGLET 2 : MODE EXAMENS & FERMETURE RAPIDE D'UN CRÉNEAU */}
+      {/* ONGLET 2 : TARIFS & PROMOTIONS (FLASH PROMO ET ÉDITEUR DE PRIX) */}
+      {activeTab === 'pricing' && (
+        <div className="mt-6 space-y-6">
+          {/* CARTE 1 : INTERRUPTEUR PROMO GLOBALE */}
+          <div className="rounded-[24px] border border-[#F3E1E6] bg-white p-6 shadow-powdery sm:p-7">
+            <div className="flex flex-wrap items-center justify-between gap-3">
+              <div>
+                <div className="flex items-center gap-2">
+                  <PowderyBadge variant={promoModeActive ? 'rose' : 'amber'}>
+                    <Sparkles className="h-3.5 w-3.5" />
+                    {promoModeActive
+                      ? 'Promo Globale Active'
+                      : 'Tarifs Normaux Actifs'}
+                  </PowderyBadge>
+                </div>
+                <h2 className="mt-2 font-serif text-2xl font-semibold text-[#1C191A]">
+                  Mode Promo Globale (Flash Promo)
+                </h2>
+                <p className="mt-1 max-w-xl text-xs text-[#786B6E]">
+                  Bascule instantanément toutes les poses complètes au prix promo
+                  indiqué et affiche la bannière d’annonce en haut du site avec
+                  le prix barré.
+                </p>
+              </div>
+
+              {/* Toggle switch rapide */}
+              <button
+                type="button"
+                onClick={() => setPromoModeActive(!promoModeActive)}
+                className={cn(
+                  'relative inline-flex h-8 w-14 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none',
+                  promoModeActive ? 'bg-[#C47482]' : 'bg-[#E5DCDD]'
+                )}
+              >
+                <span
+                  className={cn(
+                    'pointer-events-none inline-block h-7 w-7 transform rounded-full bg-white shadow-md ring-0 transition duration-200 ease-in-out',
+                    promoModeActive ? 'translate-x-6' : 'translate-x-0'
+                  )}
+                />
+              </button>
+            </div>
+
+            <form onSubmit={handleSavePromoMode} className="mt-6 space-y-4">
+              <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                <div>
+                  <label className="block text-xs font-semibold text-[#1C191A]">
+                    Tarif Promo Global (FCFA)
+                  </label>
+                  <p className="text-[11px] text-[#786B6E]">
+                    S’applique à toutes les poses complètes (Cil à cil, Mixte,
+                    Volume).
+                  </p>
+                  <div className="relative mt-1.5">
+                    <input
+                      type="number"
+                      step={500}
+                      min={5000}
+                      max={100000}
+                      value={promoPriceXof}
+                      onChange={(e) => setPromoPriceXof(Number(e.target.value))}
+                      className="w-full rounded-xl border border-[#F3E1E6] bg-[#FDF8F9] px-3.5 py-2.5 text-sm font-semibold text-[#1C191A] tabular-nums focus:border-[#D88B99] focus:outline-none"
+                    />
+                    <span className="absolute right-3.5 top-2.5 text-xs font-medium text-[#786B6E]">
+                      FCFA
+                    </span>
+                  </div>
+                </div>
+
+                <div>
+                  <label className="block text-xs font-semibold text-[#1C191A]">
+                    Statut Actuel
+                  </label>
+                  <p className="text-[11px] text-[#786B6E]">
+                    Impact direct sur le calendrier et les réservations.
+                  </p>
+                  <div className="mt-1.5 flex h-[42px] items-center rounded-xl border border-[#F3E1E6] bg-[#FDF8F9] px-3.5 text-xs text-[#786B6E]">
+                    {promoModeActive ? (
+                      <span className="font-semibold text-[#B36270]">
+                        ✓ Toutes les poses complètes sont à{' '}
+                        {formatXof(promoPriceXof)}
+                      </span>
+                    ) : (
+                      <span>Les tarifs individuels hors promo s’appliquent</span>
+                    )}
+                  </div>
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-xs font-semibold text-[#1C191A]">
+                  Message du Bandeau Promo (Affiché en haut de la vitrine)
+                </label>
+                <input
+                  type="text"
+                  maxLength={180}
+                  value={promoBannerMessage}
+                  onChange={(e) => setPromoBannerMessage(e.target.value)}
+                  placeholder="Ex: Offre de lancement : toutes nos poses d’extensions sont à 15 000 FCFA !"
+                  className="mt-1.5 w-full rounded-xl border border-[#F3E1E6] bg-[#FDF8F9] px-3.5 py-2.5 text-xs text-[#1C191A] focus:border-[#D88B99] focus:outline-none"
+                />
+              </div>
+
+              {/* Aperçu direct du bandeau vitrine */}
+              {promoModeActive && (
+                <div className="rounded-xl border border-[#F3E1E6] bg-[#F9EBEF] p-3 text-center text-xs font-medium text-[#B36270]">
+                  <span className="inline-flex items-center gap-1.5">
+                    <Sparkles className="h-3.5 w-3.5" />
+                    <strong>Aperçu vitrine :</strong> {promoBannerMessage}
+                  </span>
+                </div>
+              )}
+
+              <div className="flex justify-end pt-2">
+                <TactileButton
+                  variant="primary"
+                  type="submit"
+                  isLoading={isSavingPromo}
+                >
+                  <Sparkles className="h-4 w-4" />
+                  <span>Enregistrer la promo</span>
+                </TactileButton>
+              </div>
+            </form>
+          </div>
+
+          {/* CARTE 2 : GESTION DES TARIFS & ACOMPTES OBLIGATOIRES PAR PRESTATION */}
+          <div className="rounded-[24px] border border-[#F3E1E6] bg-white p-6 shadow-powdery sm:p-7">
+            <div className="flex flex-col justify-between gap-3 sm:flex-row sm:items-center">
+              <div>
+                <h2 className="font-serif text-2xl font-semibold text-[#1C191A]">
+                  Tarifs & Acomptes Obligatoires par Prestation
+                </h2>
+                <p className="mt-1 text-xs text-[#786B6E]">
+                  Vous pouvez modifier à tout moment les tarifs et les acomptes de chaque prestation.
+                  L’acompte est exigé pour chaque réservation et est intégralement déduit le jour du rendez-vous.
+                </p>
+              </div>
+              <TactileButton
+                variant="secondary"
+                className="self-start sm:self-auto min-h-10 px-4 py-2 text-xs"
+                isLoading={isSavingAllServices}
+                onClick={handleSaveAllServicesPricing}
+              >
+                <Sparkles className="h-4 w-4 text-[#C47482]" />
+                <span>Tout enregistrer</span>
+              </TactileButton>
+            </div>
+
+            <div className="mt-6 space-y-4">
+              {servicesList.map((service) => {
+                const edit = editingServices[service.id] ?? {
+                  priceXof: service.regularPriceXof ?? service.priceXof,
+                  regularPriceXof: service.regularPriceXof ?? '',
+                  depositXof: service.depositXof,
+                };
+                const isSaving = savingServiceId === service.id;
+
+                return (
+                  <div
+                    key={service.id}
+                    className="flex flex-col justify-between gap-4 rounded-2xl border border-[#F3E1E6] bg-[#FDF8F9] p-4.5 sm:flex-row sm:items-center"
+                  >
+                    <div className="flex items-center gap-3">
+                      <div className="relative h-12 w-12 shrink-0 overflow-hidden rounded-xl border border-[#F3E1E6] bg-white">
+                        <img
+                          src={service.imageUrl}
+                          alt={service.name}
+                          className="h-full w-full object-cover"
+                        />
+                      </div>
+                      <div>
+                        <h3 className="font-serif text-lg font-semibold text-[#1C191A]">
+                          {service.name}
+                        </h3>
+                        <div className="mt-0.5 flex items-center gap-2">
+                          <span className="text-[11px] text-[#786B6E]">
+                            {service.category === 'FULL_SET'
+                              ? 'Pose Complète'
+                              : 'Remplissage'}
+                          </span>
+                          <span className="text-[11px] font-medium text-[#B36270]">
+                            • {service.durationMinutes} min
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="flex flex-wrap items-center gap-3">
+                      <div>
+                        <label className="block text-[10px] font-semibold uppercase tracking-wider text-[#786B6E]">
+                          Prix Total (FCFA) *
+                        </label>
+                        <input
+                          type="number"
+                          step={500}
+                          min={1000}
+                          value={edit.priceXof}
+                          onChange={(e) =>
+                            setEditingServices((prev) => ({
+                              ...prev,
+                              [service.id]: {
+                                ...edit,
+                                priceXof: Number(e.target.value),
+                              },
+                            }))
+                          }
+                          className="mt-1 w-28 rounded-lg border border-[#F3E1E6] bg-white px-2.5 py-1.5 text-xs font-semibold tabular-nums text-[#1C191A] focus:border-[#D88B99] focus:outline-none"
+                        />
+                      </div>
+
+                      <div>
+                        <label className="block text-[10px] font-semibold uppercase tracking-wider text-[#B36270]">
+                          Acompte Requis (FCFA) *
+                        </label>
+                        <input
+                          type="number"
+                          step={500}
+                          min={1000}
+                          value={edit.depositXof}
+                          onChange={(e) =>
+                            setEditingServices((prev) => ({
+                              ...prev,
+                              [service.id]: {
+                                ...edit,
+                                depositXof: Number(e.target.value),
+                              },
+                            }))
+                          }
+                          className="mt-1 w-28 rounded-lg border border-[#D88B99] bg-white px-2.5 py-1.5 text-xs font-semibold tabular-nums text-[#1C191A] focus:border-[#B36270] focus:outline-none"
+                        />
+                      </div>
+
+                      <div>
+                        <label className="block text-[10px] font-semibold uppercase tracking-wider text-[#786B6E]">
+                          Prix Barré (Ref)
+                        </label>
+                        <input
+                          type="number"
+                          step={500}
+                          placeholder="Optionnel"
+                          value={edit.regularPriceXof}
+                          onChange={(e) =>
+                            setEditingServices((prev) => ({
+                              ...prev,
+                              [service.id]: {
+                                ...edit,
+                                regularPriceXof:
+                                  e.target.value === ''
+                                    ? ''
+                                    : Number(e.target.value),
+                              },
+                            }))
+                          }
+                          className="mt-1 w-24 rounded-lg border border-[#F3E1E6] bg-white px-2.5 py-1.5 text-xs font-semibold tabular-nums text-[#1C191A] focus:border-[#D88B99] focus:outline-none"
+                        />
+                      </div>
+
+                      <div className="pt-4 sm:pt-0">
+                        <TactileButton
+                          variant="secondary"
+                          className="min-h-9 px-4 py-1 text-xs"
+                          isLoading={isSaving}
+                          onClick={() => handleSaveServicePricing(service.id)}
+                        >
+                          Enregistrer
+                        </TactileButton>
+                      </div>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+
+            <div className="mt-6 flex flex-col items-center justify-between gap-3 rounded-2xl border border-[#F3E1E6] bg-[#FDF8F9] p-4 sm:flex-row">
+              <div className="flex items-center gap-2 text-xs text-[#786B6E]">
+                <ShieldCheck className="h-4 w-4 text-[#C47482]" />
+                <span>L’acompte est obligatoire et directement imposé lors de la réservation en ligne.</span>
+              </div>
+              <TactileButton
+                variant="primary"
+                isLoading={isSavingAllServices}
+                onClick={handleSaveAllServicesPricing}
+                className="w-full sm:w-auto min-h-10 px-5 py-2 text-xs"
+              >
+                <Sparkles className="h-4 w-4" />
+                <span>Enregistrer tous les tarifs & acomptes</span>
+              </TactileButton>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* ONGLET 3 : MODE EXAMENS & FERMETURE RAPIDE D'UN CRÉNEAU */}
       {activeTab === 'exams' && (
         <div className="mt-6 space-y-6">
           {/* Carte 1 : Activation du Mode Examens en 1 clic */}

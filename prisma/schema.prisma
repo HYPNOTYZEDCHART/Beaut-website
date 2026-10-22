@@ -58,9 +58,9 @@ model StudioSettings {
   tagline              String   @default("Extensions de cils sur-mesure dans un cadre doux, calme et intimiste.")
   zoneLabel            String   @default("Dakar — Mermoz / Sacré-Cœur (adresse exacte envoyée dès confirmation)")
   exactAddress         String   @default("Mermoz Pyrotechnie, Villa n°24 (Porte rose poudré, 1er étage), Dakar")
-  whatsappPhone        String   @default("+221776852146")
-  wavePhone            String   @default("+221776852146")
-  orangeMoneyPhone     String   @default("+221776852146")
+  whatsappPhone        String   @default("+221773956966")
+  wavePhone            String   @default("+221773956966")
+  orangeMoneyPhone     String   @default("+221773956966")
   instagramHandle      String   @default("@diamaeyelashextensions")
   timezone             String   @default("Africa/Dakar")
   minNoticeHours       Int      @default(24) // Délai minimum (24h à 48h à l'avance)
@@ -70,6 +70,9 @@ model StudioSettings {
   slotIntervalMinutes  Int      @default(30) // Pas de génération des créneaux (ex: 30 min)
   examModeActive       Boolean  @default(false) // Interrupteur global Mode Examens (/admin)
   examModeMessage      String?  @default("Les réservations sont temporairement suspendues pour période d'examens. De nouveaux créneaux seront ouverts très vite.")
+  promoModeActive      Boolean  @default(false) // Interrupteur global Mode Promo (/admin)
+  promoPriceXof        Int?     @default(15000) // Tarif promo global en FCFA (ex: 15 000 FCFA)
+  promoBannerMessage   String?  @default("Offre de lancement : toutes nos poses d'extensions sont actuellement à 15 000 FCFA !")
   updatedAt            DateTime @updatedAt
 }
 
@@ -81,6 +84,7 @@ model Service {
   shortDescription  String
   fullDescription   String?
   priceXof          Int             // Tarif total en FCFA (entier strict, zéro Float)
+  regularPriceXof   Int?            // Tarif standard de référence barré si en promo (ex: 18000 FCFA)
   depositXof        Int             // Acompte requis en FCFA (entier strict)
   durationMinutes   Int             // Durée estimée de la pose en minutes
   bufferMinutes     Int             @default(20) // Temps de nettoyage/préparation après la pose (15-30 min)

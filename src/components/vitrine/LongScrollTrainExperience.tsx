@@ -111,6 +111,19 @@ export function LongScrollTrainExperience({
         </div>
       )}
 
+      {/* Bannière Promotion Active Haute Couture */}
+      {settings.promoModeActive && !settings.examModeActive && (
+        <div className="border-b border-[#F3C5CE] bg-[#FDF2F4] px-4 py-3 text-center text-xs font-medium text-[#9E3E53] sm:text-sm">
+          <span className="mr-2 inline-flex items-center rounded-full bg-[#E57B8F] px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider text-white shadow-sm">
+            Offre Spéciale
+          </span>
+          <span>
+            {settings.promoBannerMessage ??
+              'Offre exclusive : Toutes nos poses complètes sont en promotion à 15 000 FCFA pour une durée limitée !'}
+          </span>
+        </div>
+      )}
+
       {/* =====================================================================
           SECTION 01 — ACCUEIL & HERO HAUTE COUTURE (#accueil)
          ===================================================================== */}
@@ -346,14 +359,34 @@ export function LongScrollTrainExperience({
                     </span>
                   </div>
                   <div>
-                    <p className="text-[11px] font-semibold uppercase tracking-wider text-[#B36270]">
-                      Pose sélectionnée pour votre réservation
-                    </p>
+                    <div className="flex items-center gap-2">
+                      <p className="text-[11px] font-semibold uppercase tracking-wider text-[#B36270]">
+                        Pose sélectionnée pour votre réservation
+                      </p>
+                      {highlightedService.isPromoActive && (
+                        <span className="rounded-full bg-[#E57B8F]/15 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-[#9E3E53] border border-[#E57B8F]/30">
+                          En promo
+                        </span>
+                      )}
+                    </div>
                     <h3 className="font-serif text-2xl font-semibold text-[#1C191A]">
                       {highlightedService.name} —{' '}
-                      <span className="tabular-nums text-[#C47482]">
-                        {formatXof(highlightedService.priceXof)}
-                      </span>
+                      {highlightedService.isPromoActive &&
+                      highlightedService.regularPriceXof &&
+                      highlightedService.regularPriceXof > highlightedService.priceXof ? (
+                        <>
+                          <span className="line-through text-base font-normal text-[#A89A9D] mr-2 tabular-nums">
+                            {formatXof(highlightedService.regularPriceXof)}
+                          </span>
+                          <span className="tabular-nums text-[#C47482]">
+                            {formatXof(highlightedService.priceXof)}
+                          </span>
+                        </>
+                      ) : (
+                        <span className="tabular-nums text-[#C47482]">
+                          {formatXof(highlightedService.priceXof)}
+                        </span>
+                      )}
                     </h3>
                   </div>
                 </div>
@@ -418,11 +451,18 @@ export function LongScrollTrainExperience({
                         className="h-full w-full object-cover object-center transition-transform duration-500 ease-emil-out hover:scale-[1.03]"
                       />
                       <div className="absolute inset-x-3 top-3 flex items-center justify-between gap-2">
-                        <span className="rounded-full border border-[#F3E1E6] bg-white/95 px-3 py-1 text-[11px] font-semibold uppercase tracking-wider text-[#B36270] backdrop-blur-sm">
-                          {service.category === 'REFILL'
-                            ? 'Entretien & Suivi'
-                            : 'Pose Complète'}
-                        </span>
+                        <div className="flex items-center gap-1.5">
+                          <span className="rounded-full border border-[#F3E1E6] bg-white/95 px-3 py-1 text-[11px] font-semibold uppercase tracking-wider text-[#B36270] backdrop-blur-sm">
+                            {service.category === 'REFILL'
+                              ? 'Entretien & Suivi'
+                              : 'Pose Complète'}
+                          </span>
+                          {service.isPromoActive && (
+                            <span className="rounded-full border border-[#E57B8F]/30 bg-[#E57B8F] px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-white shadow-sm backdrop-blur-sm">
+                              Promo
+                            </span>
+                          )}
+                        </div>
                         <span className="inline-flex items-center gap-1 rounded-full border border-[#F3E1E6] bg-white/95 px-3 py-1 text-xs font-medium text-[#1C191A] tabular-nums backdrop-blur-sm">
                           <Clock
                             className="h-3.5 w-3.5 text-[#D88B99]"
@@ -438,9 +478,22 @@ export function LongScrollTrainExperience({
                         {service.name}
                       </h3>
                       <div className="text-right tabular-nums">
-                        <p className="text-lg font-bold text-[#1C191A]">
-                          {formatXof(service.priceXof)}
-                        </p>
+                        {service.isPromoActive &&
+                        service.regularPriceXof &&
+                        service.regularPriceXof > service.priceXof ? (
+                          <div>
+                            <span className="line-through text-xs font-normal text-[#A89A9D] mr-1.5">
+                              {formatXof(service.regularPriceXof)}
+                            </span>
+                            <span className="text-lg font-bold text-[#C47482]">
+                              {formatXof(service.priceXof)}
+                            </span>
+                          </div>
+                        ) : (
+                          <p className="text-lg font-bold text-[#1C191A]">
+                            {formatXof(service.priceXof)}
+                          </p>
+                        )}
                         <p className="text-[11px] text-[#786B6E]">
                           Acompte : {formatXof(service.depositXof)}
                         </p>
@@ -653,13 +706,50 @@ export function LongScrollTrainExperience({
                 </h3>
               </div>
               <p className="mt-3 text-sm leading-relaxed text-[#786B6E] tabular-nums">
-                Acompte de <strong className="text-[#1C191A]">4 000 à 7 000 FCFA</strong> déduit
-                du total. Non remboursable si annulation à moins de 24h ou retard
-                &gt; 15 min ; reportable 1 fois en prévenant 24h avant ; 100 %
-                remboursé si l’annulation vient de la praticienne.
+                <strong className="text-[#1C191A]">Acompte obligatoire</strong> défini selon la pose et intégralement déduit du total le jour de la séance. Non remboursable si annulation à moins de 24h ou retard &gt; 15 min ; reportable 1 fois en prévenant 24h avant ; 100 % remboursé si l’annulation vient de la praticienne.
               </p>
             </motion.article>
           </div>
+
+          {/* Encart Aftercare — Soins & Longévité des Cils */}
+          <motion.div
+            variants={STAGGER_ITEM_VARIANTS}
+            className="mt-6 overflow-hidden rounded-[26px] border border-[#F3E1E6] bg-[#FDF8F9] p-6 shadow-powdery sm:p-8"
+          >
+            <div className="grid grid-cols-1 items-center gap-6 md:grid-cols-12">
+              <div className="md:col-span-4">
+                <div className="relative mx-auto max-w-[240px] overflow-hidden rounded-2xl border border-[#F3E1E6] bg-white p-2 shadow-powdery">
+                  <img
+                    src="/images/aftercare-guide.jpg"
+                    alt="Guide aftercare extensions de cils DIAMA EYELASH EXTENSIONS Dakar"
+                    loading="lazy"
+                    className="h-auto w-full rounded-xl object-contain"
+                  />
+                </div>
+              </div>
+              <div className="space-y-3 md:col-span-8">
+                <PowderyBadge variant="rose">
+                  <Sparkles className="h-3.5 w-3.5" strokeWidth={1.5} />
+                  Aftercare • Longévité 3 à 4 semaines
+                </PowderyBadge>
+                <h3 className="font-serif text-2xl font-semibold text-[#1C191A] sm:text-3xl">
+                  Prendre soin de vos extensions au quotidien
+                </h3>
+                <p className="text-sm leading-relaxed text-[#786B6E]">
+                  Pour garder un regard impeccable sans perte prématurée : pas d'eau ni de chaleur pendant 48h, zéro corps gras sur les yeux, brossage doux au goupillon propre et sommeil sur le dos.
+                </p>
+                <div className="pt-2">
+                  <a
+                    href="/a-savoir#aftercare"
+                    className="inline-flex min-h-11 items-center justify-center gap-2 rounded-full border border-[#D88B99] bg-white px-5 py-2.5 text-xs font-semibold text-[#B36270] shadow-powdery transition-transform duration-150 ease-emil-out active:scale-[0.97] hover:bg-[#FDF8F9]"
+                  >
+                    <span>Consulter le guide complet aftercare</span>
+                    <ArrowRight className="h-4 w-4" strokeWidth={1.5} />
+                  </a>
+                </div>
+              </div>
+            </div>
+          </motion.div>
         </motion.div>
       </section>
 

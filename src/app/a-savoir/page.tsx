@@ -155,10 +155,10 @@ export default async function ASavoirPage() {
             </div>
             <ul className="mt-3 space-y-2 text-sm leading-relaxed text-[#786B6E] tabular-nums">
               <li>
-                • Un acompte (de <strong className="text-[#1C191A]">4 000 à 7 000 FCFA</strong> selon la pose) est obligatoire pour valider et bloquer définitivement votre créneau.
+                • Un <strong className="text-[#1C191A]">acompte obligatoire</strong> (défini selon la prestation choisie) est requis pour bloquer et confirmer définitivement votre créneau.
               </li>
               <li>
-                • Le montant de l’acompte est <strong className="text-[#1C191A]">intégralement déduit</strong> du tarif total le jour de la prestation.
+                • Le montant de cet acompte est <strong className="text-[#1C191A]">intégralement déduit</strong> du tarif total le jour de votre rendez-vous.
               </li>
               <li>
                 • <strong className="text-[#1C191A]">Non remboursable</strong> en cas d’annulation à moins de 24h, d’oubli ou de retard supérieur à 15 minutes.
@@ -170,6 +170,85 @@ export default async function ASavoirPage() {
                 • <strong className="text-[#1C191A]">100 % remboursé</strong> si un imprévu universitaire ou personnel oblige la praticienne à annuler la séance.
               </li>
             </ul>
+          </section>
+
+          {/* 6. Entretien & Soins post-pose (Aftercare) */}
+          <section
+            id="aftercare"
+            className="scroll-mt-24 rounded-[26px] border border-[#F3E1E6] bg-[#FDF8F9] p-6 shadow-powdery sm:p-8"
+          >
+            <div className="flex items-center gap-2.5">
+              <span className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-[#F3E1E6] bg-white text-[#D88B99]">
+                <Sparkles className="h-5 w-5" strokeWidth={1.5} />
+              </span>
+              <div>
+                <h2 className="font-serif text-2xl font-semibold text-[#1C191A]">
+                  6. Guide d’entretien post-pose (Aftercare)
+                </h2>
+                <p className="text-xs text-[#786B6E]">
+                  Pour conserver des cils intacts, soyeux et fournis pendant 3 à 4 semaines
+                </p>
+              </div>
+            </div>
+
+            <div className="mt-6 grid grid-cols-1 items-center gap-6 lg:grid-cols-12">
+              <div className="overflow-hidden rounded-2xl border border-[#F3E1E6] bg-white p-2.5 shadow-powdery lg:col-span-5">
+                <img
+                  src="/images/aftercare-guide.jpg"
+                  alt="Guide illustré des soins post-pose d'extensions de cils DIAMA EYELASH EXTENSIONS Dakar"
+                  className="h-auto w-full rounded-xl object-contain shadow-sm"
+                  loading="lazy"
+                />
+              </div>
+
+              <div className="space-y-4 lg:col-span-7">
+                <div className="rounded-2xl border border-[#F3E1E6] bg-white p-5 shadow-sm">
+                  <h3 className="flex items-center gap-2 text-sm font-semibold text-[#1C191A]">
+                    <span className="inline-flex h-6 w-6 items-center justify-center rounded-full bg-[#FDF8F9] text-xs font-bold text-[#B36270]">
+                      1
+                    </span>
+                    Les 48 premières heures (Période critique de fixation)
+                  </h3>
+                  <ul className="mt-2.5 space-y-2 text-xs leading-relaxed text-[#786B6E] sm:text-sm">
+                    <li>
+                      • <strong className="text-[#1C191A]">Ne pas mouiller les cils :</strong>{' '}
+                      Évitez toute eau, douche directe sur le visage, pluie et larmes pendant 48h, le temps que la colle sèche à cœur.
+                    </li>
+                    <li>
+                      • <strong className="text-[#1C191A]">Éviter toute source de chaleur :</strong>{' '}
+                      Pas de hammam, sauna, vapeur intense ou sèche-cheveux orienté vers le visage.
+                    </li>
+                    <li>
+                      • <strong className="text-[#1C191A]">Ne pas brosser excessivement :</strong>{' '}
+                      Laissez vos extensions se stabiliser les deux premiers jours.
+                    </li>
+                  </ul>
+                </div>
+
+                <div className="rounded-2xl border border-[#F3E1E6] bg-white p-5 shadow-sm">
+                  <h3 className="flex items-center gap-2 text-sm font-semibold text-[#1C191A]">
+                    <span className="inline-flex h-6 w-6 items-center justify-center rounded-full bg-[#FDF8F9] text-xs font-bold text-[#B36270]">
+                      2
+                    </span>
+                    Au quotidien (Durabilité & Protection naturelle)
+                  </h3>
+                  <ul className="mt-2.5 space-y-2 text-xs leading-relaxed text-[#786B6E] sm:text-sm">
+                    <li>
+                      • <strong className="text-[#1C191A]">Zéro corps gras sur les cils :</strong>{' '}
+                      Bannissez les huiles, sérums huileux et démaquillants biphasés (le gras dissout la colle).
+                    </li>
+                    <li>
+                      • <strong className="text-[#1C191A]">Ne pas frotter ni tirer :</strong>{' '}
+                      Brossez doucement le matin avec votre goupillon propre offert au studio, sans jamais tirer.
+                    </li>
+                    <li>
+                      • <strong className="text-[#1C191A]">Ne pas dormir sur le visage :</strong>{' '}
+                      Dormez sur le dos ou sur le côté pour éviter d'écraser vos éventails contre l'oreiller.
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
           </section>
         </div>
 

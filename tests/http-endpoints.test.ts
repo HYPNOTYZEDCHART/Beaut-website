@@ -1,8 +1,33 @@
 import { describe, it } from 'node:test';
 import assert from 'node:assert/strict';
+import net from 'node:net';
 
-describe('HTTP ENDPOINTS & ASSETS — Audit Réseau Réel sur Serveur Localhost:3000', () => {
+/**
+ * Sonde rapidement si le serveur Next.js écoute sur localhost:3000
+ */
+async function isLocalServerListening(port = 3000, host = '127.0.0.1'): Promise<boolean> {
+  return new Promise((resolve) => {
+    const socket = new net.Socket();
+    let settled = false;
+
+    const finish = (result: boolean) => {
+      if (settled) return;
+      settled = true;
+      socket.destroy();
+      resolve(result);
+    };
+
+    socket.setTimeout(300);
+    socket.once('connect', () => finish(true));
+    socket.once('timeout', () => finish(false));
+    socket.once('error', () => finish(false));
+    socket.connect(port, host);
+  });
+}
+
+describe('HTTP ENDPOINTS & ASSETS — Audit Réseau Réel sur Serveur Localhost:3000', async () => {
   const baseUrl = 'http://localhost:3000';
+  const serverRunning = await isLocalServerListening(3000);
 
   const htmlRoutes = [
     { path: '/', expectedSnippet: 'DIAMA EYELASH EXTENSIONS' },
@@ -15,7 +40,11 @@ describe('HTTP ENDPOINTS & ASSETS — Audit Réseau Réel sur Serveur Localhost:
   ];
 
   for (const route of htmlRoutes) {
-    it(`Page ${route.path} : retourne HTTP 200 OK avec contenu HTML valide`, async () => {
+    it(`Page ${route.path} : retourne HTTP 200 OK avec contenu HTML valide`, async (t) => {
+      if (!serverRunning) {
+        t.skip('Serveur localhost:3000 non démarré (test réseau ignoré)');
+        return;
+      }
       const response = await fetch(`${baseUrl}${route.path}`);
       assert.strictEqual(
         response.status,
@@ -35,7 +64,11 @@ describe('HTTP ENDPOINTS & ASSETS — Audit Réseau Réel sur Serveur Localhost:
     });
   }
 
-  it('PWA & SEO : GET /manifest.webmanifest retourne un manifest JSON valide', async () => {
+  it('PWA & SEO : GET /manifest.webmanifest retourne un manifest JSON valide', async (t) => {
+    if (!serverRunning) {
+      t.skip('Serveur localhost:3000 non démarré (test réseau ignoré)');
+      return;
+    }
     const response = await fetch(`${baseUrl}/manifest.webmanifest`);
     assert.strictEqual(response.status, 200);
     const contentType = response.headers.get('content-type') ?? '';
@@ -49,7 +82,11 @@ describe('HTTP ENDPOINTS & ASSETS — Audit Réseau Réel sur Serveur Localhost:
     assert.strictEqual(json.theme_color, '#FDF8F9');
   });
 
-  it('Favicon dynamique : GET /icon retourne une image PNG générée', async () => {
+  it('Favicon dynamique : GET /icon retourne une image PNG générée', async (t) => {
+    if (!serverRunning) {
+      t.skip('Serveur localhost:3000 non démarré (test réseau ignoré)');
+      return;
+    }
     const response = await fetch(`${baseUrl}/icon`);
     assert.strictEqual(response.status, 200);
     const contentType = response.headers.get('content-type') ?? '';
@@ -67,10 +104,15 @@ describe('HTTP ENDPOINTS & ASSETS — Audit Réseau Réel sur Serveur Localhost:
     '/images/services/volume-leger.jpg',
     '/images/services/volume-intense.jpg',
     '/images/services/remplissage.jpg',
+    '/images/aftercare-guide.jpg',
   ];
 
   for (const imgPath of staticImages) {
-    it(`Image HD ${imgPath} : retourne HTTP 200 OK et format JPEG valide`, async () => {
+    it(`Image HD ${imgPath} : retourne HTTP 200 OK et format JPEG valide`, async (t) => {
+      if (!serverRunning) {
+        t.skip('Serveur localhost:3000 non démarré (test réseau ignoré)');
+        return;
+      }
       const response = await fetch(`${baseUrl}${imgPath}`);
       assert.strictEqual(
         response.status,
