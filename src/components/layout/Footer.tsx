@@ -6,7 +6,6 @@ import {
   Download,
   Heart,
   Instagram,
-  Lock,
   MapPin,
   MessageCircle,
   Phone,
@@ -311,15 +310,6 @@ export async function Footer() {
           <div className="flex items-center gap-4 text-xs">
             <Link href="/a-savoir" className="transition-colors hover:text-white">
               Règles du Studio
-            </Link>
-            <span>•</span>
-            <Link
-              href="/admin"
-              className="inline-flex items-center gap-1 text-[#C47482] transition-colors hover:text-[#E5A5B1]"
-              title="Accès sécurisé pour la gérante"
-            >
-              <Lock className="h-3 w-3" strokeWidth={1.75} />
-              <span>Espace Praticienne</span>
             </Link>
           </div>
         </div>
