@@ -36,7 +36,7 @@ describe('HTTP ENDPOINTS & ASSETS — Audit Réseau Réel sur Serveur Localhost:
     { path: '/a-savoir', expectedSnippet: 'À savoir' },
     { path: '/avis', expectedSnippet: 'Avis' },
     { path: '/contact', expectedSnippet: 'Contact' },
-    { path: '/admin', expectedSnippet: 'Espace Praticienne' },
+    { path: '/admin', expectedSnippet: 'Espace Gérante' },
   ];
 
   for (const route of htmlRoutes) {

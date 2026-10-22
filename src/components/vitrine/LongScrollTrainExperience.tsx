@@ -129,7 +129,7 @@ export function LongScrollTrainExperience({
          ===================================================================== */}
       <section
         id="accueil"
-        className="relative scroll-mt-24 overflow-hidden bg-white py-10 sm:py-16 lg:py-20"
+        className="relative scroll-mt-24 overflow-hidden bg-white py-6 sm:py-16 lg:py-20"
       >
         {/* Photo d'arrière-plan Haute Couture (visibilité renforcée & contraste WCAG optimal) */}
         <div
@@ -153,42 +153,48 @@ export function LongScrollTrainExperience({
           viewport={{ once: true, margin: '-60px' }}
           className="relative z-10 mx-auto max-w-5xl px-4 sm:px-6"
         >
-          <div className="grid grid-cols-1 items-center gap-10 lg:grid-cols-12">
-            <div className="lg:col-span-7 space-y-5">
+          <div className="grid grid-cols-1 items-center gap-8 lg:grid-cols-12 lg:gap-10">
+            <div className="lg:col-span-7 space-y-3.5 sm:space-y-5">
               <motion.div
                 variants={STAGGER_ITEM_VARIANTS}
                 className="flex flex-wrap items-center gap-2"
               >
-                <PowderyBadge variant="rose">Studio Privé • Dakar Mermoz</PowderyBadge>
+                <PowderyBadge variant="rose" className="hidden sm:inline-flex">
+                  Studio Privé • Dakar Mermoz
+                </PowderyBadge>
                 <PowderyBadge
                   variant={settings.examModeActive ? 'amber' : 'sage'}
                 >
                   <span className="h-2 w-2 rounded-full bg-current" />
                   {settings.examModeActive
                     ? 'Période d’examens en cours'
-                    : 'Vrais créneaux ouverts en direct'}
+                    : 'Créneaux ouverts en direct'}
                 </PowderyBadge>
               </motion.div>
 
               <motion.h1
                 variants={STAGGER_ITEM_VARIANTS}
-                className="font-serif text-4xl font-semibold leading-[1.1] tracking-tight text-[#1C191A] sm:text-5xl lg:text-6xl"
+                className="font-serif text-3xl font-semibold leading-[1.15] tracking-tight text-[#1C191A] sm:text-5xl lg:text-6xl"
               >
-                {settings.studioName}
+                <span className="sm:hidden">L’art du regard sur-mesure à Dakar</span>
+                <span className="hidden sm:inline">{settings.studioName}</span>
               </motion.h1>
 
               <motion.p
                 variants={STAGGER_ITEM_VARIANTS}
-                className="max-w-xl text-base leading-relaxed text-[#786B6E] sm:text-lg"
+                className="max-w-xl text-sm leading-relaxed text-[#786B6E] sm:text-base lg:text-lg"
               >
-                {settings.tagline} Défilez à travers nos poses, nos consignes de
-                séance et les avis vérifiés, puis réservez votre créneau en toute
-                sérénité selon mes disponibilités réelles, sans attente.
+                <span>{settings.tagline}</span>
+                <span className="hidden sm:inline">
+                  {' '}Défilez à travers nos poses, nos consignes de
+                  séance et les avis vérifiés, puis réservez votre créneau en toute
+                  sérénité selon mes disponibilités réelles, sans attente.
+                </span>
               </motion.p>
 
               <motion.div
                 variants={STAGGER_ITEM_VARIANTS}
-                className="flex flex-col gap-3 pt-2 sm:flex-row sm:items-center"
+                className="flex flex-col gap-2.5 pt-1 sm:flex-row sm:items-center sm:gap-3 sm:pt-2"
               >
                 <ShimmerBookingButton
                   href={
@@ -202,15 +208,16 @@ export function LongScrollTrainExperience({
                       ? `Pose : ${highlightedService.name} • ${formatXof(highlightedService.priceXof)}`
                       : 'Calendrier en temps réel • Wave & OM'
                   }
+                  hideSublabelOnMobile
                 />
 
                 <a
                   href="#prestations"
-                  className="inline-flex min-h-12 items-center justify-center gap-2 rounded-full border border-[#F3E1E6] bg-[#FDF8F9] px-6 py-3 text-sm font-medium text-[#1C191A] shadow-powdery transition-transform duration-150 ease-emil-out active:scale-[0.97]"
+                  className="inline-flex min-h-10 items-center justify-center gap-1.5 rounded-full border border-[#F3E1E6] bg-white/90 px-4 py-2 text-xs font-medium text-[#1C191A] shadow-powdery transition-transform duration-150 ease-emil-out active:scale-[0.97] sm:min-h-12 sm:px-6 sm:py-3 sm:text-sm"
                 >
                   <span>Explorer les 5 poses</span>
                   <ArrowRight
-                    className="h-4 w-4 text-[#D88B99]"
+                    className="h-3.5 w-3.5 text-[#D88B99] sm:h-4 sm:w-4"
                     strokeWidth={1.5}
                   />
                 </a>
@@ -218,35 +225,65 @@ export function LongScrollTrainExperience({
 
               <motion.div
                 variants={STAGGER_ITEM_VARIANTS}
-                className="grid grid-cols-1 gap-2.5 pt-2 sm:grid-cols-3"
+                className="pt-1 sm:pt-2"
               >
-                <div className="flex items-center gap-2 rounded-xl border border-[#F3E1E6] bg-[#FDF8F9] px-3.5 py-2 text-xs text-[#786B6E] tabular-nums">
-                  <Clock
-                    className="h-3.5 w-3.5 shrink-0 text-[#D88B99]"
-                    strokeWidth={1.5}
-                  />
-                  <span>Réservation {settings.minNoticeHours}–48h à l'avance</span>
+                {/* Réassurance Mobile : fine ligne horizontale ultra-aérée avec séparateurs poudrés */}
+                <div className="flex flex-wrap items-center gap-x-2.5 gap-y-1 text-[11px] text-[#786B6E] sm:hidden">
+                  <span className="inline-flex items-center gap-1">
+                    <Clock
+                      className="h-3 w-3 shrink-0 text-[#D88B99]"
+                      strokeWidth={1.5}
+                    />
+                    <span>24–48h à l’avance</span>
+                  </span>
+                  <span className="text-[#D88B99]">•</span>
+                  <span className="inline-flex items-center gap-1">
+                    <ShieldCheck
+                      className="h-3 w-3 shrink-0 text-[#D88B99]"
+                      strokeWidth={1.5}
+                    />
+                    <span>Créneau garanti</span>
+                  </span>
+                  <span className="text-[#D88B99]">•</span>
+                  <span className="inline-flex items-center gap-1">
+                    <MapPin
+                      className="h-3 w-3 shrink-0 text-[#D88B99]"
+                      strokeWidth={1.5}
+                    />
+                    <span>Mermoz</span>
+                  </span>
                 </div>
-                <div className="flex items-center gap-2 rounded-xl border border-[#F3E1E6] bg-[#FDF8F9] px-3.5 py-2 text-xs text-[#786B6E]">
-                  <ShieldCheck
-                    className="h-3.5 w-3.5 shrink-0 text-[#D88B99]"
-                    strokeWidth={1.5}
-                  />
-                  <span>Zéro doublon de créneau</span>
-                </div>
-                <div className="flex items-center gap-2 rounded-xl border border-[#F3E1E6] bg-[#FDF8F9] px-3.5 py-2 text-xs text-[#786B6E]">
-                  <MapPin
-                    className="h-3.5 w-3.5 shrink-0 text-[#D88B99]"
-                    strokeWidth={1.5}
-                  />
-                  <span>Dakar • Mermoz Pyrotechnie</span>
+
+                {/* Réassurance Desktop : 3 cartes bien espacées */}
+                <div className="hidden sm:grid sm:grid-cols-3 gap-2.5">
+                  <div className="flex items-center gap-2 rounded-xl border border-[#F3E1E6] bg-[#FDF8F9] px-3.5 py-2 text-xs text-[#786B6E] tabular-nums">
+                    <Clock
+                      className="h-3.5 w-3.5 shrink-0 text-[#D88B99]"
+                      strokeWidth={1.5}
+                    />
+                    <span>Réservation {settings.minNoticeHours}–48h à l'avance</span>
+                  </div>
+                  <div className="flex items-center gap-2 rounded-xl border border-[#F3E1E6] bg-[#FDF8F9] px-3.5 py-2 text-xs text-[#786B6E]">
+                    <ShieldCheck
+                      className="h-3.5 w-3.5 shrink-0 text-[#D88B99]"
+                      strokeWidth={1.5}
+                    />
+                    <span>Zéro doublon de créneau</span>
+                  </div>
+                  <div className="flex items-center gap-2 rounded-xl border border-[#F3E1E6] bg-[#FDF8F9] px-3.5 py-2 text-xs text-[#786B6E]">
+                    <MapPin
+                      className="h-3.5 w-3.5 shrink-0 text-[#D88B99]"
+                      strokeWidth={1.5}
+                    />
+                    <span>Dakar • Mermoz Pyrotechnie</span>
+                  </div>
                 </div>
               </motion.div>
             </div>
 
             <motion.div
               variants={STAGGER_ITEM_VARIANTS}
-              className="lg:col-span-5"
+              className="lg:col-span-5 hidden lg:block"
             >
               <LashIllustrationCard />
             </motion.div>

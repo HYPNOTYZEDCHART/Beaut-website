@@ -12,6 +12,7 @@ interface ShimmerBookingButtonProps {
   sublabel?: string;
   className?: string;
   fullWidth?: boolean;
+  hideSublabelOnMobile?: boolean;
 }
 
 export function ShimmerBookingButton({
@@ -20,6 +21,7 @@ export function ShimmerBookingButton({
   sublabel,
   className,
   fullWidth = false,
+  hideSublabelOnMobile = false,
 }: ShimmerBookingButtonProps) {
   const router = useRouter();
 
@@ -31,7 +33,7 @@ export function ShimmerBookingButton({
       whileHover={{ scale: 1.015 }}
       transition={{ type: 'spring', stiffness: 380, damping: 28 }}
       className={cn(
-        'group relative inline-flex min-h-12 items-center justify-center gap-3 overflow-hidden rounded-full border border-[#B36270]/30 bg-[#C47482] px-7 py-3.5 text-sm font-semibold tracking-wide text-white',
+        'group relative inline-flex min-h-11 sm:min-h-12 items-center justify-center gap-3 overflow-hidden rounded-full border border-[#B36270]/30 bg-[#C47482] px-6 sm:px-7 py-2.5 sm:py-3.5 text-xs sm:text-sm font-semibold tracking-wide text-white',
         'shadow-powderyLg hover:bg-[#B36270]',
         fullWidth && 'w-full',
         className
@@ -47,7 +49,12 @@ export function ShimmerBookingButton({
       <span className="relative z-10 flex flex-col items-start text-left leading-tight">
         <span>{label}</span>
         {sublabel && (
-          <span className="text-[11px] font-normal text-[#FDF8F9]/90 tabular-nums">
+          <span
+            className={cn(
+              'text-[11px] font-normal text-[#FDF8F9]/90 tabular-nums',
+              hideSublabelOnMobile && 'hidden sm:inline'
+            )}
+          >
             {sublabel}
           </span>
         )}
