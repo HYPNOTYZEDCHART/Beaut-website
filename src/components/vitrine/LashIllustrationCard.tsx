@@ -26,9 +26,9 @@ export function LashIllustrationCard({
           src={backgroundImageUrl}
           alt=""
           loading="eager"
-          className="h-full w-full object-cover object-center opacity-25 scale-105 transition-transform duration-700 ease-emil-out"
+          className="h-full w-full object-cover object-center opacity-40 scale-105 transition-transform duration-700 ease-emil-out"
         />
-        <div className="absolute inset-0 bg-gradient-to-b from-[#FDF8F9]/85 via-white/80 to-[#F9EBEF]/85" />
+        <div className="absolute inset-0 bg-gradient-to-b from-[#FDF8F9]/75 via-white/70 to-[#F9EBEF]/75" />
       </div>
 
       <div className="relative z-10 flex items-center justify-between">

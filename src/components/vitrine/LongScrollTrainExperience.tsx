@@ -131,7 +131,7 @@ export function LongScrollTrainExperience({
         id="accueil"
         className="relative scroll-mt-24 overflow-hidden bg-white py-10 sm:py-16 lg:py-20"
       >
-        {/* Photo d'arrière-plan Haute Couture voilée (Blanc Pur & Rose Poudré, contraste WCAG optimal) */}
+        {/* Photo d'arrière-plan Haute Couture (visibilité renforcée & contraste WCAG optimal) */}
         <div
           aria-hidden="true"
           className="pointer-events-none absolute inset-0 overflow-hidden"
@@ -140,10 +140,10 @@ export function LongScrollTrainExperience({
             src="/images/hero-studio-bg.jpg"
             alt=""
             loading="eager"
-            className="h-full w-full object-cover object-center opacity-35"
+            className="h-full w-full object-cover object-center lg:object-[65%_center] opacity-70"
           />
-          <div className="absolute inset-0 bg-gradient-to-r from-white/95 via-white/88 to-[#FDF8F9]/75" />
-          <div className="absolute inset-x-0 bottom-0 h-20 bg-gradient-to-t from-white to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-r from-white/90 via-white/65 to-white/30 lg:from-white/88 lg:via-white/55 lg:to-transparent" />
+          <div className="absolute inset-x-0 bottom-0 h-28 bg-gradient-to-t from-white via-white/60 to-transparent" />
         </div>
 
         <motion.div
