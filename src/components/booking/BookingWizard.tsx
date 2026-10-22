@@ -19,6 +19,9 @@ import {
   CheckCircle2,
   Wallet,
   X,
+  Smartphone,
+  ExternalLink,
+  Send,
 } from 'lucide-react';
 import {
   getServiceAvailabilityAction,
@@ -191,6 +194,32 @@ export function BookingWizard({
     settings.slotHoldMinutes * 60
   );
   const [isMarkingProofSent, setIsMarkingProofSent] = useState<boolean>(false);
+  const [hasLaunchedPaymentApp, setHasLaunchedPaymentApp] =
+    useState<boolean>(false);
+  const [showReturnedPrompt, setShowReturnedPrompt] = useState<boolean>(false);
+
+  // Détection automatique du retour de l'application de paiement (Wave / Orange Money)
+  useEffect(() => {
+    if (!hasLaunchedPaymentApp || step !== 5) return;
+
+    const handleVisibilityChange = () => {
+      if (document.visibilityState === 'visible') {
+        setShowReturnedPrompt(true);
+      }
+    };
+
+    const handleFocus = () => {
+      setShowReturnedPrompt(true);
+    };
+
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+    window.addEventListener('focus', handleFocus);
+
+    return () => {
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
+      window.removeEventListener('focus', handleFocus);
+    };
+  }, [hasLaunchedPaymentApp, step]);
 
   useEffect(() => {
     if (!selectedService) return;
@@ -261,6 +290,36 @@ export function BookingWizard({
       toast.success(`Numéro ${label} copié dans le presse-papiers`);
     } catch {
       toast.info(`Numéro ${label} : ${phone}`);
+    }
+  }
+
+  async function handleLaunchPaymentApp(method: 'WAVE' | 'ORANGE_MONEY') {
+    if (!lockedBooking) return;
+    const phone =
+      method === 'WAVE'
+        ? lockedBooking.wavePhone
+        : lockedBooking.orangeMoneyPhone;
+    const cleanPhone = phone.replace(/\s+/g, '');
+
+    // Copie automatique du numéro dans le presse-papier avec confirmation toast
+    try {
+      await navigator.clipboard.writeText(cleanPhone);
+      toast.success(
+        `Numéro (${phone}) et montant (${formatXof(lockedBooking.depositAmountXof)}) copiés ! Collez-les dans ${method === 'WAVE' ? 'Wave' : 'Orange Money'}.`
+      );
+    } catch {
+      toast.info(
+        `Numéro : ${phone} • Montant : ${formatXof(lockedBooking.depositAmountXof)}`
+      );
+    }
+
+    setHasLaunchedPaymentApp(true);
+
+    // Déclenchement du Deep Link mobile
+    if (method === 'WAVE') {
+      window.location.href = 'wave://';
+    } else {
+      window.location.href = 'tel:*144#';
     }
   }
 
@@ -1309,78 +1368,125 @@ export function BookingWizard({
                 </div>
               </motion.div>
 
-              {/* Numéro Wave / Orange Money avec copie en 1 clic */}
+              {/* Smart Pay Mobile Card : Wave ou Orange Money */}
               <motion.div
                 variants={STEP_CASCADE_ITEM}
-                className="mt-5 rounded-2xl border border-[#F3E1E6] bg-white p-5"
+                className="mt-5 rounded-2xl border border-[#F3E1E6] bg-white p-5 shadow-sm space-y-4"
               >
-                <p className="text-xs font-semibold uppercase tracking-wider text-[#786B6E]">
-                  1. Envoyez {formatXof(lockedBooking.depositAmountXof)} par{' '}
-                  {paymentMethod === 'WAVE' ? 'Wave' : 'Orange Money'} au
-                  numéro :
-                </p>
-
-                <div className="mt-3 flex flex-col items-stretch justify-between gap-3 rounded-2xl border border-[#F3E1E6] bg-[#FDF8F9] p-4 sm:flex-row sm:items-center">
-                  <div className="tabular-nums">
-                    <p className="text-xs text-[#786B6E]">
-                      Compte{' '}
-                      {paymentMethod === 'WAVE' ? 'Wave' : 'Orange Money'}
-                    </p>
-                    <p className="text-lg font-bold text-[#1C191A]">
-                      {paymentMethod === 'WAVE'
-                        ? lockedBooking.wavePhone
-                        : lockedBooking.orangeMoneyPhone}
-                    </p>
-                  </div>
-
-                  <TactileButton
-                    variant="secondary"
-                    onClick={() =>
-                      handleCopyPhone(
-                        paymentMethod === 'WAVE'
-                          ? lockedBooking.wavePhone
-                          : lockedBooking.orangeMoneyPhone,
-                        paymentMethod === 'WAVE' ? 'Wave' : 'Orange Money'
-                      )
-                    }
-                  >
-                    <Copy
-                      className="h-4 w-4 text-[#D88B99]"
-                      strokeWidth={1.5}
-                    />
-                    <span>Copier le numéro</span>
-                  </TactileButton>
+                <div className="flex items-center justify-between">
+                  <span className="text-xs font-semibold uppercase tracking-wider text-[#786B6E]">
+                    Mode sélectionné : {paymentMethod === 'WAVE' ? 'Wave Mobile' : 'Orange Money'}
+                  </span>
+                  <span className="rounded-full bg-[#FDF4E7] px-2.5 py-0.5 text-[11px] font-semibold text-[#B4690E]">
+                    Acompte : {formatXof(lockedBooking.depositAmountXof)}
+                  </span>
                 </div>
 
-                <p className="mt-4 text-xs leading-relaxed text-[#786B6E]">
-                  2. Cliquez ci-dessous pour ouvrir le tiroir 3D de validation
-                  ou envoyer directement votre capture d’écran sur WhatsApp.
+                {/* Bouton d'action Deep Link direct */}
+                <div className="flex flex-col gap-2.5">
+                  <button
+                    type="button"
+                    onClick={() => handleLaunchPaymentApp(paymentMethod)}
+                    className={cn(
+                      'flex w-full items-center justify-center gap-2.5 rounded-2xl py-3.5 px-4 text-sm font-semibold text-white shadow-md transition-transform active:scale-[0.98]',
+                      paymentMethod === 'WAVE'
+                        ? 'bg-[#1E88E5] hover:bg-[#1976D2]'
+                        : 'bg-[#FF6600] hover:bg-[#E65C00]'
+                    )}
+                  >
+                    <Smartphone className="h-4 w-4" strokeWidth={2} />
+                    <span>
+                      {paymentMethod === 'WAVE'
+                        ? 'Ouvrir l’application Wave pour payer'
+                        : 'Lancer Orange Money (#144#)'}
+                    </span>
+                    <ExternalLink className="h-3.5 w-3.5 opacity-80" strokeWidth={2} />
+                  </button>
+
+                  <div className="flex items-center justify-between rounded-xl border border-[#F3E1E6] bg-[#FDF8F9] px-3.5 py-2.5 text-xs">
+                    <span className="text-[#786B6E]">
+                      Numéro officiel ({paymentMethod === 'WAVE' ? 'Wave' : 'OM'}) :{' '}
+                      <strong className="text-[#1C191A]">
+                        {paymentMethod === 'WAVE'
+                          ? lockedBooking.wavePhone
+                          : lockedBooking.orangeMoneyPhone}
+                      </strong>
+                    </span>
+                    <button
+                      type="button"
+                      onClick={() =>
+                        handleCopyPhone(
+                          paymentMethod === 'WAVE'
+                            ? lockedBooking.wavePhone
+                            : lockedBooking.orangeMoneyPhone,
+                          paymentMethod === 'WAVE' ? 'Wave' : 'Orange Money'
+                        )
+                      }
+                      className="inline-flex items-center gap-1 font-semibold text-[#B36270] hover:underline"
+                    >
+                      <Copy className="h-3.5 w-3.5" />
+                      <span>Copier</span>
+                    </button>
+                  </div>
+                </div>
+
+                <p className="text-[11px] text-[#786B6E] leading-relaxed">
+                  💡 Le clic copie automatiquement le numéro et le montant exact pour un transfert instantané dans votre application.
                 </p>
               </motion.div>
 
+              {/* Bannière de retour : "Acompte envoyé ? Envoyez votre preuve" */}
               <motion.div
                 variants={STEP_CASCADE_ITEM}
-                className="mt-6 flex flex-col gap-3 sm:flex-row sm:justify-between"
+                className={cn(
+                  'mt-5 rounded-2xl border p-5 transition-all duration-300',
+                  showReturnedPrompt || hasLaunchedPaymentApp
+                    ? 'border-[#25D366] bg-[#F0FDF4] shadow-md ring-2 ring-[#25D366]/20'
+                    : 'border-[#F3E1E6] bg-[#FDF8F9]'
+                )}
               >
-                <TactileButton
-                  variant="secondary"
-                  onClick={() => setDepositDrawerOpen(true)}
-                >
-                  <Wallet
-                    className="h-4 w-4 text-[#D88B99]"
-                    strokeWidth={1.5}
-                  />
-                  <span>Ouvrir le tiroir d’acompte 3D</span>
-                </TactileButton>
+                <div className="flex items-start gap-3">
+                  <div
+                    className={cn(
+                      'mt-0.5 inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-white',
+                      showReturnedPrompt || hasLaunchedPaymentApp
+                        ? 'bg-[#25D366]'
+                        : 'bg-[#B36270]'
+                    )}
+                  >
+                    <MessageCircle className="h-4 w-4" strokeWidth={2} />
+                  </div>
+                  <div className="flex-1">
+                    <h3 className="font-serif text-base font-semibold text-[#1C191A]">
+                      {showReturnedPrompt || hasLaunchedPaymentApp
+                        ? '✨ Vous avez effectué votre transfert ?'
+                        : 'Confirmation finale par WhatsApp'}
+                    </h3>
+                    <p className="mt-1 text-xs text-[#786B6E] leading-relaxed">
+                      Cliquez sur le bouton ci-dessous pour transmettre la capture d’écran de votre acompte. Votre référence <strong className="text-[#1C191A]">{lockedBooking.referenceCode}</strong> est déjà pré-remplie !
+                    </p>
 
-                <TactileButton
-                  variant="primary"
-                  isLoading={isMarkingProofSent}
-                  onClick={handleConfirmProofSentAndGoToStep6}
-                >
-                  <MessageCircle className="h-4 w-4" strokeWidth={1.5} />
-                  <span>J’ai envoyé l’acompte • Ouvrir WhatsApp</span>
-                </TactileButton>
+                    <div className="mt-4 flex flex-col gap-2.5 sm:flex-row sm:items-center">
+                      <TactileButton
+                        variant="primary"
+                        isLoading={isMarkingProofSent}
+                        onClick={handleConfirmProofSentAndGoToStep6}
+                        className="bg-[#25D366] hover:bg-[#1EBE5D] text-white border-transparent"
+                      >
+                        <MessageCircle className="h-4 w-4" strokeWidth={2} />
+                        <span>Envoyer ma preuve sur WhatsApp</span>
+                      </TactileButton>
+
+                      <TactileButton
+                        variant="secondary"
+                        onClick={() => setDepositDrawerOpen(true)}
+                      >
+                        <Wallet className="h-4 w-4 text-[#D88B99]" strokeWidth={1.5} />
+                        <span>Voir le récapitulatif</span>
+                      </TactileButton>
+                    </div>
+                  </div>
+                </div>
               </motion.div>
             </motion.section>
           )}

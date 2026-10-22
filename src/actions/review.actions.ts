@@ -7,10 +7,19 @@ import {
 } from '@prisma/client';
 import { z } from 'zod';
 import { isDatabaseReachableFast, prisma } from '@/lib/prisma';
+import { revalidatePath } from 'next/cache';
 import {
   ActionResult,
   verifyAdminPinOrThrow,
 } from '@/actions/availability.actions';
+
+function safeRevalidatePath(path: string) {
+  try {
+    revalidatePath(path);
+  } catch {
+    // Ignoré si exécuté en environnement CLI / test sans request store
+  }
+}
 
 export interface PublicReviewDTO {
   id: string;
@@ -318,6 +327,8 @@ export async function submitClientReviewAction(
       },
     });
 
+    safeRevalidatePath('/admin');
+
     return {
       success: true,
       data: {
@@ -373,6 +384,10 @@ export async function moderateReviewAction(
       },
       select: { id: true, moderationStatus: true },
     });
+
+    safeRevalidatePath('/avis');
+    safeRevalidatePath('/');
+    safeRevalidatePath('/admin');
 
     return {
       success: true,
