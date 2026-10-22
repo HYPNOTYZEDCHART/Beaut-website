@@ -263,3 +263,4 @@ describe('SLOT ENGINE — Moteur Mathématique de Créneaux (Africa/Dakar UTC+0)
     assert.strictEqual(isBookingBlockingSlot(cancelled, now), false, 'Une réservation annulée ne bloque pas');
   });
 });
+

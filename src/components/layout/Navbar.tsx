@@ -133,10 +133,10 @@ export function Navbar() {
         </Link>
       </div>
 
-      {/* Rail horizontal des wagons sur Mobile avec morphing layoutId */}
+      {/* Rail horizontal des wagons sur Mobile avec morphing layoutId & défilement fluide sans barre visible */}
       <nav
         aria-label="Navigation mobile par wagons"
-        className="flex items-center gap-1.5 overflow-x-auto border-t border-[#F3E1E6]/80 bg-[#FDF8F9]/95 px-3 py-2 md:hidden [touch-action:pan-x]"
+        className="flex items-center gap-1.5 overflow-x-auto border-t border-[#F3E1E6]/80 bg-[#FDF8F9]/95 px-4 py-2 md:hidden [touch-action:pan-x] scrollbar-none [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]"
       >
         {TRAIN_WAGONS.map((wagon) => {
           const isActive =

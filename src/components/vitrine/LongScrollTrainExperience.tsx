@@ -105,7 +105,7 @@ export function LongScrollTrainExperience({
   const instagramUrl = `https://instagram.com/${cleanInsta}`;
 
   return (
-    <div className="relative pb-24 md:pb-0">
+    <div className="relative pb-36 md:pb-0">
       {/* Bannière Mode Examens si activé */}
       {settings.examModeActive && (
         <div className="border-b border-[#F6DFC0] bg-[#FDF4E7] px-4 py-3 text-center text-xs font-medium text-[#B4690E] sm:text-sm">
@@ -115,7 +115,7 @@ export function LongScrollTrainExperience({
       )}
 
       {/* =====================================================================
-          WAGON 01 — ACCUEIL & HERO HAUTE COUTURE (#accueil)
+          SECTION 01 — ACCUEIL & HERO HAUTE COUTURE (#accueil)
          ===================================================================== */}
       <section
         id="accueil"
@@ -144,12 +144,12 @@ export function LongScrollTrainExperience({
           className="relative z-10 mx-auto max-w-5xl px-4 sm:px-6"
         >
           <div className="grid grid-cols-1 items-center gap-10 lg:grid-cols-12">
-            <div className="lg:col-span-7 space-y-6">
+            <div className="lg:col-span-7 space-y-5">
               <motion.div
                 variants={STAGGER_ITEM_VARIANTS}
                 className="flex flex-wrap items-center gap-2"
               >
-                <PowderyBadge variant="rose">Wagon 01 • Accueil</PowderyBadge>
+                <PowderyBadge variant="rose">Studio Privé • Dakar Mermoz</PowderyBadge>
                 <PowderyBadge
                   variant={settings.examModeActive ? 'amber' : 'sage'}
                 >
@@ -173,7 +173,7 @@ export function LongScrollTrainExperience({
               >
                 {settings.tagline} Défilez à travers nos poses, nos consignes de
                 séance et les avis vérifiés, puis réservez votre créneau en toute
-                autonomie sans perturber mes heures d’études.
+                sérénité selon mes disponibilités réelles, sans attente.
               </motion.p>
 
               <motion.div
@@ -186,17 +186,17 @@ export function LongScrollTrainExperience({
                       ? `/reserver?service=${encodeURIComponent(highlightedService.slug)}`
                       : '/reserver'
                   }
-                  label="Réserver mon rendez-vous"
+                  label="Réserver mon créneau"
                   sublabel={
                     highlightedService
-                      ? `Pose présélectionnée : ${highlightedService.name}`
+                      ? `Pose : ${highlightedService.name} • ${formatXof(highlightedService.priceXof)}`
                       : 'Calendrier en temps réel • Wave & OM'
                   }
                 />
 
                 <a
                   href="#prestations"
-                  className="inline-flex min-h-12 items-center justify-center gap-2 rounded-full border border-[#F3E1E6] bg-[#FDF8F9] px-6 py-3.5 text-sm font-medium text-[#1C191A] shadow-powdery transition-transform duration-150 ease-emil-out active:scale-[0.97]"
+                  className="inline-flex min-h-12 items-center justify-center gap-2 rounded-full border border-[#F3E1E6] bg-[#FDF8F9] px-6 py-3 text-sm font-medium text-[#1C191A] shadow-powdery transition-transform duration-150 ease-emil-out active:scale-[0.97]"
                 >
                   <span>Explorer les 5 poses</span>
                   <ArrowRight
@@ -208,28 +208,28 @@ export function LongScrollTrainExperience({
 
               <motion.div
                 variants={STAGGER_ITEM_VARIANTS}
-                className="grid grid-cols-1 gap-3 pt-3 sm:grid-cols-3"
+                className="grid grid-cols-1 gap-2.5 pt-2 sm:grid-cols-3"
               >
-                <div className="flex items-center gap-2.5 rounded-2xl border border-[#F3E1E6] bg-[#FDF8F9] px-3.5 py-2.5 text-xs text-[#786B6E] tabular-nums">
+                <div className="flex items-center gap-2 rounded-xl border border-[#F3E1E6] bg-[#FDF8F9] px-3.5 py-2 text-xs text-[#786B6E] tabular-nums">
                   <Clock
-                    className="h-4 w-4 shrink-0 text-[#D88B99]"
+                    className="h-3.5 w-3.5 shrink-0 text-[#D88B99]"
                     strokeWidth={1.5}
                   />
-                  <span>Réservation {settings.minNoticeHours}–48h avant</span>
+                  <span>Réservation {settings.minNoticeHours}–48h à l'avance</span>
                 </div>
-                <div className="flex items-center gap-2.5 rounded-2xl border border-[#F3E1E6] bg-[#FDF8F9] px-3.5 py-2.5 text-xs text-[#786B6E]">
+                <div className="flex items-center gap-2 rounded-xl border border-[#F3E1E6] bg-[#FDF8F9] px-3.5 py-2 text-xs text-[#786B6E]">
                   <ShieldCheck
-                    className="h-4 w-4 shrink-0 text-[#D88B99]"
+                    className="h-3.5 w-3.5 shrink-0 text-[#D88B99]"
                     strokeWidth={1.5}
                   />
                   <span>Zéro doublon de créneau</span>
                 </div>
-                <div className="flex items-center gap-2.5 rounded-2xl border border-[#F3E1E6] bg-[#FDF8F9] px-3.5 py-2.5 text-xs text-[#786B6E]">
+                <div className="flex items-center gap-2 rounded-xl border border-[#F3E1E6] bg-[#FDF8F9] px-3.5 py-2 text-xs text-[#786B6E]">
                   <MapPin
-                    className="h-4 w-4 shrink-0 text-[#D88B99]"
+                    className="h-3.5 w-3.5 shrink-0 text-[#D88B99]"
                     strokeWidth={1.5}
                   />
-                  <span>Mermoz / Sacré-Cœur</span>
+                  <span>Dakar • Mermoz Pyrotechnie</span>
                 </div>
               </motion.div>
             </div>
@@ -261,7 +261,7 @@ export function LongScrollTrainExperience({
           <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-end">
             <motion.div variants={STAGGER_ITEM_VARIANTS}>
               <PowderyBadge variant="rose">
-                Wagon 02 • Prestations & Tarifs
+                Nos Poses • Tarifs en FCFA
               </PowderyBadge>
               <h2 className="mt-2 font-serif text-3xl font-semibold text-[#1C191A] sm:text-4xl">
                 Nos modèles d’extensions de cils
@@ -539,7 +539,7 @@ export function LongScrollTrainExperience({
         >
           <motion.div variants={STAGGER_ITEM_VARIANTS} className="max-w-2xl">
             <PowderyBadge variant="rose">
-              Wagon 03 • À savoir avant de venir
+              Consignes • À savoir avant de venir
             </PowderyBadge>
             <h2 className="mt-2 font-serif text-3xl font-semibold text-[#1C191A] sm:text-4xl">
               Les règles d’or de votre rendez-vous
@@ -687,7 +687,7 @@ export function LongScrollTrainExperience({
             <div>
               <PowderyBadge variant="sage">
                 <ShieldCheck className="h-3.5 w-3.5" strokeWidth={1.5} />
-                Wagon 04 • Avis 100 % authentiques post-prestation
+                Témoignages • Avis 100 % authentiques
               </PowderyBadge>
               <h2 className="mt-2 font-serif text-3xl font-semibold text-[#1C191A] sm:text-4xl">
                 Ce qu’elles pensent de leur pose
@@ -768,7 +768,7 @@ export function LongScrollTrainExperience({
         >
           <motion.div variants={STAGGER_ITEM_VARIANTS} className="text-center">
             <PowderyBadge variant="rose">
-              Wagon 05 • Contact & Horaires
+              Assistance • Contact & Échange direct
             </PowderyBadge>
             <h2 className="mt-2 font-serif text-3xl font-semibold text-[#1C191A] sm:text-4xl">
               Une question avant votre réservation ?
