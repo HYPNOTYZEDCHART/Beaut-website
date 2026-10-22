@@ -15,9 +15,9 @@ export const FALLBACK_STUDIO_SETTINGS: PublicStudioSettingsDTO = {
     'Extensions de cils sur-mesure dans un cadre doux, calme et intimiste.',
   zoneLabel:
     'Dakar — Mermoz / Sacré-Cœur (adresse exacte communiquée dès confirmation)',
-  whatsappPhone: '+221771234567',
-  wavePhone: '+221771234567',
-  orangeMoneyPhone: '+221771234567',
+  whatsappPhone: '+221776852146',
+  wavePhone: '+221776852146',
+  orangeMoneyPhone: '+221776852146',
   instagramHandle: '@tonespacebeaute',
   timezone: 'Africa/Dakar',
   minNoticeHours: 24,

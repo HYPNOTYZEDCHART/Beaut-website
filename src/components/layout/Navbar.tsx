@@ -79,8 +79,12 @@ export function Navbar() {
           onClick={() => setActiveWagon('accueil')}
           className="group inline-flex items-center gap-2.5 font-serif text-lg font-semibold tracking-wider text-[#1C191A] sm:text-xl"
         >
-          <span className="inline-flex h-9 w-11 items-center justify-center rounded-xl border border-[#F3E1E6] bg-[#FDF8F9] px-1.5 shadow-powdery transition-transform duration-150 ease-emil-out group-active:scale-[0.96]">
-            <LashLogoMark size="sm" />
+          <span className="inline-flex h-9 w-10 items-center justify-center overflow-hidden rounded-xl border border-[#F3E1E6] bg-[#FAF7F5] p-0.5 shadow-powdery transition-transform duration-150 ease-emil-out group-active:scale-[0.96]">
+            <img
+              src="/images/diama-logo.jpg"
+              alt="Logo Diama Eyelash Extensions"
+              className="h-full w-full object-contain"
+            />
           </span>
           <span>TON ESPACE BEAUTÉ</span>
         </Link>

@@ -41,11 +41,17 @@ export function LashIllustrationCard({
         </span>
       </div>
 
-      {/* Emblème officiel de courbure de cils conservé intact au centre de son écrin */}
-      <div className="relative z-10 my-7 flex flex-col items-center justify-center rounded-2xl border border-[#F3E1E6]/90 bg-white/92 px-6 py-9 shadow-powdery backdrop-blur-[2px]">
-        <LashLogoMark size="lg" />
+      {/* Logo officiel Diama Eyelash Extensions au centre de son écrin */}
+      <div className="relative z-10 my-6 flex flex-col items-center justify-center rounded-2xl border border-[#F3E1E6]/90 bg-white/95 p-6 shadow-powdery backdrop-blur-[2px]">
+        <div className="relative h-44 w-44 overflow-hidden rounded-2xl">
+          <img
+            src="/images/diama-logo.jpg"
+            alt="Diama Eyelash Extensions Logo Officiel"
+            className="h-full w-full object-contain"
+          />
+        </div>
 
-        <p className="mt-4 font-serif text-xl font-semibold text-[#1C191A] text-center">
+        <p className="mt-3 font-serif text-xl font-semibold text-[#1C191A] text-center">
           {title}
         </p>
         <p className="mt-1 text-xs text-[#786B6E] text-center">{subtitle}</p>

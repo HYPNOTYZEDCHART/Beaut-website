@@ -7,15 +7,19 @@ export function Footer() {
     <footer className="safe-bottom border-t border-[#F3E1E6] bg-[#FDF8F9] pt-10">
       <div className="mx-auto flex max-w-5xl flex-col items-center justify-between gap-6 px-4 text-center sm:flex-row sm:px-6 sm:text-left">
         <div className="flex flex-col items-center gap-2 sm:flex-row sm:items-center sm:gap-3.5">
-          <span className="inline-flex h-11 w-14 items-center justify-center rounded-2xl border border-[#F3E1E6] bg-white px-2 shadow-powdery">
-            <LashLogoMark size="md" />
+          <span className="inline-flex h-12 w-14 items-center justify-center overflow-hidden rounded-2xl border border-[#F3E1E6] bg-[#FAF7F5] p-1 shadow-powdery">
+            <img
+              src="/images/diama-logo.jpg"
+              alt="Logo Diama Eyelash Extensions"
+              className="h-full w-full object-contain"
+            />
           </span>
           <div>
             <p className="font-serif text-lg font-semibold tracking-wider text-[#1C191A]">
               TON ESPACE BEAUTÉ
             </p>
             <p className="mt-0.5 text-xs text-[#786B6E]">
-              Extensions de cils sur-mesure à Dakar • Sur rendez-vous uniquement.
+              Diama • Extensions de cils sur-mesure à Dakar • Sur rendez-vous uniquement.
             </p>
           </div>
         </div>

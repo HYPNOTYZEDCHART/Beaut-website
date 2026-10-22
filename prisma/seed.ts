@@ -24,9 +24,9 @@ async function main(): Promise<void> {
         'Dakar — Mermoz / Sacré-Cœur (adresse exacte communiquée dès confirmation)',
       exactAddress:
         'Mermoz Pyrotechnie, Villa n°24 (Porte rose poudré, 1er étage), Dakar',
-      whatsappPhone: '+221771234567',
-      wavePhone: '+221771234567',
-      orangeMoneyPhone: '+221771234567',
+      whatsappPhone: '+221776852146',
+      wavePhone: '+221776852146',
+      orangeMoneyPhone: '+221776852146',
       instagramHandle: '@tonespacebeaute',
       timezone: 'Africa/Dakar',
       minNoticeHours: 24,
