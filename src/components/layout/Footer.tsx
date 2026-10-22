@@ -52,15 +52,19 @@ export async function Footer() {
             <div className="flex w-full flex-col gap-3 sm:w-auto sm:flex-row">
               <Link
                 href="/reserver"
-                className="inline-flex min-h-12 items-center justify-center gap-2 rounded-2xl bg-[#C47482] px-6 text-sm font-semibold text-white shadow-[0_8px_24px_rgba(196,116,130,0.35)] transition-all duration-200 hover:bg-[#B36270] hover:scale-[1.02] active:scale-[0.98]"
+                className="group relative inline-flex min-h-12 items-center justify-center gap-2 overflow-hidden rounded-full bg-[#C47482] px-6 py-3 text-sm font-medium text-white shadow-powdery transition-[transform,background-color] duration-150 ease-emil-out hover:bg-[#B36270] active:scale-[0.98]"
               >
-                <Calendar className="h-4 w-4" strokeWidth={1.75} />
-                <span>Réserver mon créneau</span>
+                <span
+                  aria-hidden="true"
+                  className="shimmer-sheen pointer-events-none absolute inset-y-0 left-0 w-1/2 bg-gradient-to-r from-transparent via-[#FDF8F9]/25 to-transparent"
+                />
+                <Calendar className="relative z-10 h-4 w-4" strokeWidth={1.75} />
+                <span className="relative z-10">Réserver mon créneau</span>
               </Link>
               <a
                 href="/guides/Guide_Reservation_Diama_Eyelash.pdf"
                 download="Guide_Reservation_Diama_Eyelash.pdf"
-                className="inline-flex min-h-12 items-center justify-center gap-2 rounded-2xl border border-[#44383C] bg-white/5 px-5 text-sm font-medium text-white transition-all duration-200 hover:border-[#D88B99]/50 hover:bg-white/10"
+                className="inline-flex min-h-12 items-center justify-center gap-2 rounded-full border border-[#44383C] bg-white/5 px-6 py-3 text-sm font-medium text-white transition-all duration-200 hover:border-[#D88B99]/50 hover:bg-white/10 active:scale-[0.98]"
               >
                 <Download className="h-4 w-4 text-[#D88B99]" strokeWidth={1.75} />
                 <span>Guide PDF Cliente</span>
