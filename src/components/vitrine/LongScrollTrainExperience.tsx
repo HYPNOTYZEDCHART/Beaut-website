@@ -29,10 +29,7 @@ import {
 import { cn } from '@/lib/cn';
 import { PowderyBadge } from '@/components/ui/PowderyBadge';
 import { TactileButton } from '@/components/ui/TactileButton';
-import {
-  ShimmerBookingButton,
-  StickyAndroidBookingBar,
-} from '@/components/ui/ShimmerBookingButton';
+import { ShimmerBookingButton } from '@/components/ui/ShimmerBookingButton';
 import { ServiceConditionsDrawer } from '@/components/ui/ServiceConditionsDrawer';
 import { LashIllustrationCard } from '@/components/vitrine/LashIllustrationCard';
 
@@ -105,7 +102,7 @@ export function LongScrollTrainExperience({
   const instagramUrl = `https://instagram.com/${cleanInsta}`;
 
   return (
-    <div className="relative pb-36 md:pb-0">
+    <div className="relative">
       {/* Bannière Mode Examens si activé */}
       {settings.examModeActive && (
         <div className="border-b border-[#F6DFC0] bg-[#FDF4E7] px-4 py-3 text-center text-xs font-medium text-[#B4690E] sm:text-sm">
@@ -859,17 +856,6 @@ export function LongScrollTrainExperience({
         }}
         onSelectService={(srv) =>
           router.push(`/reserver?service=${encodeURIComponent(srv.slug)}`)
-        }
-      />
-
-      {/* Barre d'action flottante sur Android / iOS toujours présente pendant le scroll des wagons */}
-      <StickyAndroidBookingBar
-        selectedServiceName={highlightedService?.name}
-        selectedServiceSlug={highlightedService?.slug}
-        selectedServicePriceFormatted={
-          highlightedService
-            ? formatXof(highlightedService.priceXof)
-            : undefined
         }
       />
     </div>
