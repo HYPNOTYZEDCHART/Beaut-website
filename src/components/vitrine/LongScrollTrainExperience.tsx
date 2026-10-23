@@ -508,13 +508,6 @@ export function LongScrollTrainExperience({
                         </PowderyBadge>
                       )}
                     </div>
-
-                    {service.refillConditions && (
-                      <div className="mt-4 rounded-2xl border border-[#F3E1E6] bg-[#FDF8F9] p-3.5 text-xs leading-relaxed text-[#786B6E]">
-                        <strong className="text-[#1C191A]">Conditions : </strong>
-                        {service.refillConditions}
-                      </div>
-                    )}
                   </div>
 
                   <div className="relative z-10 mt-6 flex flex-col gap-2.5 sm:flex-row">

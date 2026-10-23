@@ -144,16 +144,6 @@ export function PrestationsClientList({
                   </PowderyBadge>
                 )}
               </div>
-
-              {/* Aperçu direct des conditions de remplissage sur la page /prestations */}
-              {!compact && service.refillConditions && (
-                <div className="mt-4 rounded-2xl border border-[#F3E1E6] bg-[#FDF8F9] p-3.5 text-xs leading-relaxed text-[#786B6E]">
-                  <span className="font-semibold text-[#1C191A]">
-                    Conditions :{' '}
-                  </span>
-                  {service.refillConditions}
-                </div>
-              )}
             </div>
 
             {/* Actions tactiles (min-h-12, active:scale-[0.98]) */}
