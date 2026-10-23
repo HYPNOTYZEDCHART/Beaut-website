@@ -11,12 +11,12 @@ async function generateClientPdfGuide() {
   const outputPath = path.join(outputDir, 'Guide_Reservation_Diama_Eyelash.pdf');
   const doc = new PDFDocument({
     size: 'A4',
-    margins: { top: 40, bottom: 40, left: 45, right: 45 },
+    margins: { top: 35, bottom: 35, left: 40, right: 40 },
     info: {
       Title: 'Guide de Réservation & Expérience Studio - Diama Eyelash',
       Author: 'Diama Eyelash Studio Dakar',
-      Subject: 'Guide officiel pour les clientes : Réservation en ligne, Acompte et Entretien des Cils',
-      Keywords: 'Diama Eyelash, Extensions de Cils Dakar, Réservation, Guide Cliente',
+      Subject: 'Guide officiel pour les clientes : Réservation en ligne, Acompte Wave/Max it et Entretien des Cils',
+      Keywords: 'Diama Eyelash, Extensions de Cils Dakar, Réservation, Guide Cliente, Wave, Max it',
     },
   });
 
@@ -24,123 +24,136 @@ async function generateClientPdfGuide() {
   doc.pipe(writeStream);
 
   const colors = {
-    primary: '#18181B', // Zinc 900
-    accent: '#9D174D', // Deep Rose 800
-    accentLight: '#FDF2F8', // Rose 50
-    secondary: '#4B5563', // Gray 600
-    gold: '#B45309', // Amber 700
-    border: '#E4E4E7', // Zinc 200
+    dark: '#141213',
+    primary: '#241C1E',
+    accent: '#9E2A4B',
+    accentLight: '#FDF2F8',
+    secondary: '#5C4E52',
+    gold: '#B45309',
+    goldLight: '#FEF3C7',
+    border: '#E8DADB',
     cardBg: '#FAFAFA',
+    white: '#FFFFFF',
   };
+
+  const waveLogoPath = path.resolve(process.cwd(), 'public/images/wave-logo.png');
+  const maxitLogoPath = path.resolve(process.cwd(), 'public/images/maxit-logo.png');
 
   // Helper pour dessiner un en-tête de section chic
   const drawSectionHeader = (title: string, yPos?: number) => {
     if (yPos) doc.y = yPos;
-    doc.moveDown(0.6);
+    doc.moveDown(0.5);
     const startY = doc.y;
-    doc
-      .rect(45, startY, 4, 18)
-      .fill(colors.accent);
+    doc.rect(40, startY, 4, 16).fill(colors.accent);
     doc
       .font('Helvetica-Bold')
-      .fontSize(13)
-      .fillColor(colors.primary)
-      .text(title.toUpperCase(), 55, startY + 2, { characterSpacing: 1 });
-    doc.moveDown(0.8);
+      .fontSize(11)
+      .fillColor(colors.accent)
+      .text(title.toUpperCase(), 50, startY + 2, { characterSpacing: 1 });
+    doc.moveDown(0.7);
   };
 
   // --------------------------------------------------------------------------
-  // PAGE 1 : EN-TÊTE & PRÉSENTATION HAUTE COUTURE
+  // PAGE 1 : EN-TÊTE, TARIFS OFFICIELS & ÉTAPES DE RÉSERVATION
   // --------------------------------------------------------------------------
-  // Bannière supérieure décorative
-  doc.rect(0, 0, 595.28, 12).fill(colors.accent);
+  doc.rect(0, 0, 595.28, 10).fill(colors.accent);
 
-  doc.moveDown(0.5);
+  doc.moveDown(0.4);
   doc
     .font('Helvetica-Bold')
-    .fontSize(22)
+    .fontSize(20)
     .fillColor(colors.primary)
-    .text('DIAMA EYELASH', { align: 'center', characterSpacing: 2 });
+    .text('DIAMA EYELASH EXTENSIONS', { align: 'center', characterSpacing: 2 });
 
   doc
     .font('Helvetica')
-    .fontSize(10)
+    .fontSize(9.5)
     .fillColor(colors.accent)
-    .text('STUDIO PRIVÉ D’EXTENSIONS DE CILS • DAKAR', {
+    .text('STUDIO PRIVÉ HAUTE COUTURE • DAKAR DIAMALAYE', {
       align: 'center',
       characterSpacing: 1.5,
     });
 
-  doc.moveDown(0.3);
+  doc.moveDown(0.2);
   doc
     .font('Helvetica-Oblique')
-    .fontSize(9)
+    .fontSize(8.5)
     .fillColor(colors.secondary)
     .text('Guide officiel d’utilisation du site & Carnet d’accueil pour nos clientes', {
       align: 'center',
     });
 
-  doc.moveDown(0.8);
+  doc.moveDown(0.5);
   doc
-    .moveTo(45, doc.y)
-    .lineTo(550, doc.y)
+    .moveTo(40, doc.y)
+    .lineTo(555, doc.y)
     .strokeColor(colors.border)
     .lineWidth(0.8)
     .stroke();
 
   // Encadré de Bienvenue
-  doc.moveDown(0.8);
+  doc.moveDown(0.5);
   const welcomeY = doc.y;
   doc
-    .roundedRect(45, welcomeY, 505, 55, 6)
+    .roundedRect(40, welcomeY, 515, 48, 6)
     .fillAndStroke(colors.accentLight, colors.accent);
 
   doc
     .font('Helvetica-Bold')
-    .fontSize(10)
+    .fontSize(9.5)
     .fillColor(colors.accent)
-    .text('BIENVENUE DANS VOTRE ESPACE BEAUTÉ EN LIGNE', 60, welcomeY + 12);
+    .text('BIENVENUE DANS VOTRE ESPACE BEAUTÉ EN LIGNE', 52, welcomeY + 9);
 
   doc
     .font('Helvetica')
-    .fontSize(8.5)
+    .fontSize(8)
     .fillColor(colors.primary)
     .text(
-      'Découvrez la nouvelle plateforme officielle de Diama Eyelash. Vous pouvez désormais consulter en temps réel nos disponibilités, choisir votre style de pose sur-mesure, bloquer instantanément votre créneau et sécuriser votre rendez-vous 24h/24 en toute sérénité.',
-      60,
-      welcomeY + 26,
-      { width: 475, lineGap: 2 }
+      'Découvrez la plateforme officielle de Diama Eyelash. Vous pouvez désormais consulter en temps réel mes créneaux disponibles, choisir votre modèle de pose sur-mesure, bloquer instantanément votre rendez-vous et sécuriser votre créneau 24h/24 en toute sérénité.',
+      52,
+      welcomeY + 22,
+      { width: 490, lineGap: 1.5 }
     );
 
-  doc.y = welcomeY + 68;
+  doc.y = welcomeY + 58;
 
-  // SECTION 1 : CHOISIR SA PRESTATION
-  drawSectionHeader('1. Le Menu des Poses : Quelle prestation choisir ?');
+  // SECTION 1 : MENU DES POSES & TARIFS OFFICIELS
+  drawSectionHeader('1. Le Menu des Poses : Tarifs & Acomptes en direct');
 
   const services = [
     {
       name: 'Pose Cil à Cil',
-      desc: 'Une extension appliquée sur chaque cil naturel. Effet mascara délicat, ultra-naturel et élégant pour le quotidien.',
+      price: '15 000 FCFA',
+      deposit: '5 000 FCFA',
+      desc: 'Une extension sur chaque cil naturel. Effet mascara délicat, ultra-naturel et raffiné.',
       tag: 'Naturel & Discret',
     },
     {
-      name: 'Pose Mixte (Hybride) - Nôtre Best-Seller',
-      desc: 'Mélange subtil de cil à cil et de légers bouquets volume. Regard habillé, texture modulée et éclat envoûtant.',
+      name: 'Pose Mixte (Hybride) — Best-Seller',
+      price: '16 000 FCFA',
+      deposit: '5 000 FCFA',
+      desc: 'Mélange subtil de cil à cil et bouquets vaporeux. Regard habillé, texture et éclat envoûtant.',
       tag: 'Coup de Cœur',
     },
     {
-      name: 'Pose Volume Russe',
-      desc: 'Bouquets légers en éventail créant une frange vaporeuse, intense et glamour, sans alourdir le cil naturel.',
+      name: 'Pose Volume Léger (Volume Russe)',
+      price: '17 000 FCFA',
+      deposit: '5 000 FCFA',
+      desc: 'Bouquets en éventail soyeux créant une frange dense et glamour, sans alourdir le cil naturel.',
       tag: 'Intensité & Glamour',
     },
     {
-      name: 'Pose Mega Volume',
-      desc: 'Densité maximale avec des bouquets ultra-fins pour un regard noir intense et spectaculaire digne des tapis rouges.',
+      name: 'Pose Volume Intense (Mega Volume)',
+      price: '18 000 FCFA',
+      deposit: '5 000 FCFA',
+      desc: 'Densité maximale avec des bouquets ultra-fins pour un regard noir intense et spectaculaire.',
       tag: 'Densité Maximale',
     },
     {
-      name: 'Remplissages (2 ou 3 Semaines)',
-      desc: 'Indispensable pour préserver la perfection de votre pose en comblant la repousse naturelle de vos cils.',
+      name: 'Remplissage (2 ou 3 Semaines)',
+      price: '10 000 FCFA',
+      deposit: '5 000 FCFA',
+      desc: 'Idéal pour préserver la perfection de votre pose en comblant la repousse naturelle de vos cils.',
       tag: 'Entretien Périodique',
     },
   ];
@@ -148,208 +161,216 @@ async function generateClientPdfGuide() {
   services.forEach((s) => {
     const cardY = doc.y;
     doc
-      .roundedRect(45, cardY, 505, 34, 4)
+      .roundedRect(40, cardY, 515, 33, 4)
       .fillAndStroke(colors.cardBg, colors.border);
 
     doc
       .font('Helvetica-Bold')
-      .fontSize(9.5)
+      .fontSize(9)
       .fillColor(colors.primary)
-      .text(s.name, 55, cardY + 7);
+      .text(s.name, 50, cardY + 6);
 
     doc
       .font('Helvetica-Bold')
-      .fontSize(7.5)
+      .fontSize(9)
       .fillColor(colors.accent)
-      .text(`[ ${s.tag} ]`, 380, cardY + 8, { align: 'right', width: 155 });
+      .text(`${s.price}  (Acompte ${s.deposit})`, 330, cardY + 6, { align: 'right', width: 215 });
 
     doc
       .font('Helvetica')
-      .fontSize(8)
+      .fontSize(7.5)
       .fillColor(colors.secondary)
-      .text(s.desc, 55, cardY + 20, { width: 480 });
+      .text(s.desc, 50, cardY + 19, { width: 495 });
 
     doc.y = cardY + 38;
   });
 
-  // SECTION 2 : LES 5 ÉTAPES DE RÉSERVATION
-  doc.moveDown(0.4);
-  drawSectionHeader('2. Comment réserver en 5 étapes simples sur le site');
+  // SECTION 2 : COMMENT RÉSERVER EN 5 ÉTAPES
+  doc.moveDown(0.2);
+  drawSectionHeader('2. Comment Réserver en 5 Étapes Simples sur le Site');
 
   const steps = [
     {
       num: '01',
-      title: 'Sélectionnez votre prestation',
-      desc: 'Cliquez sur « Réserver cette pose » pour découvrir les détails et le tarif en vigueur.',
+      title: 'Sélectionnez votre pose',
+      desc: 'Cliquez sur « Réserver cette pose » pour découvrir les détails, la durée et le tarif officiel.',
     },
     {
       num: '02',
       title: 'Choisissez votre date & créneau libre',
-      desc: 'Le calendrier affiche en direct les créneaux réels disponibles. Zéro double réservation possible.',
+      desc: 'Le calendrier affiche en direct mes créneaux réels disponibles. Zéro double réservation possible.',
     },
     {
       num: '03',
       title: 'Renseignez vos coordonnées',
-      desc: 'Indiquez votre nom, votre numéro WhatsApp actif et votre compte Instagram pour le suivi.',
+      desc: 'Indiquez votre nom, votre numéro WhatsApp actif et votre compte Instagram pour le suivi VIP.',
     },
     {
       num: '04',
       title: 'Verrouillage immédiat (2 heures)',
-      desc: 'Votre créneau est temporairement bloqué pendant 2h pour vous permettre de régler l’acompte.',
+      desc: 'Votre créneau est temporairement bloqué pendant 2h pour vous permettre de régler votre acompte.',
     },
     {
       num: '05',
-      title: 'Validation de l’Acompte & Confirmation',
-      desc: 'Envoyez votre preuve de paiement par WhatsApp. Votre rendez-vous est alors confirmé avec l’adresse exacte.',
+      title: 'Validation de l’Acompte & Confirmation WhatsApp',
+      desc: 'Ouvrez Wave ou Max it en 1 clic sur le site, puis transmettez votre preuve par WhatsApp.',
     },
   ];
 
   steps.forEach((step) => {
     const stepY = doc.y;
-    doc.circle(58, stepY + 8, 9).fill(colors.accent);
+    doc.circle(52, stepY + 8, 8).fill(colors.accent);
     doc
       .font('Helvetica-Bold')
       .fontSize(7.5)
       .fillColor('#FFFFFF')
-      .text(step.num, 51, stepY + 5, { width: 14, align: 'center' });
+      .text(step.num, 45, stepY + 5, { width: 14, align: 'center' });
 
     doc
       .font('Helvetica-Bold')
       .fontSize(8.5)
       .fillColor(colors.primary)
-      .text(step.title, 75, stepY + 2);
+      .text(step.title, 68, stepY + 2);
 
     doc
       .font('Helvetica')
-      .fontSize(8)
+      .fontSize(7.5)
       .fillColor(colors.secondary)
-      .text(step.desc, 75, stepY + 13, { width: 470 });
+      .text(step.desc, 68, stepY + 13, { width: 475 });
 
-    doc.y = stepY + 26;
+    doc.y = stepY + 25;
   });
 
   // --------------------------------------------------------------------------
-  // PAGE 2 : PAIEMENT SÉCURISÉ, CHARTE DU STUDIO & ENTRETIEN (AFTERCARE)
+  // PAGE 2 : ACOMPTE WAVE & MAX IT (AVEC VRAIS LOGOS), CHARTE & AFTERCARE
   // --------------------------------------------------------------------------
   doc.addPage();
-
-  // Bannière supérieure
   doc.rect(0, 0, 595.28, 8).fill(colors.accent);
 
-  // SECTION 3 : RÈGLEMENT DE L'ACOMPTE OBLIGATOIRE
   doc.y = 35;
-  drawSectionHeader('3. Règlement de l’Acompte Obligatoire & Moyens de Paiement');
+  drawSectionHeader('3. Règlement Sécurisé de l’Acompte (Wave & Max it)');
 
+  // Box Explication Acompte
   const depositY = doc.y;
   doc
-    .roundedRect(45, depositY, 505, 80, 6)
-    .fillAndStroke('#FEF3C7', colors.gold); // Amber light
+    .roundedRect(40, depositY, 515, 68, 6)
+    .fillAndStroke(colors.goldLight, colors.gold);
 
   doc
     .font('Helvetica-Bold')
-    .fontSize(10)
+    .fontSize(9.5)
     .fillColor(colors.gold)
-    .text('POURQUOI L’ACOMPTE EST-IL STRICTEMENT OBLIGATOIRE ?', 60, depositY + 10);
+    .text('POURQUOI L’ACOMPTE DE 5 000 FCFA EST STRICTEMENT OBLIGATOIRE ?', 52, depositY + 8);
 
   doc
     .font('Helvetica')
-    .fontSize(8.5)
+    .fontSize(8)
     .fillColor(colors.primary)
     .text(
-      'Chaque pose d’extension demande entre 1h30 et 3h de travail méticuleux et monopolise un créneau exclusif dans notre studio privé. L’acompte (indiqué pour chaque prestation) confirme formellement votre engagement et bloque définitivement le temps qui vous est dédié. Sans acompte dans les 2 heures suivant la réservation en ligne, le créneau est automatiquement libéré pour d’autres clientes.',
-      60,
-      depositY + 25,
-      { width: 475, lineGap: 2 }
+      'Chaque pose d’extension demande entre 1h30 et 3h de minutie et monopolise un créneau exclusif dans notre studio privé. L’acompte de 5 000 FCFA confirme formellement votre engagement et bloque définitivement le temps qui vous est réservé.\n\n' +
+      '• Cet acompte est intégralement déduit du solde total à régler sur place après votre pose.\n' +
+      '• Sans acompte dans les 2 heures suivant votre réservation en ligne, le créneau est automatiquement libéré.',
+      52,
+      depositY + 22,
+      { width: 495, lineGap: 1.5 }
     );
 
-  doc.y = depositY + 92;
+  doc.y = depositY + 76;
 
-  // Box Numéros Wave & Orange Money
+  // Box Numéro Officiel avec VRAIS LOGOS Wave et Max it
   const payCardY = doc.y;
   doc
-    .roundedRect(45, payCardY, 505, 60, 6)
+    .roundedRect(40, payCardY, 515, 68, 6)
     .fillAndStroke(colors.cardBg, colors.border);
+
+  // Insertion des vraies images d'application Wave et Max it
+  if (fs.existsSync(waveLogoPath)) {
+    doc.image(waveLogoPath, 52, payCardY + 14, { width: 38 });
+  }
+  if (fs.existsSync(maxitLogoPath)) {
+    doc.image(maxitLogoPath, 98, payCardY + 14, { width: 38 });
+  }
 
   doc
     .font('Helvetica-Bold')
     .fontSize(9.5)
     .fillColor(colors.primary)
-    .text('NUMÉRO OFFICIEL POUR LE TRANSFERT D’ACOMPTE (WAVE & MAX IT)', 60, payCardY + 10);
+    .text('NUMÉRO OFFICIEL POUR LE TRANSFERT (WAVE & MAX IT)', 150, payCardY + 12);
 
   doc
     .font('Helvetica-Bold')
-    .fontSize(14)
+    .fontSize(15)
     .fillColor(colors.accent)
-    .text('+221 77 685 21 46', 60, payCardY + 25);
+    .text('+221 77 685 21 46', 150, payCardY + 26);
 
   doc
     .font('Helvetica')
-    .fontSize(8)
+    .fontSize(7.5)
     .fillColor(colors.secondary)
     .text(
-      'Après avoir effectué votre transfert sur l’application Wave ou Max it, cliquez sur le bouton WhatsApp sur le site pour transmettre automatiquement votre capture d’écran avec votre référence.',
-      60,
-      payCardY + 44,
-      { width: 475 }
+      'Sur le site mobile, cliquez sur « Ouvrir l’application Wave » ou « Ouvrir Max it » pour copier le numéro et ouvrir directement votre application. Ensuite, cliquez sur WhatsApp pour envoyer votre capture d’écran avec votre référence unique.',
+      150,
+      payCardY + 45,
+      { width: 395, lineGap: 1 }
     );
 
-  doc.y = payCardY + 70;
+  doc.y = payCardY + 76;
 
-  // SECTION 4 : CHARTE DE SAVOIR-VIVRE & CONDITIONS DU STUDIO
-  drawSectionHeader('4. Charte d’Accueil & Ponctualité au Studio');
+  // SECTION 4 : CHARTE D'ACCUEIL & PONCTUALITÉ
+  drawSectionHeader('4. Charte d’Accueil & Ponctualité au Studio Privé');
 
   const rules = [
     {
       title: 'Ponctualité stricte (Tolérance max : 15 minutes)',
-      desc: 'Tout retard de plus de 15 minutes entraîne l’annulation du rendez-vous sans remboursement de l’acompte, afin de ne pas pénaliser les clientes suivantes.',
+      desc: 'Tout retard supérieur à 15 minutes entraîne l’annulation du rendez-vous sans remboursement de l’acompte, pour ne pas pénaliser la cliente suivante.',
     },
     {
       title: 'Studio privé : Rendez-vous strictement individuel',
-      desc: 'Pour des raisons de confort, de calme et d’hygiène, aucun accompagnant, enfant ou animal de compagnie n’est accepté en cabine.',
+      desc: 'Pour des raisons de calme, de confort et d’hygiène, aucun accompagnant, enfant ou ami n’est accepté en cabine de pose.',
     },
     {
       title: 'Modification & Report de rendez-vous',
-      desc: 'Tout report doit être signalé sur WhatsApp au moins 24 heures à l’avance pour conserver la validité de votre acompte.',
+      desc: 'Tout report doit être signalé sur WhatsApp au moins 24 heures à l’avance pour conserver la validité intégrale de votre acompte.',
     },
   ];
 
   rules.forEach((r) => {
     const ry = doc.y;
     doc
-      .roundedRect(45, ry, 505, 30, 4)
+      .roundedRect(40, ry, 515, 28, 4)
       .fillAndStroke(colors.cardBg, colors.border);
 
     doc
       .font('Helvetica-Bold')
-      .fontSize(8.5)
+      .fontSize(8)
       .fillColor(colors.primary)
-      .text(`• ${r.title}`, 55, ry + 6);
+      .text(`• ${r.title}`, 48, ry + 5);
 
     doc
       .font('Helvetica')
-      .fontSize(7.8)
+      .fontSize(7.2)
       .fillColor(colors.secondary)
-      .text(r.desc, 65, ry + 17, { width: 470 });
+      .text(r.desc, 56, ry + 16, { width: 485 });
 
-    doc.y = ry + 34;
+    doc.y = ry + 32;
   });
 
   // SECTION 5 : PRÉPARATION & ENTRETIEN (AFTERCARE)
-  doc.moveDown(0.3);
+  doc.moveDown(0.2);
   drawSectionHeader('5. Carnet d’Entretien : Conserver vos cils 3 à 4 semaines');
 
   const careColsY = doc.y;
 
   // Colonne Gauche : Avant le Rendez-vous
   doc
-    .roundedRect(45, careColsY, 245, 110, 6)
+    .roundedRect(40, careColsY, 252, 95, 6)
     .fillAndStroke(colors.cardBg, colors.border);
 
   doc
     .font('Helvetica-Bold')
-    .fontSize(9)
+    .fontSize(8.5)
     .fillColor(colors.accent)
-    .text('AVANT LE RENDEZ-VOUS', 55, careColsY + 10);
+    .text('AVANT LE RENDEZ-VOUS', 50, careColsY + 8);
 
   const beforeItems = [
     'Arriver les yeux parfaitement démaquillés.',
@@ -358,67 +379,69 @@ async function generateClientPdfGuide() {
     'Retirer vos lentilles de contact avant la pose.',
   ];
 
-  let bY = careColsY + 26;
+  let bY = careColsY + 22;
   beforeItems.forEach((item) => {
     doc
       .font('Helvetica')
-      .fontSize(7.8)
+      .fontSize(7.5)
       .fillColor(colors.primary)
-      .text(`✔ ${item}`, 55, bY, { width: 225 });
-    bY += 19;
+      .text(`✔ ${item}`, 50, bY, { width: 232 });
+    bY += 17;
   });
 
   // Colonne Droite : Après la Pose (Aftercare)
   doc
-    .roundedRect(305, careColsY, 245, 110, 6)
+    .roundedRect(302, careColsY, 253, 95, 6)
     .fillAndStroke(colors.cardBg, colors.border);
-
-  doc
-    .font('Helvetica-Bold')
-    .fontSize(9)
-    .fillColor(colors.accent)
-    .text('APRÈS LA POSE (RÈGLES D’OR)', 315, careColsY + 10);
-
-  const afterItems = [
-    'Éviter l’eau, hammam et sauna pendant 24 heures.',
-    'Brosser délicatement vos cils 1 fois par jour avec le goupillon offert.',
-    'Bannir tout démaquillant biphasé ou corps gras (huile).',
-    'Ne jamais tirer sur les extensions ni tenter de les arracher.',
-  ];
-
-  let aY = careColsY + 26;
-  afterItems.forEach((item) => {
-    doc
-      .font('Helvetica')
-      .fontSize(7.8)
-      .fillColor(colors.primary)
-      .text(`★ ${item}`, 315, aY, { width: 225 });
-    aY += 19;
-  });
-
-  doc.y = careColsY + 118;
-
-  // PIED DE PAGE & CONTACT ASSISTANCE
-  const footerY = doc.y;
-  doc
-    .roundedRect(45, footerY, 505, 42, 6)
-    .fillAndStroke(colors.accentLight, colors.accent);
 
   doc
     .font('Helvetica-Bold')
     .fontSize(8.5)
     .fillColor(colors.accent)
-    .text('UNE QUESTION OU BESOIN D’ASSISTANCE ?', 60, footerY + 8);
+    .text('APRÈS LA POSE (RÈGLES D’OR)', 312, careColsY + 8);
+
+  const afterItems = [
+    'Éviter l’eau, hammam et sauna pendant 24 heures.',
+    'Brosser délicatement vos cils 1 fois/jour avec le goupillon.',
+    'Bannir tout démaquillant biphasé ou huile sur les yeux.',
+    'Ne jamais tirer sur les extensions ni les arracher.',
+  ];
+
+  let aY = careColsY + 22;
+  afterItems.forEach((item) => {
+    doc
+      .font('Helvetica')
+      .fontSize(7.5)
+      .fillColor(colors.primary)
+      .text(`★ ${item}`, 312, aY, { width: 233 });
+    aY += 17;
+  });
+
+  doc.y = careColsY + 102;
+
+  // PIED DE PAGE & CONTACT OFFICIEL
+  const footerY = doc.y;
+  doc
+    .roundedRect(40, footerY, 515, 38, 6)
+    .fillAndStroke(colors.accentLight, colors.accent);
+
+  doc
+    .font('Helvetica-Bold')
+    .fontSize(8)
+    .fillColor(colors.accent)
+    .text('DIAMA EYELASH EXTENSIONS • STUDIO PRIVÉ DAKAR DIAMALAYE', 50, footerY + 8, {
+      align: 'center',
+    });
 
   doc
     .font('Helvetica')
-    .fontSize(7.8)
+    .fontSize(7.5)
     .fillColor(colors.primary)
     .text(
-      'Notre équipe vous répond sur WhatsApp au +221 77 685 21 46 pour tout conseil personnalisé ou assistance technique lors de votre réservation sur le site.',
-      60,
-      footerY + 20,
-      { width: 475 }
+      'WhatsApp Officiel : +221 77 685 21 46   •   Instagram : @diamassa_   •   TikTok : @diamassa4',
+      50,
+      footerY + 21,
+      { align: 'center' }
     );
 
   // Fin du document
@@ -432,7 +455,7 @@ async function generateClientPdfGuide() {
 
 generateClientPdfGuide()
   .then(() => {
-    console.log('PDF client guide généré avec succès dans public/guides/Guide_Reservation_Diama_Eyelash.pdf');
+    console.log('PDF Guide Réservation Cliente généré avec succès dans public/guides/Guide_Reservation_Diama_Eyelash.pdf');
   })
   .catch((err) => {
     console.error('Erreur lors de la génération du PDF :', err);
