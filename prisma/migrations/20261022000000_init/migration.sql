@@ -289,7 +289,7 @@ INSERT INTO "Service" (
   'volume-intense',
   'Volume Intense',
   'FULL_SET',
-  'Un résultat profond, sophistiqué et haute couture pour un regard intensément habillé.',
+  'Un résultat profond, sophistiqué et ultra glamour pour un regard intensément habillé.',
   'Éventails denses et ultra-souples (4D à 6D) travaillés sur-mesure selon la morphologie de vos yeux pour une courbure et une intensité maximales.',
   25000, 7000, 165, 30, true, true,
   'Remplissage accepté sous 21 jours maximum avec au moins 40 % des extensions restantes (pose initiale réalisée au studio uniquement).',

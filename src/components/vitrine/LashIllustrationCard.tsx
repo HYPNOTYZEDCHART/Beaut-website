@@ -46,7 +46,7 @@ export function LashIllustrationCard({
             {badgeText}
           </span>
           <span className="text-[10px] font-semibold tracking-widest uppercase text-[#786B6E]">
-            Haute Couture
+            Studio Privé
           </span>
         </div>
 
@@ -115,7 +115,7 @@ export function LashIllustrationCard({
           {badgeText}
         </span>
         <span className="text-xs font-medium tracking-widest uppercase text-[#786B6E]">
-          Haute Couture
+          Studio Privé
         </span>
       </div>
 

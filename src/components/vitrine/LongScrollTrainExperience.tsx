@@ -122,7 +122,7 @@ export function LongScrollTrainExperience({
         </div>
       )}
 
-      {/* Bannière Promotion Active Haute Couture */}
+      {/* Bannière Promotion Active */}
       {settings.promoModeActive && !settings.examModeActive && (
         <div className="border-b border-[#F3C5CE] bg-[#FDF2F4] px-4 py-3 text-center text-xs font-medium text-[#9E3E53] sm:text-sm">
           <span className="mr-2 inline-flex items-center rounded-full bg-[#E57B8F] px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider text-white shadow-sm">
@@ -136,13 +136,13 @@ export function LongScrollTrainExperience({
       )}
 
       {/* =====================================================================
-          SECTION 01 — ACCUEIL & HERO HAUTE COUTURE (#accueil)
+          SECTION 01 — ACCUEIL & HERO (#accueil)
          ===================================================================== */}
       <section
         id="accueil"
         className="relative scroll-mt-24 overflow-hidden bg-white py-6 sm:py-16 lg:py-20"
       >
-        {/* Photo d'arrière-plan Haute Couture (visibilité renforcée & contraste WCAG optimal) */}
+        {/* Photo d'arrière-plan Studio (visibilité renforcée & contraste WCAG optimal) */}
         <div
           aria-hidden="true"
           className="pointer-events-none absolute inset-0 overflow-hidden"

@@ -116,7 +116,7 @@ Cet onglet est votre meilleur allié pour concilier vos études et votre passion
 
 ## 📋 4. RAPPEL DES RÈGLES D'OR DU STUDIO (CHARTE CLIENTE)
 
-Pour préserver la réputation haute couture de votre studio et la qualité de vos journées :
+Pour préserver la réputation d’excellence de votre studio et la qualité de vos journées :
 
 1. **Acompte non négociable :** Aucun créneau n'est réservé sans les 5 000 FCFA d'acompte. C'est votre garantie anti-lapin.
 2. **Retards supérieurs à 15 minutes :** Le rendez-vous est annulé et l'acompte est conservé, afin que la cliente suivante ne subisse aucun décalage.

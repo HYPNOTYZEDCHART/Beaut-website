@@ -114,7 +114,7 @@ export const FALLBACK_SERVICES: ServiceCatalogItemDTO[] = [
     name: 'Mega Volume',
     category: 'FULL_SET',
     shortDescription:
-      'Un résultat profond, sophistiqué et haute couture pour un regard intensément habillé.',
+      'Un résultat profond, sophistiqué et ultra glamour pour un regard intensément habillé.',
     fullDescription:
       'Éventails denses et ultra-souples (4D à 6D) travaillés sur-mesure selon la morphologie de vos yeux pour une courbure et une intensité maximales.',
     priceXof: 18000,

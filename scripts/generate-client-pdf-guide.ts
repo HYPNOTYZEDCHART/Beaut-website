@@ -69,7 +69,7 @@ async function generateClientPdfGuide() {
     .font('Helvetica')
     .fontSize(9.5)
     .fillColor(colors.accent)
-    .text('STUDIO PRIVÉ HAUTE COUTURE • DAKAR DIAMALAYE', {
+    .text('STUDIO PRIVÉ D’EXTENSIONS DE CILS • DAKAR DIAMALAYE', {
       align: 'center',
       characterSpacing: 1.5,
     });
