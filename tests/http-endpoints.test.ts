@@ -99,6 +99,7 @@ describe('HTTP ENDPOINTS & ASSETS — Audit Réseau Réel sur Serveur Localhost:
     '/images/diama-logo.jpg',
     '/images/hero-studio-bg.jpg',
     '/images/studio-ambiance.jpg',
+    '/images/studio-seance-pose.jpg',
     '/images/services/cil-a-cil.jpg',
     '/images/services/pose-mixte.jpg',
     '/images/services/volume-leger.jpg',

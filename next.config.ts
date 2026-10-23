@@ -21,7 +21,10 @@ export default function nextConfig(phase: string): NextConfig {
           headers: [
             {
               key: 'Cache-Control',
-              value: 'public, max-age=31536000, immutable',
+              value:
+                phase === PHASE_DEVELOPMENT_SERVER
+                  ? 'no-store, no-cache, must-revalidate, proxy-revalidate'
+                  : 'public, max-age=31536000, immutable',
             },
           ],
         },

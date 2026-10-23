@@ -570,7 +570,7 @@ export function LongScrollTrainExperience({
           >
             <div className="relative h-56 overflow-hidden rounded-2xl border border-[#F3E1E6] bg-white md:col-span-5 sm:h-64">
               <img
-                src="/images/studio-ambiance.jpg"
+                src="/images/studio-seance-pose.jpg"
                 alt="Séance de pose d’extensions de cils au studio privé DIAMA EYELASH EXTENSIONS à Dakar"
                 loading="lazy"
                 className="h-full w-full object-cover object-[center_38%]"
