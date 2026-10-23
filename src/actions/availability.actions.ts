@@ -707,7 +707,11 @@ const updateServicePricingSchema = z
       .optional(),
     depositXof: z.number().int().min(1000).max(100000),
   })
-  .strict();
+  .strict()
+  .refine((data) => data.depositXof <= data.priceXof, {
+    message: "L'acompte ne peut pas dépasser le tarif total de la prestation.",
+    path: ['depositXof'],
+  });
 
 /**
  * Back-Office (/admin) : Met à jour le tarif total et l'acompte d'une prestation spécifique.
