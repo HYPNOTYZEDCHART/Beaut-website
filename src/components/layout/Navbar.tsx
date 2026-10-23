@@ -115,16 +115,18 @@ export function Navbar() {
         <Link
           href="/#accueil"
           onClick={handleLogoClick}
-          className="group inline-flex select-none touch-manipulation items-center gap-2.5 font-serif text-lg font-semibold tracking-wider text-[#1C191A] sm:text-xl"
+          className="group inline-flex min-w-0 select-none touch-manipulation items-center gap-2 font-serif text-base font-semibold tracking-wide text-[#1C191A] sm:gap-2.5 sm:text-lg sm:tracking-wider"
         >
-          <span className="inline-flex h-9 w-10 items-center justify-center overflow-hidden rounded-xl border border-[#F3E1E6] bg-[#FAF7F5] p-0.5 shadow-powdery transition-transform duration-150 ease-emil-out group-active:scale-[0.96]">
+          <span className="inline-flex h-9 w-9 shrink-0 items-center justify-center overflow-hidden rounded-xl border border-[#F3E1E6] bg-[#FAF7F5] p-0.5 shadow-powdery transition-transform duration-150 ease-emil-out group-active:scale-[0.96] sm:h-9 sm:w-10">
             <img
               src="/images/diama-logo.jpg"
               alt="Logo Diama Eyelash Extensions"
               className="h-full w-full object-contain"
             />
           </span>
-          <span>DIAMA EYELASH EXTENSIONS</span>
+          <span className="truncate">
+            DIAMA EYELASH <span className="hidden sm:inline">EXTENSIONS</span>
+          </span>
         </Link>
 
         {/* Navigation Desktop par wagons avec glissement layoutId */}

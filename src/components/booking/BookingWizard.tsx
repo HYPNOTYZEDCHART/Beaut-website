@@ -1050,7 +1050,7 @@ export function BookingWizard({
                               type="button"
                               onClick={() => setSelectedSlot(slot)}
                               className={cn(
-                                'relative flex min-h-12 items-center justify-center gap-2 rounded-full border px-4 py-3 text-sm font-semibold tabular-nums transition-transform duration-150 ease-emil-out active:scale-[0.96]',
+                                'relative flex min-h-12 items-center justify-center gap-1.5 sm:gap-2 rounded-full border px-2.5 sm:px-4 py-3 text-xs sm:text-sm font-semibold tabular-nums whitespace-nowrap transition-transform duration-150 ease-emil-out active:scale-[0.96]',
                                 isSlotSelected
                                   ? 'border-[#C47482] text-white'
                                   : 'border-[#F3E1E6] bg-[#FDF8F9] text-[#1C191A] hover:border-[#D88B99]'
