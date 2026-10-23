@@ -253,7 +253,7 @@ INSERT INTO "Service" (
   'Un effet mascara naturel, élégant et aérien qui sublime le regard sans l’alourdir.',
   'Application minutieuse d’une extension sur chaque cil naturel isolé. Idéal pour une première pose ou un rendu chic au quotidien.',
   15000, 5000, 120, 20, true, true,
-  'Remplissage accepté sous 21 jours maximum avec au moins 40 % des extensions restantes (pose initiale réalisée au studio uniquement).',
+  'Remplissage accepté sous 21 jours maximum (pose initiale réalisée au studio uniquement).',
   'Venir les yeux totalement démaquillés, sans mascara ni corps gras depuis 24h.',
   '/images/services/cil-a-cil.jpg',
   1, true, CURRENT_TIMESTAMP
@@ -266,7 +266,7 @@ INSERT INTO "Service" (
   'L’équilibre subtil entre la définition du cil à cil et la douceur texturée du volume.',
   'Alliance harmonieuse d’extensions cil à cil et d’éventails de volume léger pour combler les zones clairsemées tout en gardant un résultat doux.',
   18000, 5000, 135, 20, true, true,
-  'Remplissage accepté sous 21 jours maximum avec au moins 40 % des extensions restantes (pose initiale réalisée au studio uniquement).',
+  'Remplissage accepté sous 21 jours maximum (pose initiale réalisée au studio uniquement).',
   'Venir les yeux totalement démaquillés, sans mascara ni huile sur le contour des yeux.',
   '/images/services/pose-mixte.jpg',
   2, true, CURRENT_TIMESTAMP
@@ -279,7 +279,7 @@ INSERT INTO "Service" (
   'Un regard fourni, soyeux et vaporeux tout en finesse, parfait de jour comme de soirée.',
   'Bouquets faits main ultra-légers (2D à 3D) offrant une ligne de cils dense et aérienne sans jamais fatiguer vos cils naturels.',
   20000, 5000, 150, 25, true, true,
-  'Remplissage accepté sous 21 jours maximum avec au moins 40 % des extensions restantes (pose initiale réalisée au studio uniquement).',
+  'Remplissage accepté sous 21 jours maximum (pose initiale réalisée au studio uniquement).',
   'Venir les yeux totalement démaquillés, sans lentilles de contact pendant la séance.',
   '/images/services/volume-leger.jpg',
   3, true, CURRENT_TIMESTAMP
@@ -292,7 +292,7 @@ INSERT INTO "Service" (
   'Un résultat profond, sophistiqué et ultra glamour pour un regard intensément habillé.',
   'Éventails denses et ultra-souples (4D à 6D) travaillés sur-mesure selon la morphologie de vos yeux pour une courbure et une intensité maximales.',
   25000, 7000, 165, 30, true, true,
-  'Remplissage accepté sous 21 jours maximum avec au moins 40 % des extensions restantes (pose initiale réalisée au studio uniquement).',
+  'Remplissage accepté sous 21 jours maximum (pose initiale réalisée au studio uniquement).',
   'Venir les yeux totalement démaquillés. Prévoir 2h45 au calme sans appel téléphonique.',
   '/images/services/volume-intense.jpg',
   4, true, CURRENT_TIMESTAMP
@@ -305,7 +305,7 @@ INSERT INTO "Service" (
   'Entretien complet de votre pose pour retrouver une ligne fraîche, nette et parfaitement fournie.',
   'Nettoyage doux, retrait des extensions ayant poussé et pose de nouveaux bouquets pour redonner tout son éclat à votre pose initiale.',
   12000, 4000, 90, 20, false, true,
-  'Exclusivement réservé aux poses réalisées chez TON ESPACE BEAUTÉ datant de moins de 21 jours avec au moins 40 % des extensions restantes. Au-delà, une dépose + nouvelle pose complète sera facturée.',
+  'Exclusivement réservé aux poses réalisées chez DIAMA EYELASH EXTENSIONS datant de moins de 21 jours.',
   'Brossage et nettoyage au shampoing cils avant le rendez-vous. Aucune pose extérieure n’est remplie.',
   '/images/services/remplissage.jpg',
   5, true, CURRENT_TIMESTAMP

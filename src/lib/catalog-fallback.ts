@@ -52,7 +52,7 @@ export const FALLBACK_SERVICES: ServiceCatalogItemDTO[] = [
     naturalLashesOnly: true,
     refillAccepted: true,
     refillConditions:
-      'Remplissage accepté sous 21 jours maximum avec au moins 40 % des extensions restantes (pose initiale réalisée au studio uniquement).',
+      'Remplissage accepté sous 21 jours maximum (pose initiale réalisée au studio uniquement).',
     prepInstructions:
       'Venir les yeux totalement démaquillés, sans mascara ni corps gras depuis 24h.',
     imageUrl: '/images/services/cil-a-cil.jpg',
@@ -77,7 +77,7 @@ export const FALLBACK_SERVICES: ServiceCatalogItemDTO[] = [
     naturalLashesOnly: true,
     refillAccepted: true,
     refillConditions:
-      'Remplissage accepté sous 21 jours maximum avec au moins 40 % des extensions restantes (pose initiale réalisée au studio uniquement).',
+      'Remplissage accepté sous 21 jours maximum (pose initiale réalisée au studio uniquement).',
     prepInstructions:
       'Venir les yeux totalement démaquillés, sans mascara ni huile sur le contour des yeux.',
     imageUrl: '/images/services/pose-mixte.jpg',
@@ -102,7 +102,7 @@ export const FALLBACK_SERVICES: ServiceCatalogItemDTO[] = [
     naturalLashesOnly: true,
     refillAccepted: true,
     refillConditions:
-      'Remplissage accepté sous 21 jours maximum avec au moins 40 % des extensions restantes (pose initiale réalisée au studio uniquement).',
+      'Remplissage accepté sous 21 jours maximum (pose initiale réalisée au studio uniquement).',
     prepInstructions:
       'Venir les yeux totalement démaquillés, sans lentilles de contact pendant la séance.',
     imageUrl: '/images/services/volume-leger.jpg',
@@ -127,7 +127,7 @@ export const FALLBACK_SERVICES: ServiceCatalogItemDTO[] = [
     naturalLashesOnly: true,
     refillAccepted: true,
     refillConditions:
-      'Remplissage accepté sous 21 jours maximum avec au moins 40 % des extensions restantes (pose initiale réalisée au studio uniquement).',
+      'Remplissage accepté sous 21 jours maximum (pose initiale réalisée au studio uniquement).',
     prepInstructions:
       'Venir les yeux totalement démaquillés. Prévoir 2h45 au calme sans appel téléphonique.',
     imageUrl: '/images/services/volume-intense.jpg',
@@ -152,7 +152,7 @@ export const FALLBACK_SERVICES: ServiceCatalogItemDTO[] = [
     naturalLashesOnly: false,
     refillAccepted: true,
     refillConditions:
-      'Exclusivement réservé aux poses réalisées chez DIAMA EYELASH EXTENSIONS datant de moins de 21 jours avec au moins 40 % des extensions restantes. Au-delà, une dépose + nouvelle pose complète sera facturée.',
+      'Exclusivement réservé aux poses réalisées chez DIAMA EYELASH EXTENSIONS datant de moins de 21 jours.',
     prepInstructions:
       'Brossage et nettoyage au shampoing cils avant le rendez-vous. Aucune pose extérieure n’est remplie.',
     imageUrl: '/images/services/remplissage.jpg',
