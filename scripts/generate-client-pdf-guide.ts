@@ -280,7 +280,7 @@ async function generateClientPdfGuide() {
     .font('Helvetica-Bold')
     .fontSize(14)
     .fillColor(colors.accent)
-    .text('+221 77 395 69 66', 60, payCardY + 25);
+    .text('+221 77 685 21 46', 60, payCardY + 25);
 
   doc
     .font('Helvetica')
@@ -415,7 +415,7 @@ async function generateClientPdfGuide() {
     .fontSize(7.8)
     .fillColor(colors.primary)
     .text(
-      'Notre équipe vous répond sur WhatsApp au +221 77 395 69 66 pour tout conseil personnalisé ou assistance technique lors de votre réservation sur le site.',
+      'Notre équipe vous répond sur WhatsApp au +221 77 685 21 46 pour tout conseil personnalisé ou assistance technique lors de votre réservation sur le site.',
       60,
       footerY + 20,
       { width: 475 }
