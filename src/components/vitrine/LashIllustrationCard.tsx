@@ -39,14 +39,11 @@ export function LashIllustrationCard({
           <div className="absolute inset-0 bg-gradient-to-b from-[#FDF8F9]/85 via-white/80 to-[#F9EBEF]/85" />
         </div>
 
-        {/* Ligne d'en-tête : Badges discrets */}
-        <div className="relative z-10 flex items-center justify-between pb-2.5">
+        {/* Ligne d'en-tête : Badge discret */}
+        <div className="relative z-10 flex items-center justify-start pb-2.5">
           <span className="inline-flex items-center gap-1.5 rounded-full border border-[#F3E1E6] bg-white/95 px-2.5 py-0.5 text-[11px] font-medium text-[#B36270] shadow-sm">
             <Sparkles className="h-3 w-3 text-[#D88B99]" strokeWidth={1.5} />
             {badgeText}
-          </span>
-          <span className="text-[10px] font-semibold tracking-widest uppercase text-[#786B6E]">
-            Studio Privé
           </span>
         </div>
 
@@ -109,13 +106,10 @@ export function LashIllustrationCard({
         <div className="absolute inset-0 bg-gradient-to-b from-[#FDF8F9]/75 via-white/70 to-[#F9EBEF]/75" />
       </div>
 
-      <div className="relative z-10 flex items-center justify-between">
+      <div className="relative z-10 flex items-center justify-start">
         <span className="inline-flex items-center gap-1.5 rounded-full border border-[#F3E1E6] bg-white/95 px-3 py-1 text-xs font-medium text-[#B36270] shadow-powdery">
           <Sparkles className="h-3.5 w-3.5 text-[#D88B99]" strokeWidth={1.5} />
           {badgeText}
-        </span>
-        <span className="text-xs font-medium tracking-widest uppercase text-[#786B6E]">
-          Studio Privé
         </span>
       </div>
 
