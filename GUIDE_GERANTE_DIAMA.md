@@ -12,9 +12,9 @@ Ce guide a été spécialement conçu pour vous, **Diama**. Il contient **unique
 - Rendez-vous sur la page secrète d’administration :
   👉 **`https://votre-site.com/admin`** *(ou `http://localhost:3000/admin` en local)*
 
-### Votre Code PIN de Sécurité
-- Votre code PIN d'accès confidentiel est : **`2210`**
-- *Sécurité automatique :* Si quelqu'un d'autre tente de deviner votre code PIN plus de 5 fois de suite, l'accès est automatiquement bloqué pendant 15 minutes pour protéger vos données.
+### Votre Code de Sécurité
+- Votre code d'accès confidentiel est : **`##DiamassA*#`**
+- *Sécurité automatique :* Si quelqu'un d'autre tente de deviner votre code plus de 5 fois de suite, l'accès est automatiquement bloqué pendant 15 minutes pour protéger vos données.
 
 ### Astuce : Installer l’application sur votre téléphone (1 clic)
 Pour ouvrir votre espace en un clin d'œil comme une vraie application mobile :
@@ -54,7 +54,7 @@ Le site s'occupe de filtrer les clientes sérieuses et de bloquer les créneaux 
   - Sa capture d'écran de reçu Wave / Orange Money.
 
 ### Étape 3 : Vous confirmez en 1 clic
-1. Ouvrez votre page **/admin** et entrez votre code PIN `2210`.
+1. Ouvrez votre page **/admin** et entrez votre code `##DiamassA*#`.
 2. Dans l'onglet **Rendez-vous**, la réservation apparaît en rose avec le badge **« En attente acompte »**.
 3. Vérifiez sur votre application Wave personnelle que vous avez bien reçu les 5 000 FCFA.
 4. Cliquez sur le bouton vert **« Valider l'Acompte »**.

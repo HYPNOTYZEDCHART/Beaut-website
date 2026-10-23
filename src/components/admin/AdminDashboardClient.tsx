@@ -486,14 +486,17 @@ export function AdminDashboardClient({
 
           <input
             type="password"
-            inputMode="numeric"
+            inputMode="text"
+            autoCapitalize="none"
+            autoCorrect="off"
+            spellCheck={false}
             enterKeyHint="done"
             required
             autoFocus
-            placeholder="••••"
+            placeholder="••••••••••••"
             value={adminPin}
             onChange={(e) => setAdminPin(e.target.value)}
-            className="min-h-12 w-full rounded-2xl border border-[#F3E1E6] bg-[#FDF8F9] px-4 py-3 text-center text-xl font-bold tracking-widest text-[#1C191A] tabular-nums focus:border-[#D88B99] focus:bg-white focus:outline-none"
+            className="min-h-12 w-full rounded-2xl border border-[#F3E1E6] bg-[#FDF8F9] px-4 py-3 text-center text-lg font-bold tracking-widest text-[#1C191A] focus:border-[#D88B99] focus:bg-white focus:outline-none"
           />
 
           <TactileButton type="submit" fullWidth isLoading={isLoadingData}>

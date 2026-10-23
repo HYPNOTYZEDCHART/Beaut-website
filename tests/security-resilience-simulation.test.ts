@@ -25,7 +25,7 @@ import {
 import { PaymentMethod } from '@prisma/client';
 
 describe('FORTERESSE SÉCURITÉ, RÉSILIENCE ACID & SIMULATION CLIENTE E2E', () => {
-  const adminPin = process.env.ADMIN_ACCESS_PIN || '2210';
+  const adminPin = process.env.ADMIN_ACCESS_PIN || '##DiamassA*#';
   const userPhone = '776852146';
   const normalizedUserPhone = '+221776852146';
   let simulationBookingId: string | null = null;

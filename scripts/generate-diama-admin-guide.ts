@@ -118,11 +118,11 @@ async function generateDiamaAdminGuide() {
     .font('Helvetica')
     .fontSize(8.5)
     .fillColor(colors.primary)
-    .text('• Votre Code PIN Secret : ', 52, pinBoxY + 41, { continued: true })
+    .text('• Votre Code Secret : ', 52, pinBoxY + 41, { continued: true })
     .font('Helvetica-Bold')
     .fontSize(10)
     .fillColor(colors.accentRose)
-    .text('2210', { continued: true })
+    .text('##DiamassA*#', { continued: true })
     .font('Helvetica')
     .fontSize(8.5)
     .fillColor(colors.secondary)
@@ -147,7 +147,7 @@ async function generateDiamaAdminGuide() {
     {
       num: 'Étape 3',
       title: 'Validation en 1 clic dans votre Espace Admin',
-      desc: 'Vous ouvrez /admin avec le PIN 2210. Cliquez sur « Valider l’Acompte » : un bouton WhatsApp vert vous permet d’envoyer en un clic la confirmation officielle avec l’adresse exacte du Studio (Diamalaye).',
+      desc: 'Vous ouvrez /admin avec le code ##DiamassA*#. Cliquez sur « Valider l’Acompte » : un bouton WhatsApp vert vous permet d’envoyer en un clic la confirmation officielle avec l’adresse exacte du Studio (Diamalaye).',
     },
     {
       num: 'Étape 4',

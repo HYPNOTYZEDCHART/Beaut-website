@@ -20,7 +20,7 @@ import { PaymentMethod } from '@prisma/client';
 
 describe('SERVER ACTIONS & TRANSACTION ACID — Cycle de Vie Complet Réservation & Avis', () => {
   let createdTestBookingId: string | null = null;
-  const adminPin = process.env.ADMIN_ACCESS_PIN || '1234';
+  const adminPin = process.env.ADMIN_ACCESS_PIN || '##DiamassA*#';
 
   it('1. getServiceAvailabilityAction calcule la disponibilité réelle sur Supabase', async () => {
     const service = await prisma.service.findFirst({
