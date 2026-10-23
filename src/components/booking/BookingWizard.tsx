@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useMemo, useRef } from 'react';
 import { AnimatePresence, LayoutGroup, motion } from 'framer-motion';
 import { Drawer } from 'vaul';
 import { toast } from 'sonner';
@@ -173,6 +173,19 @@ export function BookingWizard({
   const [calendarData, setCalendarData] =
     useState<AvailabilityCalendarResult | null>(null);
   const [selectedDateKey, setSelectedDateKey] = useState<string | null>(null);
+  const dayStripRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    const strip = dayStripRef.current;
+    if (!strip || !selectedDateKey) return;
+    const target = strip.querySelector<HTMLElement>(
+      `[data-date-key="${selectedDateKey}"]`
+    );
+    if (!target) return;
+    const left =
+      target.offsetLeft - (strip.clientWidth - target.offsetWidth) / 2;
+    strip.scrollTo({ left: Math.max(0, left), behavior: 'smooth' });
+  }, [selectedDateKey]);
   const [selectedSlot, setSelectedSlot] = useState<ComputedSlot | null>(null);
 
   // Étape 4 : Formulaire Cliente
@@ -976,7 +989,10 @@ export function BookingWizard({
                     <p className="mb-2.5 text-xs font-semibold uppercase tracking-wider text-[#786B6E]">
                       1. Jours disponibles ({openDays.length})
                     </p>
-                    <div className="flex snap-x snap-mandatory gap-2.5 overflow-x-auto pb-2 [touch-action:pan-y]">
+                    <div
+                      ref={dayStripRef}
+                      className="relative flex snap-x gap-2.5 overflow-x-auto pb-2 [-webkit-overflow-scrolling:touch]"
+                    >
                       {openDays.map((day) => {
                         const isDaySelected = selectedDateKey === day.dateKey;
                         const dateObj = new Date(
@@ -995,6 +1011,8 @@ export function BookingWizard({
                         return (
                           <button
                             key={day.dateKey}
+                            data-date-key={day.dateKey}
+                            aria-pressed={isDaySelected}
                             type="button"
                             onClick={() => {
                               setSelectedDateKey(day.dateKey);
