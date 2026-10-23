@@ -166,7 +166,7 @@ export function LongScrollTrainExperience({
                 className="flex flex-wrap items-center gap-2"
               >
                 <PowderyBadge variant="rose" className="hidden sm:inline-flex">
-                  Studio Privé • Dakar Grand Médine
+                  Studio Privé • Dakar Diamalaye
                 </PowderyBadge>
                 <PowderyBadge
                   variant={settings.examModeActive ? 'amber' : 'sage'}
@@ -256,7 +256,7 @@ export function LongScrollTrainExperience({
                       className="h-3 w-3 shrink-0 text-[#D88B99]"
                       strokeWidth={1.5}
                     />
-                    <span>Grand Médine</span>
+                    <span>Diamalaye</span>
                   </span>
                 </div>
 
@@ -281,7 +281,7 @@ export function LongScrollTrainExperience({
                       className="h-3.5 w-3.5 shrink-0 text-[#D88B99]"
                       strokeWidth={1.5}
                     />
-                    <span>Dakar • Grand Médine (Rue GM-01)</span>
+                    <span>Dakar • Diamalaye (Rue GM-01)</span>
                   </div>
                 </div>
               </motion.div>
@@ -607,7 +607,7 @@ export function LongScrollTrainExperience({
                 </h3>
               </div>
               <p className="mt-3 text-sm leading-relaxed text-[#786B6E]">
-                Situé à <strong className="text-[#1C191A]">Dakar (Grand Médine / Stade Senghor)</strong>.
+                Situé à <strong className="text-[#1C191A]">Dakar (Diamalaye, repère Croisement Grand Médine)</strong>.
                 Pour votre tranquillité et la sécurité du studio,{' '}
                 <strong className="text-[#1C191A]">
                   l’adresse exacte est masquée sur le site et envoyée uniquement

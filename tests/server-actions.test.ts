@@ -163,6 +163,7 @@ describe('SERVER ACTIONS & TRANSACTION ACID — Cycle de Vie Complet Réservatio
     assert.ok(successResult.data);
     assert.ok(
       decodeURIComponent(successResult.data.clientConfirmationWhatsAppUrl).includes('GM-01') ||
+      decodeURIComponent(successResult.data.clientConfirmationWhatsAppUrl).includes('Diamalaye') ||
       decodeURIComponent(successResult.data.clientConfirmationWhatsAppUrl).includes('Grand Médine')
     );
   });

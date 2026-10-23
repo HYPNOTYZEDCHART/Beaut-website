@@ -44,7 +44,7 @@ export async function Footer() {
             <div className="max-w-2xl space-y-3">
               <span className="inline-flex items-center gap-2 rounded-full border border-[#D88B99]/30 bg-[#D88B99]/10 px-3.5 py-1 text-xs font-medium text-[#E5A5B1]">
                 <Sparkles className="h-3.5 w-3.5 text-[#D88B99]" strokeWidth={1.5} />
-                Studio Privé Haute Couture • Dakar Grand Médine
+                Studio Privé Haute Couture • Dakar Diamalaye
               </span>
               <h2 className="font-serif text-3xl font-semibold tracking-tight text-white sm:text-4xl">
                 Prête à révéler l’intensité de votre regard ?
@@ -201,10 +201,10 @@ export async function Footer() {
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label="Snapchat Diama Eyelash Extensions"
-                  className="inline-flex h-10 w-10 items-center justify-center rounded-xl border border-[#382E32] bg-[#1E181B] text-[#FFFC00] transition-all duration-150 hover:border-[#FFFC00] hover:bg-[#FFFC00]/10 active:scale-95"
+                  className="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-[#FFFC00] shadow-sm transition-all duration-150 hover:bg-[#FFE600] hover:shadow-[0_4px_14px_rgba(255,252,0,0.35)] active:scale-95"
                   title="Snapchat @diamaeyelash"
                 >
-                  <SnapchatIcon className="h-4.5 w-4.5 fill-current" />
+                  <SnapchatIcon className="h-5 w-5" />
                 </a>
 
                 {/* TÉLÉPHONE */}
@@ -271,7 +271,7 @@ export async function Footer() {
             <ul className="space-y-2.5 text-xs text-[#B8ABB0]">
               <li className="flex items-start gap-2">
                 <MapPin className="mt-0.5 h-3.5 w-3.5 shrink-0 text-[#D88B99]" strokeWidth={1.75} />
-                <span>{settings.zoneLabel || 'Dakar, Grand Médine — Rue GM-01 (sur RDV)'}</span>
+                <span>{settings.zoneLabel || 'Dakar, Diamalaye — Rue GM-01 (sur RDV)'}</span>
               </li>
               <li className="flex items-start gap-2">
                 <Clock className="mt-0.5 h-3.5 w-3.5 shrink-0 text-[#D88B99]" strokeWidth={1.75} />

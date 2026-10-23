@@ -14,7 +14,7 @@ export const FALLBACK_STUDIO_SETTINGS: PublicStudioSettingsDTO = {
   tagline:
     'Extensions de cils sur-mesure dans un cadre doux, calme et intimiste.',
   zoneLabel:
-    'Dakar — Grand Médine (adresse exacte communiquée dès confirmation)',
+    'Dakar — Diamalaye (adresse exacte communiquée dès confirmation)',
   whatsappPhone: '+221773956966',
   wavePhone: '+221773956966',
   orangeMoneyPhone: '+221773956966',

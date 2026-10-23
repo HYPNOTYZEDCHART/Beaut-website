@@ -18,6 +18,10 @@ async function main(): Promise<void> {
       whatsappPhone: '+221773956966',
       wavePhone: '+221773956966',
       orangeMoneyPhone: '+221773956966',
+      zoneLabel:
+        'Dakar — Diamalaye (adresse exacte communiquée dès confirmation)',
+      exactAddress:
+        'Rue GM-01, Diamalaye (repère Croisement Grand Médine), Dakar',
       promoModeActive: false,
       promoPriceXof: 15000,
       promoBannerMessage:
@@ -29,9 +33,9 @@ async function main(): Promise<void> {
       tagline:
         'Extensions de cils sur-mesure dans un cadre doux, calme et intimiste.',
       zoneLabel:
-        'Dakar — Grand Médine (adresse exacte communiquée dès confirmation)',
+        'Dakar — Diamalaye (adresse exacte communiquée dès confirmation)',
       exactAddress:
-        'Rue GM-01, HLM Grand Médine (proche Stade Léopold Sédar Senghor), Dakar',
+        'Rue GM-01, Diamalaye (repère Croisement Grand Médine), Dakar',
       whatsappPhone: '+221773956966',
       wavePhone: '+221773956966',
       orangeMoneyPhone: '+221773956966',
