@@ -2,13 +2,10 @@ import React from 'react';
 import Link from 'next/link';
 import {
   Calendar,
-  Clock,
   Heart,
   MapPin,
   Phone,
   ShieldCheck,
-  Sparkles,
-  Star,
 } from 'lucide-react';
 import {
   WhatsAppIcon,
@@ -31,53 +28,8 @@ export async function Footer() {
 
   return (
     <footer className="safe-bottom relative border-t border-[#2A2426] bg-[#141213] text-[#EDE4E6]">
-      {/* 1. BANDEAU DE RÉASSURANCE : LES 4 ENGAGEMENTS D'EXCELLENCE */}
+      {/* GRILLE PRINCIPALE */}
       <div className="mx-auto max-w-6xl px-4 pt-12 sm:px-6">
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
-          <div className="rounded-2xl border border-[#2B2326] bg-[#1A1618] p-4.5 space-y-1.5">
-            <div className="flex items-center gap-2.5 text-[#E5A5B1]">
-              <Sparkles className="h-4 w-4" strokeWidth={1.75} />
-              <span className="font-serif text-sm font-semibold text-white">100% Isolation Cil à Cil</span>
-            </div>
-            <p className="text-xs leading-relaxed text-[#A8989C]">
-              Pose minutieuse, zéro paquet de colle. La santé et la repousse de vos cils naturels restent intactes.
-            </p>
-          </div>
-
-          <div className="rounded-2xl border border-[#2B2326] bg-[#1A1618] p-4.5 space-y-1.5">
-            <div className="flex items-center gap-2.5 text-[#E5A5B1]">
-              <Clock className="h-4 w-4" strokeWidth={1.75} />
-              <span className="font-serif text-sm font-semibold text-white">Ponctualité & Cadre Calme</span>
-            </div>
-            <p className="text-xs leading-relaxed text-[#A8989C]">
-              Réservation 24h à 48h à l&apos;avance. Espace calme sans accompagnateur ni retard enchaîné.
-            </p>
-          </div>
-
-          <div className="rounded-2xl border border-[#2B2326] bg-[#1A1618] p-4.5 space-y-1.5">
-            <div className="flex items-center gap-2 text-[#E5A5B1]">
-              <WaveAndOmBadge size="sm" />
-              <span className="font-serif text-sm font-semibold text-white">Acompte Sécurisé</span>
-            </div>
-            <p className="text-xs leading-relaxed text-[#A8989C]">
-              Créneau immédiatement bloqué avec référence unique. Zéro doublon ni mauvaise surprise.
-            </p>
-          </div>
-
-          <div className="rounded-2xl border border-[#2B2326] bg-[#1A1618] p-4.5 space-y-1.5">
-            <div className="flex items-center gap-2.5 text-[#E5A5B1]">
-              <Star className="h-4 w-4 text-[#F3C474]" strokeWidth={1.75} />
-              <span className="font-serif text-sm font-semibold text-white">Avis 100% Vérifiés</span>
-            </div>
-            <p className="text-xs leading-relaxed text-[#A8989C]">
-              Seules les clientes ayant réellement honoré leur pose peuvent déposer un témoignage certifié.
-            </p>
-          </div>
-        </div>
-      </div>
-
-      {/* 2. GRILLE PRINCIPALE 3 COLONNES AÉRÉE */}
-      <div className="mx-auto mt-14 max-w-6xl px-4 sm:px-6">
         <div className="grid grid-cols-1 gap-10 md:grid-cols-2 lg:grid-cols-12">
           {/* Colonne 1 : Marque & Réseaux Sociaux Officiels (lg:col-span-5) */}
           <div className="space-y-5 lg:col-span-5">
