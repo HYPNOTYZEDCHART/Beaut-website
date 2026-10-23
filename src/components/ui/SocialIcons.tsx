@@ -11,6 +11,8 @@ export function WhatsAppIcon({ className = 'h-5 w-5', ...props }: IconProps) {
   return (
     <svg
       viewBox="0 0 24 24"
+      width="20"
+      height="20"
       fill="currentColor"
       className={className}
       aria-hidden="true"
@@ -28,6 +30,8 @@ export function TikTokIcon({ className = 'h-5 w-5', ...props }: IconProps) {
   return (
     <svg
       viewBox="0 0 24 24"
+      width="20"
+      height="20"
       fill="currentColor"
       className={className}
       aria-hidden="true"
@@ -45,6 +49,8 @@ export function SnapchatIcon({ className = 'h-5 w-5', ...props }: IconProps) {
   return (
     <svg
       viewBox="0 0 24 24"
+      width="20"
+      height="20"
       className={className}
       aria-hidden="true"
       {...props}
@@ -68,6 +74,8 @@ export function InstagramIcon({ className = 'h-5 w-5', ...props }: IconProps) {
   return (
     <svg
       viewBox="0 0 24 24"
+      width="20"
+      height="20"
       fill="currentColor"
       className={className}
       aria-hidden="true"

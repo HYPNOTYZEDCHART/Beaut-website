@@ -131,7 +131,7 @@ export async function Footer() {
                   className="inline-flex h-10 w-10 items-center justify-center rounded-xl border border-[#382E32] bg-[#1E181B] text-[#E5A5B1] transition-all duration-150 hover:border-[#E5A5B1] hover:bg-[#E5A5B1]/10 hover:text-white active:scale-95"
                   title="Instagram @diamassa_"
                 >
-                  <InstagramIcon className="h-4.5 w-4.5 fill-current" />
+                  <InstagramIcon className="h-5 w-5 fill-current" />
                 </a>
 
                 {/* TIKTOK */}
@@ -143,7 +143,7 @@ export async function Footer() {
                   className="inline-flex h-10 w-10 items-center justify-center rounded-xl border border-[#382E32] bg-[#1E181B] text-white transition-all duration-150 hover:border-white hover:bg-white/10 active:scale-95"
                   title="TikTok @diamassa4"
                 >
-                  <TikTokIcon className="h-4.5 w-4.5 fill-current" />
+                  <TikTokIcon className="h-5 w-5 fill-current" />
                 </a>
 
                 {/* SNAPCHAT */}
