@@ -30,10 +30,68 @@ export const viewport: Viewport = {
   themeColor: '#FFFFFF',
 };
 
+const getSiteUrl = () => {
+  if (process.env.NEXT_PUBLIC_APP_URL) {
+    const url = process.env.NEXT_PUBLIC_APP_URL;
+    return url.startsWith('http') ? url : `https://${url}`;
+  }
+  if (process.env.VERCEL_URL) {
+    return `https://${process.env.VERCEL_URL}`;
+  }
+  return 'https://beaut-website.vercel.app';
+};
+
+const siteUrl = getSiteUrl();
+
 export const metadata: Metadata = {
-  title: 'DIAMA EYELASH EXTENSIONS | Extensions de Cils à Dakar',
+  metadataBase: new URL(siteUrl),
+  title: {
+    default: 'DIAMA EYELASH EXTENSIONS | Extensions de Cils à Dakar',
+    template: '%s | DIAMA EYELASH EXTENSIONS',
+  },
   description:
     'Studio privé Diama Eyelash Extensions à Dakar (Diamalaye). Réservez votre pose d’extensions de cils (Cil à cil, Pose Mixte, Volume Léger, Volume Intense) en ligne selon les vrais créneaux disponibles.',
+  applicationName: 'DIAMA Eyelash Extensions',
+  authors: [{ name: 'DIAMA Eyelash Extensions' }],
+  keywords: [
+    'extensions de cils dakar',
+    'cils dakar',
+    'pose cils dakar',
+    'diama eyelash extensions',
+    'diamalaye cils',
+    'cil a cil dakar',
+    'volume russe dakar',
+    'studio beaute dakar',
+  ],
+  openGraph: {
+    type: 'website',
+    locale: 'fr_FR',
+    url: siteUrl,
+    siteName: 'DIAMA EYELASH EXTENSIONS',
+    title: 'DIAMA EYELASH EXTENSIONS | Extensions de Cils à Dakar',
+    description:
+      'Studio privé Diama Eyelash Extensions à Dakar (Diamalaye). Réservez votre pose d’extensions de cils sur-mesure en direct selon les disponibilités réelles.',
+    images: [
+      {
+        url: '/images/diama-logo.jpg',
+        width: 1200,
+        height: 1200,
+        alt: 'DIAMA EYELASH EXTENSIONS — Logo Studio Privé Dakar',
+        type: 'image/jpeg',
+      },
+    ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'DIAMA EYELASH EXTENSIONS | Extensions de Cils à Dakar',
+    description:
+      'Studio privé Diama Eyelash Extensions à Dakar (Diamalaye). Réservez votre pose d’extensions de cils sur-mesure en ligne.',
+    images: ['/images/diama-logo.jpg'],
+  },
+  icons: {
+    icon: '/icon',
+    apple: '/icon',
+  },
 };
 
 export default function RootLayout({
