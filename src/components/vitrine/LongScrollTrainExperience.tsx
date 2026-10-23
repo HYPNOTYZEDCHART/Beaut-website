@@ -289,9 +289,16 @@ export function LongScrollTrainExperience({
 
             <motion.div
               variants={STAGGER_ITEM_VARIANTS}
-              className="lg:col-span-5 hidden lg:block"
+              className="mt-4 sm:mt-6 lg:mt-0 lg:col-span-5"
             >
-              <LashIllustrationCard />
+              {/* Sur mobile : format compact raffiné sans effet bouchon */}
+              <div className="sm:hidden">
+                <LashIllustrationCard variant="compact" />
+              </div>
+              {/* Sur écran large : format hero complet dans la colonne droite */}
+              <div className="hidden sm:block">
+                <LashIllustrationCard variant="hero" />
+              </div>
             </motion.div>
           </div>
         </motion.div>
@@ -363,10 +370,6 @@ export function LongScrollTrainExperience({
             </motion.div>
           </div>
 
-          {/* Écrin Signature Studio (Exclusif Vue Mobile — Allégé, zéro effet bouchon) */}
-          <div className="mt-6 sm:hidden">
-            <LashIllustrationCard variant="compact" />
-          </div>
 
           {/* Grille des prestations avec anneau layoutId à ressort dynamique */}
           <div className="mt-6 grid grid-cols-1 gap-5 md:grid-cols-2">
