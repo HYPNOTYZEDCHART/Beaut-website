@@ -26,17 +26,17 @@ import { PaymentMethod } from '@prisma/client';
 
 describe('FORTERESSE SÉCURITÉ, RÉSILIENCE ACID & SIMULATION CLIENTE E2E', () => {
   const adminPin = process.env.ADMIN_ACCESS_PIN || '2210';
-  const userPhone = '773956966';
-  const normalizedUserPhone = '+221773956966';
+  const userPhone = '776852146';
+  const normalizedUserPhone = '+221776852146';
   let simulationBookingId: string | null = null;
   let collisionBookingId: string | null = null;
 
   // --------------------------------------------------------------------------
   // 1. SÉCURITÉ : NUMÉRO DU DÉVELOPPEUR & ROUTAGE WHATSAPP DAKAR
   // --------------------------------------------------------------------------
-  it('1. Protocole WhatsApp : le numéro 773956966 est bien normalisé en 221773956966 et sans caractère parasite', () => {
+  it('1. Protocole WhatsApp : le numéro 776852146 est bien normalisé en 221776852146 et sans caractère parasite', () => {
     const waDigits = toWaMePhoneDigits(userPhone);
-    assert.strictEqual(waDigits, '221773956966');
+    assert.strictEqual(waDigits, '221776852146');
 
     const depositUrl = buildDepositProofWhatsAppUrl({
       studioWhatsappPhone: normalizedUserPhone,
@@ -50,7 +50,7 @@ describe('FORTERESSE SÉCURITÉ, RÉSILIENCE ACID & SIMULATION CLIENTE E2E', () 
       paymentMethod: PaymentMethod.WAVE,
     });
 
-    assert.ok(depositUrl.startsWith('https://wa.me/221773956966?text='));
+    assert.ok(depositUrl.startsWith('https://wa.me/221776852146?text='));
     assert.ok(depositUrl.includes('TEB-SIM-01'));
     const decodedMessage = decodeURIComponent(depositUrl);
     assert.ok(decodedMessage.includes('5') && decodedMessage.includes('FCFA'));
@@ -169,7 +169,7 @@ describe('FORTERESSE SÉCURITÉ, RÉSILIENCE ACID & SIMULATION CLIENTE E2E', () 
       dateKey: targetDay.dateKey,
       startTimeLabel: targetSlot.startTimeLabel,
       clientName: 'Ndeye Astou Diop',
-      clientPhone: '+221773956966',
+      clientPhone: '+221776852146',
       clientInstagram: '@ndeye_astou',
       paymentMethod: PaymentMethod.WAVE,
       agreedToRules: true,

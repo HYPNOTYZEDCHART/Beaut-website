@@ -26,7 +26,7 @@ export async function Footer() {
   const cleanInsta = settings.instagramHandle.replace(/^@/, '');
   const instagramUrl = `https://instagram.com/${cleanInsta}`;
 
-  const tiktokUrl = 'https://www.tiktok.com/@diamaeyelashextensions';
+  const tiktokUrl = 'https://www.tiktok.com/@diamassa4';
   const snapchatUrl = 'https://www.snapchat.com/add/diamaeyelash';
 
   return (
@@ -179,7 +179,7 @@ export async function Footer() {
                   rel="noopener noreferrer"
                   aria-label="Instagram Diama Eyelash Extensions"
                   className="inline-flex h-10 w-10 items-center justify-center rounded-xl border border-[#382E32] bg-[#1E181B] text-[#E5A5B1] transition-all duration-150 hover:border-[#E5A5B1] hover:bg-[#E5A5B1]/10 hover:text-white active:scale-95"
-                  title="Instagram @diamaeyelashextensions"
+                  title="Instagram @diamassa_"
                 >
                   <InstagramIcon className="h-4.5 w-4.5 fill-current" />
                 </a>
@@ -191,7 +191,7 @@ export async function Footer() {
                   rel="noopener noreferrer"
                   aria-label="TikTok Diama Eyelash Extensions"
                   className="inline-flex h-10 w-10 items-center justify-center rounded-xl border border-[#382E32] bg-[#1E181B] text-white transition-all duration-150 hover:border-white hover:bg-white/10 active:scale-95"
-                  title="TikTok @diamaeyelashextensions"
+                  title="TikTok @diamassa4"
                 >
                   <TikTokIcon className="h-4.5 w-4.5 fill-current" />
                 </a>
@@ -210,10 +210,10 @@ export async function Footer() {
 
                 {/* TÉLÉPHONE */}
                 <a
-                  href="tel:+221773956966"
+                  href="tel:+221776852146"
                   aria-label="Appeler le studio Diama Eyelash"
                   className="inline-flex h-10 w-10 items-center justify-center rounded-xl border border-[#382E32] bg-[#1E181B] text-[#EDE4E6] transition-all duration-150 hover:border-white hover:bg-white/10 active:scale-95"
-                  title="Appel direct +221 77 395 69 66"
+                  title="Appel direct +221 77 685 21 46"
                 >
                   <Phone className="h-4 w-4" strokeWidth={1.75} />
                 </a>

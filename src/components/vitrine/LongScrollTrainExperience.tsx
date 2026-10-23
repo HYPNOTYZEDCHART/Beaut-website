@@ -108,7 +108,7 @@ export function LongScrollTrainExperience({
   );
   const cleanInsta = settings.instagramHandle.replace(/^@/, '');
   const instagramUrl = `https://instagram.com/${cleanInsta}`;
-  const tiktokUrl = 'https://www.tiktok.com/@diamaeyelashextensions';
+  const tiktokUrl = 'https://www.tiktok.com/@diamassa4';
   const snapchatUrl = 'https://www.snapchat.com/add/diamaeyelash';
 
   return (
@@ -903,7 +903,7 @@ export function LongScrollTrainExperience({
                     TikTok
                   </h3>
                   <p className="text-xs text-[#786B6E]">
-                    @diamaeyelashextensions
+                    @diamassa4
                   </p>
                 </div>
               </div>

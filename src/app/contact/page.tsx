@@ -17,7 +17,7 @@ export default async function ContactPage() {
   const whatsappUrl = buildGeneralContactWhatsAppUrl(settings.whatsappPhone);
   const cleanInsta = settings.instagramHandle.replace(/^@/, '');
   const instagramUrl = `https://instagram.com/${cleanInsta}`;
-  const tiktokUrl = 'https://www.tiktok.com/@diamaeyelashextensions';
+  const tiktokUrl = 'https://www.tiktok.com/@diamassa4';
   const snapchatUrl = 'https://www.snapchat.com/add/diamaeyelash';
 
   return (

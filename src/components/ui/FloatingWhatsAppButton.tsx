@@ -10,7 +10,7 @@ interface FloatingWhatsAppButtonProps {
 }
 
 export function FloatingWhatsAppButton({
-  phone = '+221773956966',
+  phone = '+221776852146',
 }: FloatingWhatsAppButtonProps) {
   const pathname = usePathname();
 

@@ -15,9 +15,10 @@ async function main(): Promise<void> {
   await prisma.studioSettings.upsert({
     where: { id: 'default' },
     update: {
-      whatsappPhone: '+221773956966',
-      wavePhone: '+221773956966',
-      orangeMoneyPhone: '+221773956966',
+      whatsappPhone: '+221776852146',
+      wavePhone: '+221776852146',
+      orangeMoneyPhone: '+221776852146',
+      instagramHandle: '@diamassa_',
       zoneLabel:
         'Dakar — Diamalaye (adresse exacte communiquée dès confirmation)',
       exactAddress:
@@ -36,10 +37,10 @@ async function main(): Promise<void> {
         'Dakar — Diamalaye (adresse exacte communiquée dès confirmation)',
       exactAddress:
         'Rue GM-01, Diamalaye (repère Croisement Grand Médine), Dakar',
-      whatsappPhone: '+221773956966',
-      wavePhone: '+221773956966',
-      orangeMoneyPhone: '+221773956966',
-      instagramHandle: '@diamaeyelashextensions',
+      whatsappPhone: '+221776852146',
+      wavePhone: '+221776852146',
+      orangeMoneyPhone: '+221776852146',
+      instagramHandle: '@diamassa_',
       timezone: 'Africa/Dakar',
       minNoticeHours: 24,
       defaultBufferMinutes: 20,
