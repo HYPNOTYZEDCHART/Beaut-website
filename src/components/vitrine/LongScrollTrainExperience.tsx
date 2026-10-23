@@ -15,18 +15,11 @@ import {
   Wallet,
 } from 'lucide-react';
 import {
-  WhatsAppIcon,
-  InstagramIcon,
-  TikTokIcon,
-  SnapchatIcon,
-} from '@/components/ui/SocialIcons';
-import {
   PublicStudioSettingsDTO,
   ServiceCatalogItemDTO,
 } from '@/actions/availability.actions';
 import { PublicReviewDTO } from '@/actions/review.actions';
 import {
-  buildGeneralContactWhatsAppUrl,
   formatDakarDateLong,
   formatXof,
 } from '@/lib/whatsapp';
@@ -103,14 +96,6 @@ export function LongScrollTrainExperience({
     if (categoryFilter === 'ALL') return services;
     return services.filter((s) => s.category === categoryFilter);
   }, [services, categoryFilter]);
-
-  const whatsappContactUrl = buildGeneralContactWhatsAppUrl(
-    settings.whatsappPhone
-  );
-  const cleanInsta = settings.instagramHandle.replace(/^@/, '');
-  const instagramUrl = `https://instagram.com/${cleanInsta}`;
-  const tiktokUrl = 'https://www.tiktok.com/@diamassa4';
-  const snapchatUrl = 'https://snapchat.com/t/xA2BNkFr';
 
   return (
     <div className="relative">
@@ -722,153 +707,6 @@ export function LongScrollTrainExperience({
               </motion.article>
             ))}
           </div>
-        </motion.div>
-      </section>
-
-      {/* =====================================================================
-          WAGON 05 — CONTACT RAPIDE & DERNIER APPEL À L'ACTION (#contact)
-         ===================================================================== */}
-      <section id="contact" className="scroll-mt-24 bg-white py-14 sm:py-20">
-        <motion.div
-          variants={STAGGER_CONTAINER_VARIANTS}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: '-60px' }}
-          className="mx-auto max-w-4xl px-4 sm:px-6"
-        >
-          <motion.div variants={STAGGER_ITEM_VARIANTS} className="text-center">
-            <PowderyBadge variant="rose">
-              Assistance • Contact & Échange direct
-            </PowderyBadge>
-            <h2 className="mt-2 font-serif text-3xl font-semibold text-[#1C191A] sm:text-4xl">
-              Une question avant votre réservation ?
-            </h2>
-            <p className="mx-auto mt-1 max-w-lg text-sm text-[#786B6E]">
-              Écrivez-moi directement sur WhatsApp ou Instagram pour toute
-              question hors réservation, ou bloquez votre créneau en ligne.
-            </p>
-          </motion.div>
-
-          <div className="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-2">
-            <motion.a
-              variants={STAGGER_ITEM_VARIANTS}
-              href={whatsappContactUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="hover-lift flex items-center justify-between rounded-[24px] border border-[#25D366]/30 bg-[#F4FBF7] p-5 shadow-powdery transition-all duration-150 active:scale-[0.98]"
-            >
-              <div className="flex items-center gap-3.5">
-                <span className="inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-[#25D366] text-white shadow-sm">
-                  <WhatsAppIcon className="h-6 w-6 fill-current" />
-                </span>
-                <div>
-                  <h3 className="font-serif text-lg font-semibold text-[#1C191A]">
-                    WhatsApp Direct
-                  </h3>
-                  <p className="text-xs font-semibold text-[#1A9E4B] tabular-nums">
-                    {settings.whatsappPhone}
-                  </p>
-                </div>
-              </div>
-              <ArrowRight
-                className="h-4 w-4 text-[#1A9E4B]"
-                strokeWidth={1.5}
-              />
-            </motion.a>
-
-            <motion.a
-              variants={STAGGER_ITEM_VARIANTS}
-              href={instagramUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="hover-lift flex items-center justify-between rounded-[24px] border border-[#F3E1E6] bg-[#FDF8F9] p-5 shadow-powdery transition-all duration-150 active:scale-[0.98]"
-            >
-              <div className="flex items-center gap-3.5">
-                <span className="inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-tr from-[#F58529] via-[#DD2A7B] to-[#8134AF] text-white shadow-sm">
-                  <InstagramIcon className="h-6 w-6 fill-current" />
-                </span>
-                <div>
-                  <h3 className="font-serif text-lg font-semibold text-[#1C191A]">
-                    Instagram
-                  </h3>
-                  <p className="text-xs text-[#786B6E]">
-                    {settings.instagramHandle}
-                  </p>
-                </div>
-              </div>
-              <ArrowRight
-                className="h-4 w-4 text-[#B36270]"
-                strokeWidth={1.5}
-              />
-            </motion.a>
-
-            <motion.a
-              variants={STAGGER_ITEM_VARIANTS}
-              href={tiktokUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="hover-lift flex items-center justify-between rounded-[24px] border border-[#E5E0E2] bg-white p-5 shadow-powdery transition-all duration-150 active:scale-[0.98]"
-            >
-              <div className="flex items-center gap-3.5">
-                <span className="inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-[#010101] text-white shadow-sm">
-                  <TikTokIcon className="h-6 w-6 fill-current" />
-                </span>
-                <div>
-                  <h3 className="font-serif text-lg font-semibold text-[#1C191A]">
-                    TikTok
-                  </h3>
-                  <p className="text-xs text-[#786B6E]">
-                    @diamassa4
-                  </p>
-                </div>
-              </div>
-              <ArrowRight
-                className="h-4 w-4 text-[#1C191A]"
-                strokeWidth={1.5}
-              />
-            </motion.a>
-
-            <motion.a
-              variants={STAGGER_ITEM_VARIANTS}
-              href={snapchatUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="hover-lift flex items-center justify-between rounded-[24px] border border-[#FDF0A6] bg-[#FFFEF4] p-5 shadow-powdery transition-all duration-150 active:scale-[0.98]"
-            >
-              <div className="flex items-center gap-3.5">
-                <span className="inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-[#FFFC00] text-black shadow-sm">
-                  <SnapchatIcon className="h-6 w-6 fill-current" />
-                </span>
-                <div>
-                  <h3 className="font-serif text-lg font-semibold text-[#1C191A]">
-                    Snapchat
-                  </h3>
-                  <p className="text-xs font-semibold text-[#A38600]">
-                    Rejoindre le Snap
-                  </p>
-                </div>
-              </div>
-              <ArrowRight
-                className="h-4 w-4 text-[#A38600]"
-                strokeWidth={1.5}
-              />
-            </motion.a>
-          </div>
-
-          <motion.div
-            variants={STAGGER_ITEM_VARIANTS}
-            className="mt-8 flex justify-center"
-          >
-            <ShimmerBookingButton
-              href={
-                highlightedService
-                  ? `/reserver?service=${encodeURIComponent(highlightedService.slug)}`
-                  : '/reserver'
-              }
-              label="Réserver mon rendez-vous maintenant"
-              sublabel="Accès direct au calendrier des créneaux ouverts"
-            />
-          </motion.div>
         </motion.div>
       </section>
 

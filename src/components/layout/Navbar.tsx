@@ -13,7 +13,6 @@ const TRAIN_WAGONS = [
   { id: 'prestations', href: '/#prestations', label: '02. Poses & Tarifs' },
   { id: 'a-savoir', href: '/#a-savoir', label: '03. À savoir' },
   { id: 'avis', href: '/#avis', label: '04. Avis' },
-  { id: 'contact', href: '/#contact', label: '05. Contact' },
 ] as const;
 
 const HIGH_INTENSITY_SPRING = {
