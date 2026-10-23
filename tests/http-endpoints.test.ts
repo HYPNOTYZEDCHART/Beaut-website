@@ -132,4 +132,20 @@ describe('HTTP ENDPOINTS & ASSETS — Audit Réseau Réel sur Serveur Localhost:
       );
     });
   }
+
+  const paymentLogos = ['/images/wave-logo.png', '/images/maxit-logo.png'];
+  for (const pLogo of paymentLogos) {
+    it(`Logo Paiement ${pLogo} : retourne HTTP 200 OK et format PNG officiel`, async (t) => {
+      if (!serverRunning) {
+        t.skip('Serveur localhost:3000 non démarré (test réseau ignoré)');
+        return;
+      }
+      const response = await fetch(`${baseUrl}${pLogo}`);
+      assert.strictEqual(response.status, 200, `${pLogo} doit être servi en HTTP 200`);
+      const contentType = response.headers.get('content-type') ?? '';
+      assert.ok(contentType.includes('image/png'), `${pLogo} doit être une image PNG`);
+      const buffer = await response.arrayBuffer();
+      assert.ok(buffer.byteLength > 1000, `${pLogo} doit avoir une taille > 1 Ko`);
+    });
+  }
 });
