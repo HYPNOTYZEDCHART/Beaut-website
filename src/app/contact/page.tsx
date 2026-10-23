@@ -18,7 +18,7 @@ export default async function ContactPage() {
   const cleanInsta = settings.instagramHandle.replace(/^@/, '');
   const instagramUrl = `https://instagram.com/${cleanInsta}`;
   const tiktokUrl = 'https://www.tiktok.com/@diamassa4';
-  const snapchatUrl = 'https://www.snapchat.com/add/diamaeyelash';
+  const snapchatUrl = 'https://snapchat.com/t/xA2BNkFr';
 
   return (
     <div className="bg-white py-10 sm:py-16">
@@ -132,7 +132,7 @@ export default async function ContactPage() {
               </p>
             </div>
             <p className="mt-5 text-xs font-bold text-[#A38600]">
-              Ajouter sur Snapchat (@diamaeyelash) →
+              Ajouter sur Snapchat →
             </p>
           </a>
         </div>

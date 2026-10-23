@@ -27,7 +27,7 @@ export async function Footer() {
   const instagramUrl = `https://instagram.com/${cleanInsta}`;
 
   const tiktokUrl = 'https://www.tiktok.com/@diamassa4';
-  const snapchatUrl = 'https://www.snapchat.com/add/diamaeyelash';
+  const snapchatUrl = 'https://snapchat.com/t/xA2BNkFr';
 
   return (
     <footer className="safe-bottom relative border-t border-[#2A2426] bg-[#141213] text-[#EDE4E6]">
@@ -203,7 +203,7 @@ export async function Footer() {
                   rel="noopener noreferrer"
                   aria-label="Snapchat Diama Eyelash Extensions"
                   className="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-[#FFFC00] shadow-sm transition-all duration-150 hover:bg-[#FFE600] hover:shadow-[0_4px_14px_rgba(255,252,0,0.35)] active:scale-95"
-                  title="Snapchat @diamaeyelash"
+                  title="Snapchat officiel Diama Eyelash"
                 >
                   <SnapchatIcon className="h-5 w-5" />
                 </a>
