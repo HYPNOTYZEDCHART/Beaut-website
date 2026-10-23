@@ -3,9 +3,7 @@ import Link from 'next/link';
 import {
   Calendar,
   Heart,
-  MapPin,
   Phone,
-  ShieldCheck,
 } from 'lucide-react';
 import {
   WhatsAppIcon,
@@ -15,7 +13,6 @@ import {
 } from '@/components/ui/SocialIcons';
 import { loadContactSettings } from '@/lib/catalog-fallback';
 import { buildGeneralContactWhatsAppUrl } from '@/lib/whatsapp';
-import { WaveAndOmBadge } from '@/components/ui/PaymentLogos';
 
 export async function Footer() {
   const settings = await loadContactSettings();
@@ -31,8 +28,8 @@ export async function Footer() {
       {/* GRILLE PRINCIPALE */}
       <div className="mx-auto max-w-6xl px-4 pt-12 sm:px-6">
         <div className="grid grid-cols-1 gap-10 md:grid-cols-2 lg:grid-cols-12">
-          {/* Colonne 1 : Marque & Réseaux Sociaux Officiels (lg:col-span-5) */}
-          <div className="space-y-5 lg:col-span-5">
+          {/* Colonne 1 : Marque & Réseaux Sociaux Officiels (lg:col-span-7) */}
+          <div className="space-y-5 lg:col-span-7">
             <div className="flex items-center gap-3">
               <span className="inline-flex h-12 w-12 items-center justify-center overflow-hidden rounded-2xl border border-[#3E3236] bg-[#231C1F] p-1.5 shadow-sm">
                 <img
@@ -123,8 +120,8 @@ export async function Footer() {
             </div>
           </div>
 
-          {/* Colonne 2 : Navigation Studio (lg:col-span-3) */}
-          <div className="space-y-3 lg:col-span-3">
+          {/* Colonne 2 : Navigation Studio (lg:col-span-5) */}
+          <div className="space-y-3 lg:col-span-5">
             <p className="font-serif text-sm font-semibold uppercase tracking-wider text-white">
               Navigation Studio
             </p>
@@ -163,36 +160,6 @@ export async function Footer() {
                   <Calendar className="h-3.5 w-3.5" />
                   <span>Prendre Rendez-vous en ligne</span>
                 </Link>
-              </li>
-            </ul>
-          </div>
-
-          {/* Colonne 3 : Studio Privé & Contact (lg:col-span-4) */}
-          <div className="space-y-3 lg:col-span-4">
-            <p className="font-serif text-sm font-semibold uppercase tracking-wider text-white">
-              Studio Privé & Contact
-            </p>
-            <ul className="space-y-2.5 text-xs text-[#B8ABB0]">
-              <li className="flex items-start gap-2">
-                <MapPin className="mt-0.5 h-3.5 w-3.5 shrink-0 text-[#D88B99]" strokeWidth={1.75} />
-                <span>{settings.zoneLabel || 'Dakar, Diamalaye — Rue GM-01 (sur RDV)'}</span>
-              </li>
-              <li className="flex items-start gap-2">
-                <Phone className="mt-0.5 h-3.5 w-3.5 shrink-0 text-[#D88B99]" strokeWidth={1.75} />
-                <a
-                  href={whatsappUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="transition-colors hover:text-white"
-                >
-                  WhatsApp : {settings.whatsappPhone}
-                </a>
-              </li>
-              <li className="flex items-center gap-2.5 rounded-xl border border-[#2B2326] bg-[#181416] p-3 text-[11px] leading-relaxed text-[#A8989C]">
-                <WaveAndOmBadge size="sm" className="shrink-0" />
-                <span>
-                  Acomptes sécurisés par <strong className="text-white">Wave</strong> et <strong className="text-white">Orange Money</strong>. Solde restant à régler sur place.
-                </span>
               </li>
             </ul>
           </div>
