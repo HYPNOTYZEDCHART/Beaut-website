@@ -13,9 +13,13 @@ import {
   ArrowRight,
   Star,
   Wallet,
-  MessageCircle,
-  Instagram,
 } from 'lucide-react';
+import {
+  WhatsAppIcon,
+  InstagramIcon,
+  TikTokIcon,
+  SnapchatIcon,
+} from '@/components/ui/SocialIcons';
 import {
   PublicStudioSettingsDTO,
   ServiceCatalogItemDTO,
@@ -100,6 +104,8 @@ export function LongScrollTrainExperience({
   );
   const cleanInsta = settings.instagramHandle.replace(/^@/, '');
   const instagramUrl = `https://instagram.com/${cleanInsta}`;
+  const tiktokUrl = 'https://www.tiktok.com/@diamaeyelashextensions';
+  const snapchatUrl = 'https://www.snapchat.com/add/diamaeyelash';
 
   return (
     <div className="relative">
@@ -898,23 +904,23 @@ export function LongScrollTrainExperience({
               href={whatsappContactUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="hover-lift flex items-center justify-between rounded-[24px] border border-[#F3E1E6] bg-[#FDF8F9] p-6 shadow-powdery transition-transform duration-150 active:scale-[0.98]"
+              className="hover-lift flex items-center justify-between rounded-[24px] border border-[#25D366]/30 bg-[#F4FBF7] p-5 shadow-powdery transition-all duration-150 active:scale-[0.98]"
             >
               <div className="flex items-center gap-3.5">
-                <span className="inline-flex h-12 w-12 items-center justify-center rounded-full bg-[#EBF5F0] text-[#2E7D5B]">
-                  <MessageCircle className="h-5 w-5" strokeWidth={1.5} />
+                <span className="inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-[#25D366] text-white shadow-sm">
+                  <WhatsAppIcon className="h-6 w-6 fill-current" />
                 </span>
                 <div>
-                  <h3 className="font-serif text-xl font-semibold text-[#1C191A]">
+                  <h3 className="font-serif text-lg font-semibold text-[#1C191A]">
                     WhatsApp Direct
                   </h3>
-                  <p className="text-xs text-[#786B6E] tabular-nums">
+                  <p className="text-xs font-semibold text-[#1A9E4B] tabular-nums">
                     {settings.whatsappPhone}
                   </p>
                 </div>
               </div>
               <ArrowRight
-                className="h-4 w-4 text-[#2E7D5B]"
+                className="h-4 w-4 text-[#1A9E4B]"
                 strokeWidth={1.5}
               />
             </motion.a>
@@ -924,14 +930,14 @@ export function LongScrollTrainExperience({
               href={instagramUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="hover-lift flex items-center justify-between rounded-[24px] border border-[#F3E1E6] bg-[#FDF8F9] p-6 shadow-powdery transition-transform duration-150 active:scale-[0.98]"
+              className="hover-lift flex items-center justify-between rounded-[24px] border border-[#F3E1E6] bg-[#FDF8F9] p-5 shadow-powdery transition-all duration-150 active:scale-[0.98]"
             >
               <div className="flex items-center gap-3.5">
-                <span className="inline-flex h-12 w-12 items-center justify-center rounded-full bg-[#F9EBEF] text-[#B36270]">
-                  <Instagram className="h-5 w-5" strokeWidth={1.5} />
+                <span className="inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-tr from-[#F58529] via-[#DD2A7B] to-[#8134AF] text-white shadow-sm">
+                  <InstagramIcon className="h-6 w-6 fill-current" />
                 </span>
                 <div>
-                  <h3 className="font-serif text-xl font-semibold text-[#1C191A]">
+                  <h3 className="font-serif text-lg font-semibold text-[#1C191A]">
                     Instagram
                   </h3>
                   <p className="text-xs text-[#786B6E]">
@@ -941,6 +947,58 @@ export function LongScrollTrainExperience({
               </div>
               <ArrowRight
                 className="h-4 w-4 text-[#B36270]"
+                strokeWidth={1.5}
+              />
+            </motion.a>
+
+            <motion.a
+              variants={STAGGER_ITEM_VARIANTS}
+              href={tiktokUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hover-lift flex items-center justify-between rounded-[24px] border border-[#E5E0E2] bg-white p-5 shadow-powdery transition-all duration-150 active:scale-[0.98]"
+            >
+              <div className="flex items-center gap-3.5">
+                <span className="inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-[#010101] text-white shadow-sm">
+                  <TikTokIcon className="h-6 w-6 fill-current" />
+                </span>
+                <div>
+                  <h3 className="font-serif text-lg font-semibold text-[#1C191A]">
+                    TikTok
+                  </h3>
+                  <p className="text-xs text-[#786B6E]">
+                    @diamaeyelashextensions
+                  </p>
+                </div>
+              </div>
+              <ArrowRight
+                className="h-4 w-4 text-[#1C191A]"
+                strokeWidth={1.5}
+              />
+            </motion.a>
+
+            <motion.a
+              variants={STAGGER_ITEM_VARIANTS}
+              href={snapchatUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hover-lift flex items-center justify-between rounded-[24px] border border-[#FDF0A6] bg-[#FFFEF4] p-5 shadow-powdery transition-all duration-150 active:scale-[0.98]"
+            >
+              <div className="flex items-center gap-3.5">
+                <span className="inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-[#FFFC00] text-black shadow-sm">
+                  <SnapchatIcon className="h-6 w-6 fill-current" />
+                </span>
+                <div>
+                  <h3 className="font-serif text-lg font-semibold text-[#1C191A]">
+                    Snapchat
+                  </h3>
+                  <p className="text-xs font-semibold text-[#A38600]">
+                    @diamaeyelash
+                  </p>
+                </div>
+              </div>
+              <ArrowRight
+                className="h-4 w-4 text-[#A38600]"
                 strokeWidth={1.5}
               />
             </motion.a>

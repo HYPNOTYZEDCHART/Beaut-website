@@ -1,6 +1,12 @@
 import React from 'react';
 import Link from 'next/link';
-import { MessageCircle, Instagram, Calendar, Clock } from 'lucide-react';
+import { Calendar, Clock } from 'lucide-react';
+import {
+  WhatsAppIcon,
+  InstagramIcon,
+  TikTokIcon,
+  SnapchatIcon,
+} from '@/components/ui/SocialIcons';
 import { loadContactSettings } from '@/lib/catalog-fallback';
 import { buildGeneralContactWhatsAppUrl } from '@/lib/whatsapp';
 
@@ -11,10 +17,12 @@ export default async function ContactPage() {
   const whatsappUrl = buildGeneralContactWhatsAppUrl(settings.whatsappPhone);
   const cleanInsta = settings.instagramHandle.replace(/^@/, '');
   const instagramUrl = `https://instagram.com/${cleanInsta}`;
+  const tiktokUrl = 'https://www.tiktok.com/@diamaeyelashextensions';
+  const snapchatUrl = 'https://www.snapchat.com/add/diamaeyelash';
 
   return (
     <div className="bg-white py-10 sm:py-16">
-      <div className="mx-auto max-w-3xl px-4 sm:px-6">
+      <div className="mx-auto max-w-4xl px-4 sm:px-6">
         <div className="text-center">
           <p className="text-xs font-semibold uppercase tracking-widest text-[#B36270]">
             Une question particulière ?
@@ -22,56 +30,109 @@ export default async function ContactPage() {
           <h1 className="mt-1 font-serif text-3xl font-semibold text-[#1C191A] sm:text-4xl">
             Contacter DIAMA EYELASH EXTENSIONS
           </h1>
-          <p className="mx-auto mt-2 max-w-lg text-sm leading-relaxed text-[#786B6E]">
+          <p className="mx-auto mt-2 max-w-xl text-sm leading-relaxed text-[#786B6E]">
             Pour réserver un créneau, utilisez directement le calendrier en ligne
-            (plus rapide, même lorsque je suis en cours). Pour toute question
-            spécifique hors réservation, écrivez-moi sur WhatsApp ou Instagram.
+            (plus rapide et disponible 24h/24). Pour toute question
+            spécifique, écrivez-moi sur WhatsApp ou retrouvez le studio sur nos réseaux.
           </p>
         </div>
 
-        <div className="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-2">
+        {/* Grille des 4 canaux officiels */}
+        <div className="mt-10 grid grid-cols-1 gap-4 sm:grid-cols-2">
+          {/* WHATSAPP DIRECT */}
           <a
             href={whatsappUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="hover-lift flex flex-col justify-between rounded-[24px] border border-[#F3E1E6] bg-[#FDF8F9] p-6 shadow-powdery transition-transform duration-150 ease-emil-out active:scale-[0.98]"
+            className="hover-lift flex flex-col justify-between rounded-[24px] border border-[#25D366]/25 bg-[#F4FBF7] p-6 shadow-powdery transition-all duration-150 ease-emil-out hover:border-[#25D366]/50 active:scale-[0.98]"
           >
             <div>
-              <span className="inline-flex h-11 w-11 items-center justify-center rounded-full bg-[#EBF5F0] text-[#2E7D5B]">
-                <MessageCircle className="h-5 w-5" strokeWidth={1.5} />
-              </span>
+              <div className="flex items-center justify-between">
+                <span className="inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-[#25D366] text-white shadow-md shadow-[#25D366]/20">
+                  <WhatsAppIcon className="h-6 w-6 fill-current" />
+                </span>
+                <span className="rounded-full bg-[#25D366]/10 px-2.5 py-0.5 text-[11px] font-semibold text-[#1A9E4B]">
+                  Réponse rapide
+                </span>
+              </div>
               <h2 className="mt-4 font-serif text-2xl font-semibold text-[#1C191A]">
                 WhatsApp Direct
               </h2>
-              <p className="mt-1 text-xs leading-relaxed text-[#786B6E]">
-                Idéal pour une question sur un remplissage ou un doute avant de
-                choisir votre pose.
+              <p className="mt-1 text-xs leading-relaxed text-[#55695D]">
+                Idéal pour une question sur un remplissage, un doute sur le choix de pose ou une demande d&apos;acompte.
               </p>
             </div>
-            <p className="mt-5 text-xs font-semibold text-[#2E7D5B] tabular-nums">
-              Écrire sur WhatsApp ({settings.whatsappPhone}) →
+            <p className="mt-5 text-xs font-bold text-[#1A9E4B] tabular-nums">
+              Discuter sur WhatsApp ({settings.whatsappPhone}) →
             </p>
           </a>
 
+          {/* INSTAGRAM */}
           <a
             href={instagramUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="hover-lift flex flex-col justify-between rounded-[24px] border border-[#F3E1E6] bg-[#FDF8F9] p-6 shadow-powdery transition-transform duration-150 ease-emil-out active:scale-[0.98]"
+            className="hover-lift flex flex-col justify-between rounded-[24px] border border-[#F3E1E6] bg-[#FDF8F9] p-6 shadow-powdery transition-all duration-150 ease-emil-out hover:border-[#D88B99]/50 active:scale-[0.98]"
           >
             <div>
-              <span className="inline-flex h-11 w-11 items-center justify-center rounded-full bg-[#F9EBEF] text-[#B36270]">
-                <Instagram className="h-5 w-5" strokeWidth={1.5} />
+              <span className="inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-tr from-[#F58529] via-[#DD2A7B] to-[#8134AF] text-white shadow-sm">
+                <InstagramIcon className="h-6 w-6 fill-current" />
               </span>
               <h2 className="mt-4 font-serif text-2xl font-semibold text-[#1C191A]">
                 Instagram
               </h2>
               <p className="mt-1 text-xs leading-relaxed text-[#786B6E]">
-                Découvrez les photos et vidéos des poses réalisées au studio.
+                Découvrez la galerie de photos réelles des poses, nos actualités et les retours clientes.
               </p>
             </div>
             <p className="mt-5 text-xs font-semibold text-[#B36270]">
               Voir {settings.instagramHandle} →
+            </p>
+          </a>
+
+          {/* TIKTOK */}
+          <a
+            href={tiktokUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="hover-lift flex flex-col justify-between rounded-[24px] border border-[#E5E0E2] bg-white p-6 shadow-powdery transition-all duration-150 ease-emil-out hover:border-[#1C191A] active:scale-[0.98]"
+          >
+            <div>
+              <span className="inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-[#010101] text-white shadow-sm">
+                <TikTokIcon className="h-6 w-6 fill-current" />
+              </span>
+              <h2 className="mt-4 font-serif text-2xl font-semibold text-[#1C191A]">
+                TikTok
+              </h2>
+              <p className="mt-1 text-xs leading-relaxed text-[#786B6E]">
+                Vidéos en gros plan du travail cil à cil, conseils d&apos;entretien et transformations du regard.
+              </p>
+            </div>
+            <p className="mt-5 text-xs font-semibold text-[#1C191A]">
+              Voir les vidéos sur TikTok →
+            </p>
+          </a>
+
+          {/* SNAPCHAT */}
+          <a
+            href={snapchatUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="hover-lift flex flex-col justify-between rounded-[24px] border border-[#FDF0A6] bg-[#FFFEF4] p-6 shadow-powdery transition-all duration-150 ease-emil-out hover:border-[#FFFC00] active:scale-[0.98]"
+          >
+            <div>
+              <span className="inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-[#FFFC00] text-black shadow-sm">
+                <SnapchatIcon className="h-6 w-6 fill-current" />
+              </span>
+              <h2 className="mt-4 font-serif text-2xl font-semibold text-[#1C191A]">
+                Snapchat
+              </h2>
+              <p className="mt-1 text-xs leading-relaxed text-[#786B6E]">
+                Stories quotidiennes du studio, coulisses et créneaux libérés en direct de dernière minute.
+              </p>
+            </div>
+            <p className="mt-5 text-xs font-bold text-[#A38600]">
+              Ajouter sur Snapchat (@diamaeyelash) →
             </p>
           </a>
         </div>

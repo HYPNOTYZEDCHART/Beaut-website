@@ -177,7 +177,6 @@ export function BookingWizard({
   // Étape 4 : Formulaire Cliente
   const [clientName, setClientName] = useState<string>('');
   const [clientPhone, setClientPhone] = useState<string>('+221 ');
-  const [clientInstagram, setClientInstagram] = useState<string>('');
   const [clientNotes, setClientNotes] = useState<string>('');
   const [paymentMethod, setPaymentMethod] = useState<'WAVE' | 'ORANGE_MONEY'>(
     'WAVE'
@@ -351,7 +350,7 @@ export function BookingWizard({
       startTimeLabel: selectedSlot.startTimeLabel,
       clientName: clientName.trim(),
       clientPhone: clientPhone.trim(),
-      clientInstagram: clientInstagram.trim() || undefined,
+      clientInstagram: undefined,
       clientNotes: clientNotes.trim() || undefined,
       paymentMethod,
       agreedToRules: true,
@@ -1142,10 +1141,7 @@ export function BookingWizard({
                     />
                   </motion.div>
 
-                  <motion.div
-                    variants={STEP_CASCADE_ITEM}
-                    className="grid grid-cols-1 gap-4 sm:grid-cols-2"
-                  >
+                  <motion.div variants={STEP_CASCADE_ITEM}>
                     <div>
                       <label
                         htmlFor="clientPhone"
@@ -1163,25 +1159,6 @@ export function BookingWizard({
                         value={clientPhone}
                         onChange={(e) => setClientPhone(e.target.value)}
                         className="mt-1.5 min-h-12 w-full rounded-2xl border border-[#F3E1E6] bg-[#FDF8F9] px-4 py-3 text-base text-[#1C191A] tabular-nums placeholder:text-[#786B6E]/60 focus:border-[#D88B99] focus:bg-white focus:outline-none"
-                      />
-                    </div>
-
-                    <div>
-                      <label
-                        htmlFor="clientInstagram"
-                        className="block text-xs font-semibold uppercase tracking-wider text-[#1C191A]"
-                      >
-                        Compte Instagram (optionnel)
-                      </label>
-                      <input
-                        id="clientInstagram"
-                        type="text"
-                        autoCapitalize="none"
-                        autoCorrect="off"
-                        placeholder="@votrecompte"
-                        value={clientInstagram}
-                        onChange={(e) => setClientInstagram(e.target.value)}
-                        className="mt-1.5 min-h-12 w-full rounded-2xl border border-[#F3E1E6] bg-[#FDF8F9] px-4 py-3 text-base text-[#1C191A] placeholder:text-[#786B6E]/60 focus:border-[#D88B99] focus:bg-white focus:outline-none"
                       />
                     </div>
                   </motion.div>

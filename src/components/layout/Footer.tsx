@@ -5,14 +5,18 @@ import {
   Clock,
   Download,
   Heart,
-  Instagram,
   MapPin,
-  MessageCircle,
   Phone,
   ShieldCheck,
   Sparkles,
   Star,
 } from 'lucide-react';
+import {
+  WhatsAppIcon,
+  InstagramIcon,
+  TikTokIcon,
+  SnapchatIcon,
+} from '@/components/ui/SocialIcons';
 import { loadContactSettings } from '@/lib/catalog-fallback';
 import { buildGeneralContactWhatsAppUrl } from '@/lib/whatsapp';
 
@@ -21,6 +25,9 @@ export async function Footer() {
   const whatsappUrl = buildGeneralContactWhatsAppUrl(settings.whatsappPhone);
   const cleanInsta = settings.instagramHandle.replace(/^@/, '');
   const instagramUrl = `https://instagram.com/${cleanInsta}`;
+
+  const tiktokUrl = 'https://www.tiktok.com/@diamaeyelashextensions';
+  const snapchatUrl = 'https://www.snapchat.com/add/diamaeyelash';
 
   return (
     <footer className="safe-bottom relative border-t border-[#2A2426] bg-[#141213] text-[#EDE4E6]">
@@ -118,11 +125,11 @@ export async function Footer() {
         </div>
       </div>
 
-      {/* 3. GRILLE PRINCIPALE 4 COLONNES */}
+      {/* 3. GRILLE PRINCIPALE 3 COLONNES AÉRÉE */}
       <div className="mx-auto mt-14 max-w-6xl px-4 sm:px-6">
         <div className="grid grid-cols-1 gap-10 md:grid-cols-2 lg:grid-cols-12">
-          {/* Colonne Marque (lg:col-span-4) */}
-          <div className="space-y-4 lg:col-span-4">
+          {/* Colonne 1 : Marque & Réseaux Sociaux Officiels (lg:col-span-5) */}
+          <div className="space-y-5 lg:col-span-5">
             <div className="flex items-center gap-3">
               <span className="inline-flex h-12 w-12 items-center justify-center overflow-hidden rounded-2xl border border-[#3E3236] bg-[#231C1F] p-1.5 shadow-sm">
                 <img
@@ -141,100 +148,84 @@ export async function Footer() {
               </div>
             </div>
 
-            <p className="text-xs leading-relaxed text-[#B0A1A5]">
-              Studio privé dédié à l’art des extensions de cils haute couture à Dakar. Chaque regard est sculpté
-              avec patience, douceur et rigueur pour sublimer votre beauté naturelle sans compromis sur le confort.
+            <p className="max-w-md text-xs leading-relaxed text-[#B0A1A5]">
+              Studio privé dédié à l’art des extensions de cils sur-mesure à Dakar. Chaque regard est sculpté
+              avec patience, rigueur et isolation cil à cil pour sublimer votre beauté naturelle en toute sécurité.
             </p>
 
-            <div className="flex items-center gap-3 pt-2">
-              <a
-                href={instagramUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="Instagram Diama Eyelash Extensions"
-                className="inline-flex h-10 w-10 items-center justify-center rounded-xl border border-[#332A2E] bg-[#1D171A] text-[#D88B99] transition-colors hover:border-[#D88B99] hover:bg-[#D88B99]/10"
-              >
-                <Instagram className="h-4 w-4" strokeWidth={1.75} />
-              </a>
-              <a
-                href={whatsappUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="WhatsApp Diama Eyelash Extensions"
-                className="inline-flex h-10 w-10 items-center justify-center rounded-xl border border-[#332A2E] bg-[#1D171A] text-[#25D366] transition-colors hover:border-[#25D366] hover:bg-[#25D366]/10"
-              >
-                <MessageCircle className="h-4 w-4" strokeWidth={1.75} />
-              </a>
-              <a
-                href="tel:+221773956966"
-                aria-label="Appeler Diama"
-                className="inline-flex h-10 w-10 items-center justify-center rounded-xl border border-[#332A2E] bg-[#1D171A] text-[#EDE4E6] transition-colors hover:border-white hover:bg-white/10"
-              >
-                <Phone className="h-4 w-4" strokeWidth={1.75} />
-              </a>
+            {/* Boutons Sociaux Officiels */}
+            <div className="space-y-2.5 pt-1">
+              <p className="text-[11px] font-semibold uppercase tracking-wider text-[#D88B99]">
+                Rejoignez le studio sur les réseaux
+              </p>
+              <div className="flex flex-wrap items-center gap-2.5">
+                {/* VRAI BOUTON WHATSAPP */}
+                <a
+                  href={whatsappUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="WhatsApp officiel Diama Eyelash"
+                  className="inline-flex h-10 items-center gap-2 rounded-xl bg-[#25D366] px-3.5 text-xs font-semibold text-white shadow-sm transition-all duration-150 hover:bg-[#20BD5A] hover:shadow-[0_4px_14px_rgba(37,211,102,0.35)] active:scale-95"
+                >
+                  <WhatsAppIcon className="h-4 w-4 fill-current" />
+                  <span>WhatsApp</span>
+                </a>
+
+                {/* INSTAGRAM */}
+                <a
+                  href={instagramUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="Instagram Diama Eyelash Extensions"
+                  className="inline-flex h-10 w-10 items-center justify-center rounded-xl border border-[#382E32] bg-[#1E181B] text-[#E5A5B1] transition-all duration-150 hover:border-[#E5A5B1] hover:bg-[#E5A5B1]/10 hover:text-white active:scale-95"
+                  title="Instagram @diamaeyelashextensions"
+                >
+                  <InstagramIcon className="h-4.5 w-4.5 fill-current" />
+                </a>
+
+                {/* TIKTOK */}
+                <a
+                  href={tiktokUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="TikTok Diama Eyelash Extensions"
+                  className="inline-flex h-10 w-10 items-center justify-center rounded-xl border border-[#382E32] bg-[#1E181B] text-white transition-all duration-150 hover:border-white hover:bg-white/10 active:scale-95"
+                  title="TikTok @diamaeyelashextensions"
+                >
+                  <TikTokIcon className="h-4.5 w-4.5 fill-current" />
+                </a>
+
+                {/* SNAPCHAT */}
+                <a
+                  href={snapchatUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="Snapchat Diama Eyelash Extensions"
+                  className="inline-flex h-10 w-10 items-center justify-center rounded-xl border border-[#382E32] bg-[#1E181B] text-[#FFFC00] transition-all duration-150 hover:border-[#FFFC00] hover:bg-[#FFFC00]/10 active:scale-95"
+                  title="Snapchat @diamaeyelash"
+                >
+                  <SnapchatIcon className="h-4.5 w-4.5 fill-current" />
+                </a>
+
+                {/* TÉLÉPHONE */}
+                <a
+                  href="tel:+221773956966"
+                  aria-label="Appeler le studio Diama Eyelash"
+                  className="inline-flex h-10 w-10 items-center justify-center rounded-xl border border-[#382E32] bg-[#1E181B] text-[#EDE4E6] transition-all duration-150 hover:border-white hover:bg-white/10 active:scale-95"
+                  title="Appel direct +221 77 395 69 66"
+                >
+                  <Phone className="h-4 w-4" strokeWidth={1.75} />
+                </a>
+              </div>
             </div>
           </div>
 
-          {/* Colonne 2 : Les Poses & Tarifs (lg:col-span-3) */}
+          {/* Colonne 2 : Navigation Studio (lg:col-span-3) */}
           <div className="space-y-3 lg:col-span-3">
             <p className="font-serif text-sm font-semibold uppercase tracking-wider text-white">
-              Les Poses & Tarifs
+              Navigation Studio
             </p>
             <ul className="space-y-2.5 text-xs text-[#B8ABB0]">
-              <li>
-                <Link
-                  href="/prestations#cil-a-cil"
-                  className="flex items-center justify-between transition-colors hover:text-white"
-                >
-                  <span>Cil à Cil Naturel</span>
-                  <span className="font-medium text-[#E5A5B1]">15 000 FCFA</span>
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/prestations#pose-mixte"
-                  className="flex items-center justify-between transition-colors hover:text-white"
-                >
-                  <span>Pose Mixte Hybride</span>
-                  <span className="font-medium text-[#E5A5B1]">18 000 FCFA</span>
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/prestations#volume-leger"
-                  className="flex items-center justify-between transition-colors hover:text-white"
-                >
-                  <span>Volume Léger (Soft Russe)</span>
-                  <span className="font-medium text-[#E5A5B1]">20 000 FCFA</span>
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/prestations#volume-intense"
-                  className="flex items-center justify-between transition-colors hover:text-white"
-                >
-                  <span>Volume Russe Intense</span>
-                  <span className="font-medium text-[#E5A5B1]">25 000 FCFA</span>
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/prestations#remplissage"
-                  className="flex items-center justify-between transition-colors hover:text-white"
-                >
-                  <span>Remplissage (2–3 sem.)</span>
-                  <span className="font-medium text-[#E5A5B1]">12 000 FCFA</span>
-                </Link>
-              </li>
-            </ul>
-          </div>
-
-          {/* Colonne 3 : Navigation & Studio (lg:col-span-2) */}
-          <div className="space-y-3 lg:col-span-2">
-            <p className="font-serif text-sm font-semibold uppercase tracking-wider text-white">
-              Navigation
-            </p>
-            <ul className="space-y-2 text-xs text-[#B8ABB0]">
               <li>
                 <Link href="/" className="transition-colors hover:text-white">
                   Accueil du Studio
@@ -242,7 +233,7 @@ export async function Footer() {
               </li>
               <li>
                 <Link href="/prestations" className="transition-colors hover:text-white">
-                  Tarifs & Poses
+                  Tarifs & Catalogue des Poses
                 </Link>
               </li>
               <li>
@@ -257,19 +248,23 @@ export async function Footer() {
               </li>
               <li>
                 <Link href="/contact" className="transition-colors hover:text-white">
-                  Contact & Accès
+                  Contact Direct & Accès
                 </Link>
               </li>
-              <li>
-                <Link href="/reserver" className="font-medium text-[#E5A5B1] transition-colors hover:underline">
-                  Prendre Rendez-vous
+              <li className="pt-1">
+                <Link
+                  href="/reserver"
+                  className="inline-flex items-center gap-1.5 font-semibold text-[#E5A5B1] transition-colors hover:text-white hover:underline"
+                >
+                  <Calendar className="h-3.5 w-3.5" />
+                  <span>Prendre Rendez-vous en ligne</span>
                 </Link>
               </li>
             </ul>
           </div>
 
-          {/* Colonne 4 : Studio & Infos Pratiques (lg:col-span-3) */}
-          <div className="space-y-3 lg:col-span-3">
+          {/* Colonne 3 : Studio & Horaires Pratiques (lg:col-span-4) */}
+          <div className="space-y-3 lg:col-span-4">
             <p className="font-serif text-sm font-semibold uppercase tracking-wider text-white">
               Studio & Horaires
             </p>
@@ -286,9 +281,9 @@ export async function Footer() {
                 <Phone className="mt-0.5 h-3.5 w-3.5 shrink-0 text-[#D88B99]" strokeWidth={1.75} />
                 <span>WhatsApp : +221 77 395 69 66</span>
               </li>
-              <li className="pt-2 text-[11px] leading-relaxed text-[#8E8084]">
-                Acomptes acceptés via <strong className="text-white">Wave</strong> et <strong className="text-white">Max it (Orange Money)</strong>.
-                Solde restant à régler sur place.
+              <li className="rounded-xl border border-[#2B2326] bg-[#181416] p-3 text-[11px] leading-relaxed text-[#A8989C]">
+                Acomptes de réservation sécurisés via <strong className="text-white">Wave</strong> et <strong className="text-white">Max it (Orange Money)</strong>.
+                Solde restant à régler sur place après votre pose.
               </li>
             </ul>
           </div>
