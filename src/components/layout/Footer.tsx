@@ -249,17 +249,29 @@ export async function Footer() {
 
       {/* 3. BANDEAU DE BAS DE PAGE (COPYRIGHT & MENTIONS) */}
       <div className="mt-14 border-t border-[#231C1F] bg-[#0E0C0D] py-6">
-        <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-4 px-4 text-center text-xs text-[#8A7D81] sm:flex-row sm:px-6 sm:text-left">
-          <p>
+        <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-4 px-4 text-center text-xs text-[#8A7D81] sm:flex-row sm:flex-wrap sm:px-6 sm:text-left lg:flex-nowrap">
+          <p className="order-1 sm:order-1">
             © {new Date().getFullYear()} <strong className="text-[#CBBFC2]">DIAMA EYELASH EXTENSIONS</strong>. Tous droits réservés.
           </p>
 
-          <p className="flex items-center gap-1.5 text-[11px]">
+          <p className="order-4 text-xs text-[#8A7D81] sm:order-2">
+            Créé par{' '}
+            <a
+              href="https://mon-portfolio-five-livid.vercel.app/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="font-semibold text-[#CBBFC2] underline decoration-[#D88B99]/60 underline-offset-4 transition-colors hover:text-white hover:decoration-[#D88B99]"
+            >
+              HYPNOTYZED
+            </a>
+          </p>
+
+          <p className="order-2 flex items-center gap-1.5 text-[11px] sm:order-3">
             <span>Créé avec soin pour sublimer le regard des femmes à Dakar</span>
             <Heart className="h-3 w-3 text-[#D88B99]" fill="currentColor" />
           </p>
 
-          <div className="flex items-center gap-4 text-xs">
+          <div className="order-3 flex items-center gap-4 text-xs sm:order-4">
             <Link href="/a-savoir" className="transition-colors hover:text-white">
               Règles du Studio
             </Link>
