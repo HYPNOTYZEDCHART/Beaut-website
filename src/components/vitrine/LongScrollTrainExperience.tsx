@@ -376,23 +376,34 @@ export function LongScrollTrainExperience({
           </div>
 
 
-          {/* Grille des prestations avec anneau layoutId à ressort dynamique */}
-          <div className="mt-6 grid grid-cols-1 gap-5 md:grid-cols-2">
+          {/* Grille des prestations avec anneau layoutId & animation alternée gauche / droite */}
+          <div className="mt-6 grid grid-cols-1 gap-5 md:grid-cols-2 overflow-x-clip">
             <AnimatePresence mode="popLayout">
-              {filteredServices.map((service) => {
+              {filteredServices.map((service, index) => {
                 const isSelected = highlightedService?.id === service.id;
+                const enterFromLeft = index % 2 === 0;
                 return (
                   <motion.article
                     key={service.id}
                     layout
                     initial={{
                       opacity: 0,
-                      y: 18,
-                      scale: 0.95,
-                      filter: 'blur(6px)',
+                      x: enterFromLeft ? -38 : 38,
+                      y: 16,
+                      scale: 0.96,
+                      filter: 'blur(4px)',
                     }}
+                    whileInView={{
+                      opacity: 1,
+                      x: 0,
+                      y: 0,
+                      scale: 1,
+                      filter: 'blur(0px)',
+                    }}
+                    viewport={{ once: true, amount: 0.12 }}
                     animate={{
                       opacity: 1,
+                      x: 0,
                       y: 0,
                       scale: 1,
                       filter: 'blur(0px)',
@@ -402,7 +413,12 @@ export function LongScrollTrainExperience({
                       scale: 0.94,
                       filter: 'blur(6px)',
                     }}
-                    transition={HIGH_INTENSITY_SPRING}
+                    transition={{
+                      type: 'spring',
+                      stiffness: 320,
+                      damping: 26,
+                      mass: 0.8,
+                    }}
                     onClick={() => setHighlightedService(service)}
                     className={cn(
                       'relative flex cursor-pointer flex-col justify-between rounded-[26px] border bg-white p-6 shadow-powdery transition-transform duration-150 ease-emil-out active:scale-[0.985]',

@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
+import { motion } from 'framer-motion';
 import {
   Sparkles,
   CheckCircle2,
@@ -33,12 +34,35 @@ export function PrestationsClientList({
 
   return (
     <>
-      <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
-        {services.map((service) => (
-          <article
-            key={service.id}
-            className="group hover-lift flex flex-col justify-between rounded-[24px] border border-[#F3E1E6] bg-white p-6 shadow-powdery transition-transform duration-200 ease-emil-out"
-          >
+      <div className="grid grid-cols-1 gap-5 md:grid-cols-2 overflow-x-clip">
+        {services.map((service, index) => {
+          const enterFromLeft = index % 2 === 0;
+          return (
+            <motion.article
+              key={service.id}
+              initial={{
+                opacity: 0,
+                x: enterFromLeft ? -38 : 38,
+                y: 16,
+                scale: 0.96,
+                filter: 'blur(4px)',
+              }}
+              whileInView={{
+                opacity: 1,
+                x: 0,
+                y: 0,
+                scale: 1,
+                filter: 'blur(0px)',
+              }}
+              viewport={{ once: true, amount: 0.12 }}
+              transition={{
+                type: 'spring',
+                stiffness: 320,
+                damping: 26,
+                mass: 0.8,
+              }}
+              className="group hover-lift flex flex-col justify-between rounded-[24px] border border-[#F3E1E6] bg-white p-6 shadow-powdery transition-transform duration-200 ease-emil-out"
+            >
             <div>
               {/* Visuel photo de la pose dans son écrin rose poudré */}
               <div className="relative mb-4 h-48 w-full overflow-hidden rounded-2xl border border-[#F3E1E6] bg-[#FDF8F9]">
@@ -154,8 +178,9 @@ export function PrestationsClientList({
                 <ArrowRight className="h-4 w-4" strokeWidth={1.5} />
               </TactileButton>
             </div>
-          </article>
-        ))}
+            </motion.article>
+          );
+        })}
       </div>
 
       <ServiceConditionsDrawer
