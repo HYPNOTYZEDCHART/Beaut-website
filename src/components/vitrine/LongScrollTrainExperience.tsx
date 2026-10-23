@@ -571,9 +571,9 @@ export function LongScrollTrainExperience({
             <div className="relative h-56 overflow-hidden rounded-2xl border border-[#F3E1E6] bg-white md:col-span-5 sm:h-64">
               <img
                 src="/images/studio-ambiance.jpg"
-                alt="Intérieur calme et hygiénique du studio privé DIAMA EYELASH EXTENSIONS à Dakar"
+                alt="Séance de pose d’extensions de cils au studio privé DIAMA EYELASH EXTENSIONS à Dakar"
                 loading="lazy"
-                className="h-full w-full object-cover object-center"
+                className="h-full w-full object-cover object-[center_38%]"
               />
             </div>
             <div className="space-y-3 md:col-span-7">
