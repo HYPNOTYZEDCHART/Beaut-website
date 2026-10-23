@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { Suspense } from 'react';
 import type { Metadata, Viewport } from 'next';
 import { Cormorant_Garamond, Plus_Jakarta_Sans } from 'next/font/google';
 import { Toaster } from 'sonner';
 import { Navbar } from '@/components/layout/Navbar';
 import { Footer } from '@/components/layout/Footer';
 import { FloatingWhatsAppButton } from '@/components/ui/FloatingWhatsAppButton';
+import { NavigationProgressBar } from '@/components/layout/NavigationProgressBar';
 import './globals.css';
 
 const cormorant = Cormorant_Garamond({
@@ -43,6 +44,9 @@ export default function RootLayout({
   return (
     <html lang="fr" className={`${cormorant.variable} ${jakarta.variable}`}>
       <body className="min-h-dvh bg-white font-sans text-[#1C191A] antialiased selection:bg-[#F9EBEF] selection:text-[#1C191A]">
+        <Suspense fallback={null}>
+          <NavigationProgressBar />
+        </Suspense>
         <div
           vaul-drawer-wrapper=""
           className="flex min-h-dvh flex-col bg-white"

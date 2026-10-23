@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import {
   Sparkles,
@@ -26,6 +26,10 @@ export function PrestationsClientList({
   const router = useRouter();
   const [selectedForDrawer, setSelectedForDrawer] =
     useState<ServiceCatalogItemDTO | null>(null);
+
+  useEffect(() => {
+    router.prefetch('/reserver');
+  }, [router]);
 
   return (
     <>

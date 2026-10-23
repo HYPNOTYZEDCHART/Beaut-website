@@ -1,6 +1,7 @@
-import React from 'react';
-import { loadVitrineData } from '@/lib/catalog-fallback';
+import React, { Suspense } from 'react';
+import { loadBookingData } from '@/lib/catalog-fallback';
 import { BookingWizard } from '@/components/booking/BookingWizard';
+import { BookingWizardSkeleton } from '@/components/booking/BookingWizardSkeleton';
 
 export const revalidate = 60;
 
@@ -8,21 +9,31 @@ interface ReserverPageProps {
   searchParams: Promise<{ service?: string }>;
 }
 
-export default async function ReserverPage({
+async function BookingWizardContent({
   searchParams,
-}: ReserverPageProps) {
+}: {
+  searchParams: Promise<{ service?: string }>;
+}) {
   const [{ settings, services }, resolvedParams] = await Promise.all([
-    loadVitrineData(),
+    loadBookingData(),
     searchParams,
   ]);
 
   return (
+    <BookingWizard
+      settings={settings}
+      services={services}
+      initialServiceSlug={resolvedParams.service}
+    />
+  );
+}
+
+export default function ReserverPage({ searchParams }: ReserverPageProps) {
+  return (
     <div className="min-h-[85dvh] bg-[#FDF8F9]">
-      <BookingWizard
-        settings={settings}
-        services={services}
-        initialServiceSlug={resolvedParams.service}
-      />
+      <Suspense fallback={<BookingWizardSkeleton />}>
+        <BookingWizardContent searchParams={searchParams} />
+      </Suspense>
     </div>
   );
 }

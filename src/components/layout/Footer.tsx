@@ -58,6 +58,7 @@ export async function Footer() {
             <div className="flex w-full flex-col gap-3 sm:w-auto sm:flex-row">
               <Link
                 href="/reserver"
+                prefetch={true}
                 className="group relative inline-flex min-h-12 items-center justify-center gap-2 overflow-hidden rounded-full bg-[#C47482] px-6 py-3 text-sm font-medium text-white shadow-powdery transition-[transform,background-color] duration-150 ease-emil-out hover:bg-[#B36270] active:scale-[0.98]"
               >
                 <span
@@ -254,6 +255,7 @@ export async function Footer() {
               <li className="pt-1">
                 <Link
                   href="/reserver"
+                  prefetch={true}
                   className="inline-flex items-center gap-1.5 font-semibold text-[#E5A5B1] transition-colors hover:text-white hover:underline"
                 >
                   <Calendar className="h-3.5 w-3.5" />

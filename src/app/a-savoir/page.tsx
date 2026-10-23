@@ -8,12 +8,12 @@ import {
   Wallet,
   Calendar,
 } from 'lucide-react';
-import { loadVitrineData } from '@/lib/catalog-fallback';
+import { loadContactSettings } from '@/lib/catalog-fallback';
 
 export const revalidate = 60;
 
 export default async function ASavoirPage() {
-  const { settings } = await loadVitrineData();
+  const settings = await loadContactSettings();
 
   return (
     <div className="bg-white py-10 sm:py-16">

@@ -1,13 +1,13 @@
 import React from 'react';
 import Link from 'next/link';
 import { Calendar, Info } from 'lucide-react';
-import { loadVitrineData } from '@/lib/catalog-fallback';
+import { loadServicesOnly } from '@/lib/catalog-fallback';
 import { PrestationsClientList } from '@/components/vitrine/PrestationsClientList';
 
 export const revalidate = 60;
 
 export default async function PrestationsPage() {
-  const { services } = await loadVitrineData();
+  const services = await loadServicesOnly();
 
   return (
     <div className="bg-[#FDF8F9] py-10 sm:py-16">

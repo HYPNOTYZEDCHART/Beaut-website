@@ -54,6 +54,13 @@ export function Navbar() {
       return;
     }
 
+    // Retour instantané et propre vers l'accueil si on quitte l'espace admin
+    if (pathname === '/admin') {
+      e.preventDefault();
+      router.push('/');
+      return;
+    }
+
     setActiveWagon('accueil');
   };
 
@@ -157,6 +164,7 @@ export function Navbar() {
 
         <Link
           href="/reserver"
+          prefetch={true}
           className="relative inline-flex min-h-10 items-center gap-2 overflow-hidden rounded-full bg-[#C47482] px-4 py-2 text-xs font-semibold text-white shadow-powdery transition-[transform,background-color] duration-150 ease-emil-out active:scale-[0.96] hover:bg-[#B36270] sm:text-sm"
         >
           <span

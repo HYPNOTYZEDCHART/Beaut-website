@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { AnimatePresence, motion } from 'framer-motion';
 import {
@@ -93,6 +93,10 @@ export function LongScrollTrainExperience({
     useState<ServiceCatalogItemDTO | null>(services[0] ?? null);
   const [drawerService, setDrawerService] =
     useState<ServiceCatalogItemDTO | null>(null);
+
+  useEffect(() => {
+    router.prefetch('/reserver');
+  }, [router]);
 
   const filteredServices = useMemo(() => {
     if (categoryFilter === 'ALL') return services;

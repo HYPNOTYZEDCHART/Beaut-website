@@ -198,8 +198,18 @@ export interface VitrineData {
   totalReviews: number;
 }
 
+export interface BookingCatalogData {
+  settings: PublicStudioSettingsDTO;
+  services: ServiceCatalogItemDTO[];
+}
+
 let vitrineMemoryCache: {
   data: VitrineData;
+  timestamp: number;
+} | null = null;
+
+let bookingMemoryCache: {
+  data: BookingCatalogData;
   timestamp: number;
 } | null = null;
 
@@ -207,6 +217,54 @@ const CACHE_TTL_MS = 60_000; // 60 secondes de cache mémoire ultra-rapide
 
 export function invalidateVitrineCache(): void {
   vitrineMemoryCache = null;
+  bookingMemoryCache = null;
+}
+
+export async function loadBookingData(forceFresh = false): Promise<BookingCatalogData> {
+  const now = Date.now();
+  if (!forceFresh && bookingMemoryCache && now - bookingMemoryCache.timestamp < CACHE_TTL_MS) {
+    return bookingMemoryCache.data;
+  }
+  // Réutilise immédiatement les données vitrine si déjà en cache mémoire
+  if (!forceFresh && vitrineMemoryCache && now - vitrineMemoryCache.timestamp < CACHE_TTL_MS) {
+    const data: BookingCatalogData = {
+      settings: vitrineMemoryCache.data.settings,
+      services: vitrineMemoryCache.data.services,
+    };
+    bookingMemoryCache = { data, timestamp: now };
+    return data;
+  }
+
+  const dbOnline = await isDatabaseReachableFast();
+  if (!dbOnline) {
+    const fallbackData: BookingCatalogData = {
+      settings: FALLBACK_STUDIO_SETTINGS,
+      services: FALLBACK_SERVICES,
+    };
+    bookingMemoryCache = { data: fallbackData, timestamp: now };
+    return fallbackData;
+  }
+
+  // Ne charge QUE le catalogue et les réglages nécessaires à la réservation (zéro requête sur les avis)
+  const catalogRes = await getCatalogAndSettingsAction();
+
+  const settings = catalogRes.success
+    ? catalogRes.data.settings
+    : FALLBACK_STUDIO_SETTINGS;
+
+  const services =
+    catalogRes.success && catalogRes.data.services.length > 0
+      ? catalogRes.data.services
+      : FALLBACK_SERVICES;
+
+  const result: BookingCatalogData = { settings, services };
+  bookingMemoryCache = { data: result, timestamp: now };
+  return result;
+}
+
+export async function loadServicesOnly(): Promise<ServiceCatalogItemDTO[]> {
+  const data = await loadBookingData();
+  return data.services;
 }
 
 export async function loadVitrineData(forceFresh = false): Promise<VitrineData> {
@@ -225,6 +283,10 @@ export async function loadVitrineData(forceFresh = false): Promise<VitrineData> 
       totalReviews: FALLBACK_REVIEWS.length,
     };
     vitrineMemoryCache = { data: fallbackData, timestamp: now };
+    bookingMemoryCache = {
+      data: { settings: FALLBACK_STUDIO_SETTINGS, services: FALLBACK_SERVICES },
+      timestamp: now,
+    };
     return fallbackData;
   }
 
@@ -266,14 +328,21 @@ export async function loadVitrineData(forceFresh = false): Promise<VitrineData> 
   };
 
   vitrineMemoryCache = { data: result, timestamp: now };
+  bookingMemoryCache = {
+    data: { settings, services },
+    timestamp: now,
+  };
   return result;
 }
 
 export async function loadContactSettings(): Promise<PublicStudioSettingsDTO> {
+  if (bookingMemoryCache && Date.now() - bookingMemoryCache.timestamp < CACHE_TTL_MS) {
+    return bookingMemoryCache.data.settings;
+  }
   if (vitrineMemoryCache && Date.now() - vitrineMemoryCache.timestamp < CACHE_TTL_MS) {
     return vitrineMemoryCache.data.settings;
   }
-  const full = await loadVitrineData();
+  const full = await loadBookingData();
   return full.settings;
 }
 
