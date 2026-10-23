@@ -363,81 +363,10 @@ export function LongScrollTrainExperience({
             </motion.div>
           </div>
 
-          {/* Bandeau de la pose actuellement sélectionnée (Morphing preview) */}
-          <AnimatePresence mode="popLayout">
-            {highlightedService && (
-              <motion.div
-                key={highlightedService.id}
-                initial={{
-                  opacity: 0,
-                  y: 14,
-                  scale: 0.96,
-                  filter: 'blur(6px)',
-                }}
-                animate={{
-                  opacity: 1,
-                  y: 0,
-                  scale: 1,
-                  filter: 'blur(0px)',
-                }}
-                exit={{
-                  opacity: 0,
-                  y: -10,
-                  scale: 0.96,
-                  filter: 'blur(6px)',
-                }}
-                transition={HIGH_INTENSITY_SPRING}
-                className="mt-6 flex flex-col justify-between gap-4 rounded-[24px] border border-[#D88B99] bg-white p-5 shadow-powderyLg sm:flex-row sm:items-center"
-              >
-                <div className="flex items-center gap-4">
-                  <div className="relative h-14 w-14 shrink-0 overflow-hidden rounded-2xl border border-[#D88B99] bg-[#F9EBEF] shadow-powdery">
-                    <img
-                      src={highlightedService.imageUrl}
-                      alt={highlightedService.name}
-                      className="h-full w-full object-cover object-center"
-                    />
-                  </div>
-                  <div>
-                    <div className="flex items-center gap-2">
-                      <p className="text-[11px] font-semibold uppercase tracking-wider text-[#B36270]">
-                        Pose sélectionnée pour votre réservation
-                      </p>
-                      {highlightedService.isPromoActive && (
-                        <span className="rounded-full bg-[#E57B8F]/15 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-[#9E3E53] border border-[#E57B8F]/30">
-                          En promo
-                        </span>
-                      )}
-                    </div>
-                    <h3 className="font-serif text-2xl font-semibold text-[#1C191A]">
-                      {highlightedService.name} —{' '}
-                      {highlightedService.isPromoActive &&
-                      highlightedService.regularPriceXof &&
-                      highlightedService.regularPriceXof > highlightedService.priceXof ? (
-                        <>
-                          <span className="line-through text-base font-normal text-[#A89A9D] mr-2 tabular-nums">
-                            {formatXof(highlightedService.regularPriceXof)}
-                          </span>
-                          <span className="tabular-nums text-[#C47482]">
-                            {formatXof(highlightedService.priceXof)}
-                          </span>
-                        </>
-                      ) : (
-                        <span className="tabular-nums text-[#C47482]">
-                          {formatXof(highlightedService.priceXof)}
-                        </span>
-                      )}
-                    </h3>
-                  </div>
-                </div>
-
-                <ShimmerBookingButton
-                  href={`/reserver?service=${encodeURIComponent(highlightedService.slug)}`}
-                  label="Réserver cette pose"
-                  sublabel={`Acompte : ${formatXof(highlightedService.depositXof)}`}
-                />
-              </motion.div>
-            )}
-          </AnimatePresence>
+          {/* Écrin Signature Studio (Exclusif Vue Mobile — Allégé, zéro effet bouchon) */}
+          <div className="mt-6 sm:hidden">
+            <LashIllustrationCard variant="compact" />
+          </div>
 
           {/* Grille des prestations avec anneau layoutId à ressort dynamique */}
           <div className="mt-6 grid grid-cols-1 gap-5 md:grid-cols-2">
