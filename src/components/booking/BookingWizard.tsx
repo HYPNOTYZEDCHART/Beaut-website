@@ -47,6 +47,7 @@ import { cn } from '@/lib/cn';
 import { PowderyBadge } from '@/components/ui/PowderyBadge';
 import { TactileButton } from '@/components/ui/TactileButton';
 import { ServiceConditionsDrawer } from '@/components/ui/ServiceConditionsDrawer';
+import { WaveLogo, OrangeMoneyLogo } from '@/components/ui/PaymentLogos';
 
 type WizardStep = 1 | 2 | 3 | 4 | 5 | 6;
 
@@ -1222,10 +1223,18 @@ export function BookingWizard({
                                 transition={HIGH_SPRING}
                               />
                             )}
-                            <span className="relative z-10">
-                              {method === 'WAVE'
-                                ? 'Wave Sénégal'
-                                : 'Max it (Orange Money)'}
+                            <span className="relative z-10 flex items-center justify-center gap-2 font-medium">
+                              {method === 'WAVE' ? (
+                                <>
+                                  <WaveLogo className="h-5 w-5 shrink-0" />
+                                  <span>Wave</span>
+                                </>
+                              ) : (
+                                <>
+                                  <OrangeMoneyLogo className="h-5 w-5 shrink-0" />
+                                  <span>Orange Money</span>
+                                </>
+                              )}
                             </span>
                           </button>
                         );
@@ -1379,7 +1388,11 @@ export function BookingWizard({
                         : 'bg-[#FF6600] hover:bg-[#E65C00]'
                     )}
                   >
-                    <Smartphone className="h-4 w-4" strokeWidth={2} />
+                    {paymentMethod === 'WAVE' ? (
+                      <WaveLogo className="h-5 w-5 shrink-0 drop-shadow-sm" />
+                    ) : (
+                      <OrangeMoneyLogo className="h-5 w-5 shrink-0 drop-shadow-sm" />
+                    )}
                     <span>
                       {paymentMethod === 'WAVE'
                         ? 'Ouvrir l’application Wave pour payer'

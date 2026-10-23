@@ -36,6 +36,7 @@ import { TactileButton } from '@/components/ui/TactileButton';
 import { ShimmerBookingButton } from '@/components/ui/ShimmerBookingButton';
 import { ServiceConditionsDrawer } from '@/components/ui/ServiceConditionsDrawer';
 import { LashIllustrationCard } from '@/components/vitrine/LashIllustrationCard';
+import { WaveAndOmBadge } from '@/components/ui/PaymentLogos';
 
 interface LongScrollTrainExperienceProps {
   settings: PublicStudioSettingsDTO;
@@ -669,9 +670,12 @@ export function LongScrollTrainExperience({
                 <span className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-[#F3E1E6] bg-white text-[#D88B99]">
                   <Wallet className="h-5 w-5" strokeWidth={1.5} />
                 </span>
-                <h3 className="font-serif text-2xl font-semibold text-[#1C191A]">
-                  4. Politique d’acompte Wave / OM
-                </h3>
+                <div className="flex flex-wrap items-center gap-3">
+                  <h3 className="font-serif text-2xl font-semibold text-[#1C191A]">
+                    4. Politique d’acompte
+                  </h3>
+                  <WaveAndOmBadge size="md" />
+                </div>
               </div>
               <p className="mt-3 text-sm leading-relaxed text-[#786B6E] tabular-nums">
                 <strong className="text-[#1C191A]">Acompte obligatoire</strong> défini selon la pose et intégralement déduit du total le jour de la séance. Non remboursable si annulation à moins de 24h ou retard &gt; 15 min ; reportable 1 fois en prévenant 24h avant ; 100 % remboursé si l’annulation vient de la praticienne.

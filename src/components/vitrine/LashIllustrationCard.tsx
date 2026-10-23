@@ -1,5 +1,6 @@
 import React from 'react';
 import { Sparkles } from 'lucide-react';
+import { WaveAndOmBadge } from '@/components/ui/PaymentLogos';
 
 interface LashIllustrationCardProps {
   title?: string;
@@ -78,9 +79,11 @@ export function LashIllustrationCard({
             <p className="font-serif text-sm font-semibold text-[#1C191A]">24–48h</p>
             <p className="text-[10px] text-[#786B6E]">À l’avance</p>
           </div>
-          <div>
-            <p className="font-serif text-sm font-semibold text-[#1C191A]">Wave / OM</p>
-            <p className="text-[10px] text-[#786B6E]">Acompte sécurisé</p>
+          <div className="flex flex-col items-center justify-center">
+            <div className="flex h-5 items-center justify-center">
+              <WaveAndOmBadge size="sm" />
+            </div>
+            <p className="mt-0.5 text-[10px] font-medium text-[#786B6E]">Acompte sécurisé</p>
           </div>
         </div>
       </div>
@@ -141,9 +144,11 @@ export function LashIllustrationCard({
           <p className="font-serif text-lg font-semibold text-[#1C191A]">24–48h</p>
           <p className="text-[11px] text-[#786B6E]">Réservation à l’avance</p>
         </div>
-        <div>
-          <p className="font-serif text-lg font-semibold text-[#1C191A]">Wave / OM</p>
-          <p className="text-[11px] text-[#786B6E]">Acompte sécurisé</p>
+        <div className="flex flex-col items-center justify-center">
+          <div className="flex h-7 items-center justify-center">
+            <WaveAndOmBadge size="md" />
+          </div>
+          <p className="mt-0.5 text-[11px] font-medium text-[#786B6E]">Acompte sécurisé</p>
         </div>
       </div>
     </div>

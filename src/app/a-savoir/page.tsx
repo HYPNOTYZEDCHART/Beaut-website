@@ -9,6 +9,7 @@ import {
   Calendar,
 } from 'lucide-react';
 import { loadContactSettings } from '@/lib/catalog-fallback';
+import { WaveAndOmBadge } from '@/components/ui/PaymentLogos';
 
 export const revalidate = 60;
 
@@ -149,9 +150,12 @@ export default async function ASavoirPage() {
               <span className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-[#F3E1E6] bg-white text-[#D88B99]">
                 <Wallet className="h-5 w-5" strokeWidth={1.5} />
               </span>
-              <h2 className="font-serif text-2xl font-semibold text-[#1C191A]">
-                5. Politique d’acompte (Wave & Orange Money)
-              </h2>
+              <div className="flex flex-wrap items-center gap-3">
+                <h2 className="font-serif text-2xl font-semibold text-[#1C191A]">
+                  5. Politique d’acompte
+                </h2>
+                <WaveAndOmBadge size="md" />
+              </div>
             </div>
             <ul className="mt-3 space-y-2 text-sm leading-relaxed text-[#786B6E] tabular-nums">
               <li>

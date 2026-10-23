@@ -18,6 +18,7 @@ import {
 } from '@/components/ui/SocialIcons';
 import { loadContactSettings } from '@/lib/catalog-fallback';
 import { buildGeneralContactWhatsAppUrl } from '@/lib/whatsapp';
+import { WaveAndOmBadge } from '@/components/ui/PaymentLogos';
 
 export async function Footer() {
   const settings = await loadContactSettings();
@@ -54,9 +55,9 @@ export async function Footer() {
           </div>
 
           <div className="rounded-2xl border border-[#2B2326] bg-[#1A1618] p-4.5 space-y-1.5">
-            <div className="flex items-center gap-2.5 text-[#E5A5B1]">
-              <ShieldCheck className="h-4 w-4" strokeWidth={1.75} />
-              <span className="font-serif text-sm font-semibold text-white">Acompte Sécurisé Wave / Max it</span>
+            <div className="flex items-center gap-2 text-[#E5A5B1]">
+              <WaveAndOmBadge size="sm" />
+              <span className="font-serif text-sm font-semibold text-white">Acompte Sécurisé</span>
             </div>
             <p className="text-xs leading-relaxed text-[#A8989C]">
               Créneau immédiatement bloqué avec référence unique. Zéro doublon ni mauvaise surprise.
@@ -235,9 +236,11 @@ export async function Footer() {
                   WhatsApp : {settings.whatsappPhone}
                 </a>
               </li>
-              <li className="rounded-xl border border-[#2B2326] bg-[#181416] p-3 text-[11px] leading-relaxed text-[#A8989C]">
-                Acomptes de réservation sécurisés via <strong className="text-white">Wave</strong> et <strong className="text-white">Max it (Orange Money)</strong>.
-                Solde restant à régler sur place après votre pose.
+              <li className="flex items-center gap-2.5 rounded-xl border border-[#2B2326] bg-[#181416] p-3 text-[11px] leading-relaxed text-[#A8989C]">
+                <WaveAndOmBadge size="sm" className="shrink-0" />
+                <span>
+                  Acomptes sécurisés par <strong className="text-white">Wave</strong> et <strong className="text-white">Orange Money</strong>. Solde restant à régler sur place.
+                </span>
               </li>
             </ul>
           </div>
