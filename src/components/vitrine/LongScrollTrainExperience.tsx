@@ -294,16 +294,10 @@ export function LongScrollTrainExperience({
 
             <motion.div
               variants={STAGGER_ITEM_VARIANTS}
-              className="mt-4 sm:mt-6 lg:mt-0 lg:col-span-5"
+              className="hidden sm:mt-6 sm:block lg:mt-0 lg:col-span-5"
             >
-              {/* Sur mobile : format compact raffiné sans effet bouchon */}
-              <div className="sm:hidden">
-                <LashIllustrationCard variant="compact" />
-              </div>
-              {/* Sur écran large : format hero complet dans la colonne droite */}
-              <div className="hidden sm:block">
-                <LashIllustrationCard variant="hero" />
-              </div>
+              {/* Carte masquée sur téléphone ; format hero complet dès sm */}
+              <LashIllustrationCard variant="hero" />
             </motion.div>
           </div>
         </motion.div>
