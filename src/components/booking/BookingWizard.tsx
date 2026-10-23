@@ -314,12 +314,26 @@ export function BookingWizard({
 
     setHasLaunchedPaymentApp(true);
 
-    // Déclenchement du Deep Link mobile
+    // Déclenchement du Deep Link mobile natif selon l'OS (Android / iOS)
+    const userAgent = typeof navigator !== 'undefined' ? navigator.userAgent.toLowerCase() : '';
+    const isAndroid = /android/.test(userAgent);
+
     if (method === 'WAVE') {
-      window.location.href = 'wave://';
+      if (isAndroid) {
+        // Déclenche l'application native Wave sur Android via son package officiel
+        window.location.href = 'intent://#Intent;package=com.wave.personal;scheme=wave;end;';
+      } else {
+        // Déclenche Wave sur iOS (iPhone / iPad)
+        window.location.href = 'wave://';
+      }
     } else {
-      // Déclenche l'application officielle Max it (Orange Sénégal)
-      window.location.href = 'sn.orange.maxit://';
+      if (isAndroid) {
+        // Déclenche l'application officielle Max it Orange Money sur Android
+        window.location.href = 'intent://#Intent;package=sn.orange.maxit;scheme=maxit;end;';
+      } else {
+        // Déclenche Max it sur iOS
+        window.location.href = 'sn.orange.maxit://';
+      }
     }
   }
 
