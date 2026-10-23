@@ -572,99 +572,7 @@ export function LongScrollTrainExperience({
             </p>
           </motion.div>
 
-          <motion.div
-            variants={STAGGER_ITEM_VARIANTS}
-            className="mt-8 grid grid-cols-1 items-center gap-6 overflow-hidden rounded-[26px] border border-[#F3E1E6] bg-[#FDF8F9] p-5 shadow-powdery md:grid-cols-12 sm:p-6"
-          >
-            <div className="relative h-56 overflow-hidden rounded-2xl border border-[#F3E1E6] bg-white md:col-span-5 sm:h-64">
-              <img
-                src="/images/studio-seance-pose.jpg"
-                alt="Séance de pose d’extensions de cils au studio privé DIAMA EYELASH EXTENSIONS à Dakar"
-                loading="lazy"
-                className="h-full w-full object-cover object-[center_38%]"
-              />
-            </div>
-            <div className="space-y-3 md:col-span-7">
-              <PowderyBadge variant="sage">
-                <ShieldCheck className="h-3.5 w-3.5" strokeWidth={1.5} />
-                Cadre privé, calme & hygiène irréprochable
-              </PowderyBadge>
-              <h3 className="font-serif text-2xl font-semibold text-[#1C191A] sm:text-3xl">
-                Un cocon dédié à la beauté de votre regard à Dakar
-              </h3>
-              <p className="text-sm leading-relaxed text-[#786B6E]">
-                Chaque séance inclut un temps de désinfection complète du
-                matériel et du lit de pose entre deux clientes. Pour préserver
-                cette sérénité et la ponctualité de mes études, merci de prendre
-                connaissance des 4 règles ci-dessous avant de réserver.
-              </p>
-            </div>
-          </motion.div>
-
-          <div className="mt-6 grid grid-cols-1 gap-4 md:grid-cols-2">
-            <motion.article
-              variants={STAGGER_ITEM_VARIANTS}
-              className="rounded-[24px] border border-[#F3E1E6] bg-[#FDF8F9] p-6 shadow-powdery"
-            >
-              <div className="flex items-center gap-3">
-                <span className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-[#F3E1E6] bg-white text-[#D88B99]">
-                  <MapPin className="h-5 w-5" strokeWidth={1.5} />
-                </span>
-                <h3 className="font-serif text-2xl font-semibold text-[#1C191A]">
-                  1. Zone & Adresse confidentielle
-                </h3>
-              </div>
-              <p className="mt-3 text-sm leading-relaxed text-[#786B6E]">
-                Situé à <strong className="text-[#1C191A]">Dakar (Diamalaye, repère Croisement Grand Médine)</strong>.
-                Pour votre tranquillité et la sécurité du studio,{' '}
-                <strong className="text-[#1C191A]">
-                  l’adresse exacte est masquée sur le site et envoyée uniquement
-                  après validation de votre acompte
-                </strong>
-                .
-              </p>
-            </motion.article>
-
-            <motion.article
-              variants={STAGGER_ITEM_VARIANTS}
-              className="rounded-[24px] border border-[#F3E1E6] bg-white p-6 shadow-powdery"
-            >
-              <div className="flex items-center gap-3">
-                <span className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-[#F3E1E6] bg-[#FDF8F9] text-[#D88B99]">
-                  <Sparkles className="h-5 w-5" strokeWidth={1.5} />
-                </span>
-                <h3 className="font-serif text-2xl font-semibold text-[#1C191A]">
-                  2. Préparation des cils
-                </h3>
-              </div>
-              <p className="mt-3 text-sm leading-relaxed text-[#786B6E]">
-                Venez les <strong className="text-[#1C191A]">yeux 100 % démaquillés</strong>,
-                sans mascara ni corps gras depuis 24h, et venez seule. Les poses
-                complètes se font sur cils naturels uniquement (aucun remplissage
-                sur pose extérieure).
-              </p>
-            </motion.article>
-
-            <motion.article
-              variants={STAGGER_ITEM_VARIANTS}
-              className="rounded-[24px] border border-[#F3E1E6] bg-white p-6 shadow-powdery"
-            >
-              <div className="flex items-center gap-3">
-                <span className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-[#F3E1E6] bg-[#FDF8F9] text-[#D88B99]">
-                  <Clock className="h-5 w-5" strokeWidth={1.5} />
-                </span>
-                <h3 className="font-serif text-2xl font-semibold text-[#1C191A]">
-                  3. Règles de retard & Annulation
-                </h3>
-              </div>
-              <p className="mt-3 text-sm leading-relaxed text-[#786B6E] tabular-nums">
-                Réservation au moins <strong className="text-[#1C191A]">24 à 48h à l’avance</strong>.
-                Au-delà de <strong className="text-[#1C191A]">15 minutes de retard</strong>,
-                la séance est annulée pour ne pas impacter la cliente suivante ni
-                mes cours. Tout report se demande au moins 24h avant.
-              </p>
-            </motion.article>
-
+          <div className="mt-8 grid grid-cols-1 gap-4">
             <motion.article
               variants={STAGGER_ITEM_VARIANTS}
               className="rounded-[24px] border border-[#F3E1E6] bg-[#FDF8F9] p-6 shadow-powdery"
@@ -675,7 +583,7 @@ export function LongScrollTrainExperience({
                 </span>
                 <div className="flex flex-wrap items-center gap-3">
                   <h3 className="font-serif text-2xl font-semibold text-[#1C191A]">
-                    4. Politique d’acompte
+                    Politique d’acompte
                   </h3>
                   <WaveAndOmBadge size="md" />
                 </div>
