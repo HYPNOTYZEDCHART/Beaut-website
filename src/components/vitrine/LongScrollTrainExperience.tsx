@@ -593,7 +593,7 @@ export function LongScrollTrainExperience({
                   </h4>
                 </div>
                 <p className="mt-2.5 text-xs leading-relaxed text-[#786B6E]">
-                  Au-delà de <strong className="text-[#1C191A]">15 min de retard</strong>, la séance est annulée afin de respecter le planning d'études et la cliente suivante.
+                  Au-delà de <strong className="text-[#1C191A]">15 min de retard</strong>, la séance est annulée afin de respecter le planning du studio et la cliente suivante.
                 </p>
               </motion.article>
 

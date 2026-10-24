@@ -607,9 +607,8 @@ export function BookingWizard({
                 variants={STEP_CASCADE_ITEM}
                 className="mt-2 text-sm leading-relaxed text-[#786B6E]"
               >
-                Le calendrier n’affiche que mes vraies disponibilités en dehors
-                de mes heures de cours. Voici comment votre rendez-vous est
-                sécurisé :
+                Le calendrier n’affiche que les créneaux réellement disponibles en
+                temps réel. Voici comment votre rendez-vous est sécurisé :
               </motion.p>
 
               <div className="mt-6 grid grid-cols-1 gap-3.5 sm:grid-cols-2">
@@ -1714,7 +1713,7 @@ export function BookingWizard({
                     onClick={handleConfirmProofSentAndGoToStep6}
                   >
                     <MessageCircle className="h-4 w-4" strokeWidth={1.5} />
-                    <span>Envoyer ma capture sur WhatsApp</span>
+                    <span>Confirmer ma réservation sur WhatsApp</span>
                   </TactileButton>
                 </div>
               </Drawer.Content>

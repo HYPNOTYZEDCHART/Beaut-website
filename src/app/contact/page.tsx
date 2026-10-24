@@ -141,20 +141,16 @@ export default async function ContactPage() {
         <div className="mt-6 rounded-[24px] border border-[#F3E1E6] bg-white p-6 shadow-powdery">
           <div className="flex items-center gap-2 text-sm font-semibold text-[#1C191A]">
             <Clock className="h-4 w-4 text-[#D88B99]" strokeWidth={1.5} />
-            <span>Créneaux habituels d’ouverture (hors périodes d’examens)</span>
+            <span>Horaires & Disponibilités du studio</span>
           </div>
-          <div className="mt-3 grid grid-cols-1 gap-2 text-xs text-[#786B6E] tabular-nums sm:grid-cols-3">
+          <div className="mt-3 grid grid-cols-1 gap-2 text-xs text-[#786B6E] tabular-nums sm:grid-cols-2">
             <div className="rounded-xl border border-[#F3E1E6] bg-[#FDF8F9] px-3.5 py-2.5">
-              <p className="font-semibold text-[#1C191A]">Mercredi</p>
-              <p>14:30 – 19:30</p>
+              <p className="font-semibold text-[#1C191A]">Lundi au Dimanche (7j/7)</p>
+              <p>Créneaux ouverts de 09:30 à 19:30</p>
             </div>
             <div className="rounded-xl border border-[#F3E1E6] bg-[#FDF8F9] px-3.5 py-2.5">
-              <p className="font-semibold text-[#1C191A]">Vendredi</p>
-              <p>14:30 – 19:30</p>
-            </div>
-            <div className="rounded-xl border border-[#F3E1E6] bg-[#FDF8F9] px-3.5 py-2.5">
-              <p className="font-semibold text-[#1C191A]">Samedi</p>
-              <p>09:30 – 18:30</p>
+              <p className="font-semibold text-[#1C191A]">Réservation en ligne 24h/24</p>
+              <p>Créneaux calculés en direct sur le calendrier</p>
             </div>
           </div>
 

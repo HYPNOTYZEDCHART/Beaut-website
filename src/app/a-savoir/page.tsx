@@ -27,9 +27,8 @@ export default async function ASavoirPage() {
             À savoir avant de venir
           </h1>
           <p className="mt-2 text-sm leading-relaxed text-[#786B6E] sm:text-base">
-            Pour vous garantir une séance calme, ponctuelle et respectueuse de
-            mon emploi du temps d’études, voici les règles de fonctionnement du
-            studio.
+            Pour vous garantir une séance calme, ponctuelle et respectueuse du
+            planning du studio, voici les règles de fonctionnement essentielles.
           </p>
         </div>
 
