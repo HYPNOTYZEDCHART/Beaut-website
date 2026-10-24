@@ -1,11 +1,18 @@
 import React from 'react';
+import type { Metadata } from 'next';
 import Link from 'next/link';
-import { Star, ShieldCheck, Calendar } from 'lucide-react';
+import { Star, ShieldCheck, Calendar, ArrowLeft } from 'lucide-react';
 import { loadVitrineData } from '@/lib/catalog-fallback';
 import { formatDakarDateLong } from '@/lib/whatsapp';
 import { PowderyBadge } from '@/components/ui/PowderyBadge';
 
 export const revalidate = 60;
+
+export const metadata: Metadata = {
+  title: 'Avis Clientes 100 % Vérifiés | Diama Eyelash Extensions Dakar',
+  description:
+    'Consultez les retours d’expérience et notes authentiques de nos clientes après leur pose d’extensions de cils au studio Diama à Dakar.',
+};
 
 export default async function AvisPage() {
   const { reviews, averageRating, totalReviews } = await loadVitrineData();
@@ -13,6 +20,16 @@ export default async function AvisPage() {
   return (
     <div className="bg-[#FDF8F9] py-10 sm:py-16">
       <div className="mx-auto max-w-5xl px-4 sm:px-6">
+        <div className="mb-6">
+          <Link
+            href="/#avis"
+            className="inline-flex items-center gap-1.5 text-xs font-medium text-[#786B6E] transition-colors duration-150 hover:text-[#B36270]"
+          >
+            <ArrowLeft className="h-3.5 w-3.5" />
+            <span>Retour à l’accueil</span>
+          </Link>
+        </div>
+
         <div className="flex flex-col justify-between gap-6 rounded-[28px] border border-[#F3E1E6] bg-white p-6 shadow-powdery sm:flex-row sm:items-center sm:p-8">
           <div className="max-w-xl">
             <PowderyBadge variant="sage">
@@ -43,7 +60,14 @@ export default async function AvisPage() {
           </div>
         </div>
 
-        <div className="mt-8 grid grid-cols-1 gap-4 md:grid-cols-2">
+        {reviews.length === 0 ? (
+          <div className="mt-8 rounded-[24px] border border-[#F3E1E6] bg-white p-10 text-center shadow-powdery">
+            <p className="text-sm text-[#786B6E]">
+              Aucun avis n’a encore été publié. Soyez la première à partager votre expérience !
+            </p>
+          </div>
+        ) : (
+          <div className="mt-8 grid grid-cols-1 gap-4 md:grid-cols-2">
           {reviews.map((review) => (
             <article
               key={review.id}
@@ -85,6 +109,7 @@ export default async function AvisPage() {
             </article>
           ))}
         </div>
+      )}
 
         <div className="mt-10 flex justify-center">
           <Link

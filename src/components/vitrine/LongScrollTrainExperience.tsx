@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useMemo, useEffect } from 'react';
+import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { AnimatePresence, motion } from 'framer-motion';
 import {
@@ -653,19 +654,23 @@ export function LongScrollTrainExperience({
               </p>
             </div>
 
-            <div className="inline-flex items-center gap-2 self-start rounded-2xl border border-[#F3E1E6] bg-white px-4 py-2.5 shadow-powdery tabular-nums">
+            <Link
+              href="/avis"
+              className="group inline-flex items-center gap-2 self-start rounded-2xl border border-[#F3E1E6] bg-white px-4 py-2.5 shadow-powdery tabular-nums transition-all duration-150 hover:border-[#D88B99] hover:bg-[#FDF8F9]"
+              title="Consulter tous les avis vérifiés"
+            >
               <Star className="h-5 w-5 fill-[#D88B99] text-[#D88B99]" />
               <span className="font-serif text-2xl font-bold text-[#1C191A]">
                 {averageRating.toFixed(1)} / 5
               </span>
-              <span className="text-xs text-[#786B6E]">
-                ({totalReviews} avis)
+              <span className="text-xs text-[#786B6E] group-hover:text-[#B36270]">
+                ({totalReviews} avis) →
               </span>
-            </div>
+            </Link>
           </motion.div>
 
           <div className="mt-8 grid grid-cols-1 gap-4 md:grid-cols-3">
-            {reviews.map((review) => (
+            {reviews.slice(0, 3).map((review) => (
               <motion.article
                 key={review.id}
                 variants={STAGGER_ITEM_VARIANTS}
@@ -707,6 +712,20 @@ export function LongScrollTrainExperience({
               </motion.article>
             ))}
           </div>
+
+          {/* Bouton Voir tous les avis */}
+          <motion.div
+            variants={STAGGER_ITEM_VARIANTS}
+            className="mt-8 flex justify-center"
+          >
+            <Link
+              href="/avis"
+              className="group inline-flex items-center gap-2 rounded-full border border-[#E8D4D8] bg-white px-6 py-3 text-xs font-semibold text-[#1C191A] shadow-powdery transition-all duration-150 ease-emil-out hover:border-[#D88B99] hover:bg-[#FDF8F9] hover:text-[#B36270] active:scale-[0.98]"
+            >
+              <span>Voir tous les avis ({totalReviews})</span>
+              <ArrowRight className="h-3.5 w-3.5 transition-transform duration-150 group-hover:translate-x-0.5" />
+            </Link>
+          </motion.div>
 
           {/* Appel à l'action final de conversion après réassurance sociale */}
           <motion.div
