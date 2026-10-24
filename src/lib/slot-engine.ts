@@ -34,6 +34,45 @@ export interface WeeklyTimeWindow {
   isActive: boolean;
 }
 
+export const DEFAULT_FULL_WEEK_SCHEDULES: readonly WeeklyTimeWindow[] = [
+  { dayOfWeek: 0, startTime: '09:30', endTime: '19:30', isActive: true }, // Dimanche
+  { dayOfWeek: 1, startTime: '09:30', endTime: '19:30', isActive: true }, // Lundi
+  { dayOfWeek: 2, startTime: '09:30', endTime: '19:30', isActive: true }, // Mardi
+  { dayOfWeek: 3, startTime: '09:30', endTime: '19:30', isActive: true }, // Mercredi
+  { dayOfWeek: 4, startTime: '09:30', endTime: '19:30', isActive: true }, // Jeudi
+  { dayOfWeek: 5, startTime: '09:30', endTime: '19:30', isActive: true }, // Vendredi
+  { dayOfWeek: 6, startTime: '09:30', endTime: '19:30', isActive: true }, // Samedi
+];
+
+/**
+ * Garantit que les 7 jours de la semaine (Lundi au Dimanche) sont ouverts en continu (09:30 à 19:30),
+ * tout en intégrant les plages personnalisées éventuellement enregistrées.
+ */
+export function resolveFullWeeklySchedules(
+  dbSchedules?: readonly WeeklyTimeWindow[]
+): WeeklyTimeWindow[] {
+  const map = new Map<number, WeeklyTimeWindow>();
+
+  for (const defaultSlot of DEFAULT_FULL_WEEK_SCHEDULES) {
+    map.set(defaultSlot.dayOfWeek, { ...defaultSlot });
+  }
+
+  if (dbSchedules && dbSchedules.length > 0) {
+    for (const s of dbSchedules) {
+      if (s.isActive) {
+        map.set(s.dayOfWeek, {
+          dayOfWeek: s.dayOfWeek,
+          startTime: s.startTime,
+          endTime: s.endTime,
+          isActive: true,
+        });
+      }
+    }
+  }
+
+  return Array.from(map.values()).sort((a, b) => a.dayOfWeek - b.dayOfWeek);
+}
+
 export interface TimeRangeBlock {
   id?: string;
   startAt: Date;

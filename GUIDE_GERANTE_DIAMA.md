@@ -69,48 +69,36 @@ Le site s'occupe de filtrer les clientes sérieuses et de bloquer les créneaux 
 
 ---
 
-## ⚡ 3. VOS SUPER-POUVOIRS DE GÉRANTE (FONCTIONS CLÉS)
+## ⚡ 3. VOS SUPER-POUVOIRS DE GÉRANTE (3 ONGLETS ÉPURÉS)
 
-Dans votre tableau de bord `/admin`, vous avez 4 onglets en haut :
+Dans votre tableau de bord `/admin`, vous avez désormais **3 onglets directs et ergonomiques** sur votre téléphone :
 
-### 1. Onglet « Rendez-vous »
-- Visualisez toutes les poses prévues jour par jour.
-- Filtrez par statut : *En attente*, *Confirmés*, *Terminés* ou *Annulés*.
-- Possibilité d'annuler un rendez-vous si une cliente a un empêchement justifié.
+### 1. 📅 Onglet « Rendez-vous » (Le cœur de votre activité)
+- **Suivi visuel des réservations :** Retrouvez la liste des rendez-vous avec référence, nom de la cliente, prestation, date, heure, téléphone et moyen de paiement (Wave ou Orange Money).
+- **Validation d’acompte en 1 clic :** Dès que vous recevez les 5 000 FCFA sur Wave, cliquez sur **« Confirmer l'acompte & Envoyer l'accès WhatsApp »**. Cela ouvre directement la conversation WhatsApp avec le message officiel contenant l'adresse exacte du studio à Diamalaye.
+- **Clôture & Avis VIP :** Une fois la pose terminée, cliquez sur **« Clôturer la pose & Envoyer le lien d'avis »**. Un lien unique sécurisé est envoyé par WhatsApp à votre cliente pour qu'elle puisse noter votre travail.
+- **Annulation si nécessaire :** Si un imprévu survient, un bouton discret vous permet de libérer le créneau instantanément.
 
-### 2. Onglet « Tarifs & Promos »
-- **Changer un prix en direct :** Vous voulez changer le tarif d'une pose ? Modifiez simplement le montant en FCFA et cliquez sur **« Enregistrer »**. Le site met à jour la vitrine instantanément.
-- **Mode Promotion Globale :** Vous lancez une offre spéciale (par exemple toutes les poses à 15 000 FCFA pour la Tabaski, la Korité ou la fin d'année) ?
-  - Activez l'interrupteur **« Activer la promo globale »**.
-  - Choisissez le prix promo (ex: `15 000`).
-  - Personnalisez le texte du bandeau doré.
-  - Toutes les poses passent automatiquement au tarif promo sur le site avec un élégant bandeau doré d'annonce !
-  - Pour arrêter la promo, décochez simplement l'interrupteur.
+### 2. 🏷️ Onglet « Tarifs & Acomptes » (Grille directe sans piège)
+- **Une seule grille claire :** Fini les formulaires compliqués ! Retrouvez directement la liste de vos 5 poses (Cil à cil, Pose mixte, Volume léger, Volume intense, Remplissage).
+- **Changement de prix en 2 secondes :** Vous souhaitez ajuster le tarif ou l'acompte d'une pose ? Modifiez les chiffres dans les cases et cliquez sur le bouton rose **« Enregistrer les tarifs »**.
+- **Bannière Promo en 1 clic :** Un simple interrupteur vous permet d'afficher ou masquer le ruban d'offre spéciale en haut du site sans avoir à taper de long texte.
 
-### 3. Onglet « Examens & Planning »
-Cet onglet est votre meilleur allié pour concilier vos études et votre passion !
+### 3. ⚙️ Onglet « Planning & Studio » (Études, Pauses & Avis)
+Cet onglet est votre allié pour concilier vos études et votre passion :
 
-- **Le Mode Examens (Pause Temporaire) :**
-  - Vous avez une semaine de révisions ou de partiels à l'université ?
-  - Activez simplement l'interrupteur **« Activer le Mode Examens »**.
-  - Le site reste en ligne et magnifique, mais le calendrier de réservation se met en pause avec un message chaleureux expliquant que vous êtes en examens et que les créneaux réouvriront très vite.
-  - Dès vos examens terminés, désactivez l'interrupteur : vos clientes peuvent réserver à nouveau immédiatement !
-
-- **Fermetures Rapides d'un Créneau (Blackout) :**
-  - Vous avez un cours imprévu, un déplacement ou un rendez-vous personnel un mardi après-midi de 14h00 à 17h00 ?
-  - Vous n'avez pas besoin de toucher à vos horaires généraux !
-  - Dans la boîte *« Bloquer un créneau exceptionnel »* :
-    1. Sélectionnez la date.
-    2. Choisissez l'heure de début (ex: 14:00) et l'heure de fin (ex: 17:00).
-    3. Indiquez la raison (ex: *Cours université* ou *Repos*).
-    4. Cliquez sur **« Bloquer ce créneau »**.
-  - Le site supprime immédiatement ces heures de la liste des créneaux réservables.
-  - Si votre empêchement est annulé, un bouton poubelle rouge vous permet de réouvrir ces heures en une seconde.
-
-### 4. Onglet « Modération des Avis »
-- Dès qu'une cliente laisse un avis 5 étoiles, vous le retrouvez ici.
-- Vous pouvez vérifier le texte avant qu'il ne soit visible publiquement sur la page d'accueil de votre site.
-- Vous gardez 100% le contrôle sur l'image prestigieuse de votre studio.
+- **Mettre le Studio en Pause (Mode Examens) :**
+  - Vous avez des examens ou des partiels à l'université ?
+  - Cliquez sur **« Mettre le studio en pause maintenant »**.
+  - Le site reste en ligne et affiche un message chaleureux expliquant que vous êtes en pause d'études. Les réservations sont suspendues.
+  - Dès vos examens terminés, cliquez sur **« Rouvrir les réservations »** pour reprendre les rendez-vous.
+- **Bloquer un créneau horaire (Imprévu ou cours déplacé) :**
+  - Choisissez la Date, l'Heure de début et l'Heure de fin, puis cliquez sur **« Bloquer cette plage horaire »**.
+  - Le créneau disparaît instantanément du calendrier pour les clientes.
+  - La liste des créneaux bloqués s'affiche juste en dessous, avec un bouton **« Rouvrir ce créneau »** pour le restaurer en un clic.
+- **Avis Clientes & Modération :**
+  - Retrouvez les retours d'expérience déposés par vos clientes avec leurs notes en étoiles.
+  - Vous pouvez **Publier** ou **Masquer** n'importe quel avis en un clic pour garder le contrôle total sur votre vitrine.
 
 ---
 

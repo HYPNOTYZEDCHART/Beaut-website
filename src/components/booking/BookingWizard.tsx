@@ -37,6 +37,7 @@ import {
   AvailabilityCalendarResult,
   computeAvailabilityCalendar,
   ComputedSlot,
+  DEFAULT_FULL_WEEK_SCHEDULES,
 } from '@/lib/slot-engine';
 import {
   buildDepositProofWhatsAppUrl,
@@ -139,11 +140,7 @@ function buildLocalFallbackCalendar(
       examModeActive: settings.examModeActive,
       examModeMessage: settings.examModeMessage,
     },
-    weeklySchedules: [
-      { dayOfWeek: 3, startTime: '14:30', endTime: '19:30', isActive: true },
-      { dayOfWeek: 5, startTime: '14:30', endTime: '19:30', isActive: true },
-      { dayOfWeek: 6, startTime: '09:30', endTime: '18:30', isActive: true },
-    ],
+    weeklySchedules: DEFAULT_FULL_WEEK_SCHEDULES,
     blackoutPeriods: [],
     existingBookings: [],
   });
@@ -460,7 +457,7 @@ export function BookingWizard({
 
     window.open(whatsappUrl, '_blank', 'noopener,noreferrer');
     setStep(6);
-    toast.success('Récapitulatif enregistré ! Envoie ta capture sur WhatsApp.');
+    toast.success('Réservation enregistrée ! Message prêt sur WhatsApp.');
   }
 
   return (
@@ -675,7 +672,7 @@ export function BookingWizard({
                     Confirmation & Adresse
                   </h2>
                   <p className="mt-1 text-xs leading-relaxed text-[#786B6E]">
-                    Dès réception de la preuve sur WhatsApp, vous recevez
+                    Dès confirmation de l'acompte, vous recevez
                     l’adresse exacte du studio à Dakar.
                   </p>
                 </motion.div>
@@ -867,7 +864,7 @@ export function BookingWizard({
                             )}
                             {srv.refillAccepted && (
                               <PowderyBadge variant="sage">
-                                Remplissage accepté (≤ 21 j)
+                                Remplissage accepté
                               </PowderyBadge>
                             )}
                           </div>
@@ -1475,11 +1472,11 @@ export function BookingWizard({
                   <div className="flex-1">
                     <h3 className="font-serif text-base font-semibold text-[#1C191A]">
                       {showReturnedPrompt || hasLaunchedPaymentApp
-                        ? '✨ Vous avez effectué votre transfert ?'
-                        : 'Confirmation finale par WhatsApp'}
+                        ? '✨ Votre acompte est envoyé ?'
+                        : 'Finaliser ma réservation sur WhatsApp'}
                     </h3>
                     <p className="mt-1 text-xs text-[#786B6E] leading-relaxed">
-                      Cliquez sur le bouton ci-dessous pour transmettre la capture d’écran de votre acompte. Votre référence <strong className="text-[#1C191A]">{lockedBooking.referenceCode}</strong> est déjà pré-remplie !
+                      Cliquez sur le bouton ci-dessous pour confirmer votre séance avec Diama sur WhatsApp. Votre référence <strong className="text-[#1C191A]">{lockedBooking.referenceCode}</strong> est déjà pré-remplie !
                     </p>
 
                     <div className="mt-4 flex flex-col gap-2.5 sm:flex-row sm:items-center">
@@ -1490,7 +1487,7 @@ export function BookingWizard({
                         className="bg-[#25D366] hover:bg-[#1EBE5D] text-white border-transparent"
                       >
                         <MessageCircle className="h-4 w-4" strokeWidth={2} />
-                        <span>Envoyer ma preuve sur WhatsApp</span>
+                        <span>Confirmer ma réservation sur WhatsApp</span>
                       </TactileButton>
 
                       <TactileButton
@@ -1539,9 +1536,7 @@ export function BookingWizard({
                 variants={STEP_CASCADE_ITEM}
                 className="mt-1 text-sm leading-relaxed text-[#786B6E]"
               >
-                Votre créneau est réservé. Dès validation de votre capture
-                d’acompte sur WhatsApp, vous recevrez un message de confirmation
-                avec la localisation exacte du studio.
+                Votre créneau est réservé. Dès vérification de votre acompte sur Wave, vous recevrez votre confirmation officielle avec l’adresse exacte du studio.
               </motion.p>
 
               {/* Récapitulatif complet de l'Étape 6 */}
@@ -1629,7 +1624,7 @@ export function BookingWizard({
                   className="inline-flex min-h-12 items-center justify-center gap-2 rounded-full bg-[#C47482] px-6 py-3 text-sm font-medium text-white shadow-powdery transition-transform duration-150 ease-emil-out active:scale-[0.98] hover:bg-[#B36270]"
                 >
                   <MessageCircle className="h-4 w-4" strokeWidth={1.5} />
-                  <span>Renvoyer ma capture sur WhatsApp</span>
+                  <span>Contacter le studio sur WhatsApp</span>
                 </a>
               </motion.div>
             </motion.section>

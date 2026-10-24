@@ -312,9 +312,13 @@ INSERT INTO "Service" (
 ) ON CONFLICT ("slug") DO NOTHING;
 
 INSERT INTO "WeeklySchedule" ("id", "dayOfWeek", "startTime", "endTime", "label", "isActive", "updatedAt") VALUES
-('sched-wed', 3, '14:30', '19:30', 'Mercredi après-midi', true, CURRENT_TIMESTAMP),
-('sched-fri', 5, '14:30', '19:30', 'Vendredi après-midi', true, CURRENT_TIMESTAMP),
-('sched-sat', 6, '09:30', '18:30', 'Samedi journée', true, CURRENT_TIMESTAMP)
+('sched-sun', 0, '09:30', '19:30', 'Dimanche', true, CURRENT_TIMESTAMP),
+('sched-mon', 1, '09:30', '19:30', 'Lundi', true, CURRENT_TIMESTAMP),
+('sched-tue', 2, '09:30', '19:30', 'Mardi', true, CURRENT_TIMESTAMP),
+('sched-wed', 3, '09:30', '19:30', 'Mercredi', true, CURRENT_TIMESTAMP),
+('sched-thu', 4, '09:30', '19:30', 'Jeudi', true, CURRENT_TIMESTAMP),
+('sched-fri', 5, '09:30', '19:30', 'Vendredi', true, CURRENT_TIMESTAMP),
+('sched-sat', 6, '09:30', '19:30', 'Samedi', true, CURRENT_TIMESTAMP)
 ON CONFLICT ("id") DO NOTHING;
 
 INSERT INTO "Booking" (

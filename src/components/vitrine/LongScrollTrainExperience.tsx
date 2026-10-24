@@ -489,7 +489,7 @@ export function LongScrollTrainExperience({
                             className="h-3.5 w-3.5"
                             strokeWidth={1.5}
                           />
-                          Remplissage accepté (≤ 21 j)
+                          Remplissage accepté
                         </PowderyBadge>
                       )}
                     </div>
@@ -549,15 +549,15 @@ export function LongScrollTrainExperience({
               Consignes • À savoir avant de venir
             </PowderyBadge>
             <h2 className="mt-2 font-serif text-3xl font-semibold text-[#1C191A] sm:text-4xl">
-              Les règles d’or de votre rendez-vous
+              Organisation & Acompte du Studio
             </h2>
             <p className="mt-1 text-sm leading-relaxed text-[#786B6E]">
-              Une organisation douce, claire et ponctuelle pour respecter votre
-              regard ainsi que mon planning d’études.
+              Les points clés essentiels pour votre confort, votre ponctualité et la pérennité de votre regard.
             </p>
           </motion.div>
 
           <div className="mt-8 grid grid-cols-1 gap-4">
+            {/* Carte 1 : Politique d'acompte */}
             <motion.article
               variants={STAGGER_ITEM_VARIANTS}
               className="rounded-[24px] border border-[#F3E1E6] bg-[#FDF8F9] p-6 shadow-powdery"
@@ -577,6 +577,60 @@ export function LongScrollTrainExperience({
                 <strong className="text-[#1C191A]">Acompte obligatoire</strong> défini selon la pose et intégralement déduit du total le jour de la séance. Non remboursable si annulation à moins de 24h ou retard &gt; 15 min ; reportable 1 fois en prévenant 24h avant ; 100 % remboursé si l’annulation vient de la praticienne.
               </p>
             </motion.article>
+
+            {/* Grille des 3 règles express (compacte, directe, anti-litiges) */}
+            <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
+              <motion.article
+                variants={STAGGER_ITEM_VARIANTS}
+                className="rounded-[22px] border border-[#F3E1E6] bg-white p-5 shadow-powdery"
+              >
+                <div className="flex items-center gap-2.5">
+                  <span className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-[#FDF8F9] text-[#D88B99]">
+                    <Clock className="h-4 w-4" strokeWidth={1.5} />
+                  </span>
+                  <h4 className="font-serif text-lg font-semibold text-[#1C191A]">
+                    Ponctualité stricte
+                  </h4>
+                </div>
+                <p className="mt-2.5 text-xs leading-relaxed text-[#786B6E]">
+                  Au-delà de <strong className="text-[#1C191A]">15 min de retard</strong>, la séance est annulée afin de respecter le planning d'études et la cliente suivante.
+                </p>
+              </motion.article>
+
+              <motion.article
+                variants={STAGGER_ITEM_VARIANTS}
+                className="rounded-[22px] border border-[#F3E1E6] bg-white p-5 shadow-powdery"
+              >
+                <div className="flex items-center gap-2.5">
+                  <span className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-[#FDF8F9] text-[#D88B99]">
+                    <Sparkles className="h-4 w-4" strokeWidth={1.5} />
+                  </span>
+                  <h4 className="font-serif text-lg font-semibold text-[#1C191A]">
+                    Yeux démaquillés
+                  </h4>
+                </div>
+                <p className="mt-2.5 text-xs leading-relaxed text-[#786B6E]">
+                  Venez les <strong className="text-[#1C191A]">yeux 100 % propres</strong> sans mascara ni corps gras. Poses sur cils naturels uniquement (pas de pose extérieure).
+                </p>
+              </motion.article>
+
+              <motion.article
+                variants={STAGGER_ITEM_VARIANTS}
+                className="rounded-[22px] border border-[#F3E1E6] bg-white p-5 shadow-powdery"
+              >
+                <div className="flex items-center gap-2.5">
+                  <span className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-[#FDF8F9] text-[#D88B99]">
+                    <MapPin className="h-4 w-4" strokeWidth={1.5} />
+                  </span>
+                  <h4 className="font-serif text-lg font-semibold text-[#1C191A]">
+                    Adresse confidentielle
+                  </h4>
+                </div>
+                <p className="mt-2.5 text-xs leading-relaxed text-[#786B6E]">
+                  Studio à <strong className="text-[#1C191A]">Dakar (Diamalaye)</strong>. Adresse exacte envoyée sur WhatsApp dès confirmation de l'acompte.
+                </p>
+              </motion.article>
+            </div>
           </div>
 
           {/* Encart Aftercare — Soins & Longévité des Cils */}
@@ -611,7 +665,7 @@ export function LongScrollTrainExperience({
                     href="/a-savoir#aftercare"
                     className="inline-flex min-h-11 items-center justify-center gap-2 rounded-full border border-[#D88B99] bg-white px-5 py-2.5 text-xs font-semibold text-[#B36270] shadow-powdery transition-transform duration-150 ease-emil-out active:scale-[0.97] hover:bg-[#FDF8F9]"
                   >
-                    <span>Consulter le guide complet aftercare</span>
+                    <span>Consulter le guide complet & règles du studio</span>
                     <ArrowRight className="h-4 w-4" strokeWidth={1.5} />
                   </a>
                 </div>
@@ -707,6 +761,30 @@ export function LongScrollTrainExperience({
               </motion.article>
             ))}
           </div>
+
+          {/* Appel à l'action final de conversion après réassurance sociale */}
+          <motion.div
+            variants={STAGGER_ITEM_VARIANTS}
+            className="mt-12 flex flex-col items-center justify-center text-center"
+          >
+            <p className="font-serif text-2xl font-semibold text-[#1C191A] sm:text-3xl">
+              Prête à sublimer votre regard ?
+            </p>
+            <p className="mt-1.5 max-w-md text-xs text-[#786B6E] sm:text-sm">
+              Accédez au calendrier en direct pour bloquer votre séance selon les vrais créneaux disponibles.
+            </p>
+            <div className="mt-5">
+              <ShimmerBookingButton
+                href={
+                  highlightedService
+                    ? `/reserver?service=${encodeURIComponent(highlightedService.slug)}`
+                    : '/reserver'
+                }
+                label="Réserver mon rendez-vous"
+                sublabel="Sélectionnez votre pose et votre date"
+              />
+            </div>
+          </motion.div>
         </motion.div>
       </section>
 

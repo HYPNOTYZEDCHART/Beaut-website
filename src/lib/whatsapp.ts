@@ -73,7 +73,7 @@ export function buildWhatsAppUrl(phone: string, message: string): string {
 }
 
 /**
- * 1. Lien Cliente -> Praticienne (Étape 5 : Envoi de la preuve d'acompte Wave / Orange Money)
+ * 1. Lien Cliente -> Praticienne (Étape 5 : Confirmation de la réservation Wave / Orange Money)
  */
 export function buildDepositProofWhatsAppUrl(params: {
   studioWhatsappPhone: string;
@@ -89,18 +89,20 @@ export function buildDepositProofWhatsAppUrl(params: {
   const methodLabel =
     params.paymentMethod === 'WAVE' ? 'Wave' : 'Max it (Orange Money)';
   const formattedDate = formatDakarDateLong(params.dateKey);
+  const remainingXof = params.totalPriceXof - params.depositAmountXof;
 
   const message = [
     `Bonjour DIAMA EYELASH EXTENSIONS 🌸`,
     ``,
-    `Je viens de réserver mon créneau et je t'envoie ma preuve d'acompte :`,
+    `Je viens de finaliser ma réservation sur le site :`,
     `• Référence : *${params.referenceCode}*`,
     `• Cliente : ${params.clientName}`,
     `• Prestation : *${params.serviceName}*`,
     `• Date : *${formattedDate} à ${params.startTimeLabel}*`,
-    `• Acompte réglé : *${formatXof(params.depositAmountXof)}* via ${methodLabel} (Total : ${formatXof(params.totalPriceXof)})`,
+    `• Acompte envoyé : *${formatXof(params.depositAmountXof)}* via ${methodLabel}`,
+    `• Reste à régler sur place : *${formatXof(remainingXof)}*`,
     ``,
-    `Voici ma capture d'écran de transfert ci-jointe pour confirmer mon rendez-vous :`,
+    `Merci de me confirmer la prise en compte de ma séance et l'adresse exacte du studio !`,
   ].join('\n');
 
   return buildWhatsAppUrl(params.studioWhatsappPhone, message);

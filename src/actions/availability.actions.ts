@@ -11,6 +11,7 @@ import {
   toDakarDateKey,
   addDaysToDateKey,
   buildDakarDateTime,
+  resolveFullWeeklySchedules,
 } from '@/lib/slot-engine';
 import { invalidateVitrineCache } from '@/lib/catalog-fallback';
 
@@ -381,7 +382,7 @@ export async function getServiceAvailabilityAction(
         examModeActive: settings.examModeActive,
         examModeMessage: settings.examModeMessage,
       },
-      weeklySchedules,
+      weeklySchedules: resolveFullWeeklySchedules(weeklySchedules),
       blackoutPeriods,
       existingBookings,
       now,

@@ -13,6 +13,7 @@ import { isDatabaseReachableFast, prisma } from '@/lib/prisma';
 import {
   buildDakarDateTime,
   verifySlotAvailability,
+  resolveFullWeeklySchedules,
 } from '@/lib/slot-engine';
 import {
   buildBookingConfirmedWhatsAppUrl,
@@ -203,7 +204,7 @@ export async function createBookingAndLockSlotAction(
             examModeActive: settings.examModeActive,
             examModeMessage: settings.examModeMessage,
           },
-          weeklySchedules,
+          weeklySchedules: resolveFullWeeklySchedules(weeklySchedules),
           blackoutPeriods,
           existingBookings,
           now,

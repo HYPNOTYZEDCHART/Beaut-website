@@ -140,7 +140,7 @@ export function PrestationsClientList({
                 {service.refillAccepted && (
                   <PowderyBadge variant="sage">
                     <CheckCircle2 className="h-3.5 w-3.5" strokeWidth={1.5} />
-                    Remplissage accepté (≤ 21 j)
+                    Remplissage accepté
                   </PowderyBadge>
                 )}
               </div>
