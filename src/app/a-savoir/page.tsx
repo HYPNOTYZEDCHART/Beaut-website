@@ -117,8 +117,8 @@ export default async function ASavoirPage() {
                 Au-delà de 15 minutes de retard, le rendez-vous est
                 automatiquement annulé
               </strong>{' '}
-              afin de ne pas pénaliser la cliente suivante ni mes horaires de
-              cours, et l’acompte n’est pas remboursable.
+              afin de ne pas pénaliser la cliente suivante ni le planning du
+              studio, et l’acompte n’est pas remboursable.
             </p>
           </section>
 

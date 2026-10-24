@@ -577,60 +577,6 @@ export function LongScrollTrainExperience({
                 <strong className="text-[#1C191A]">Acompte obligatoire</strong> défini selon la pose et intégralement déduit du total le jour de la séance. Non remboursable si annulation à moins de 24h ou retard &gt; 15 min ; reportable 1 fois en prévenant 24h avant ; 100 % remboursé si l’annulation vient de la praticienne.
               </p>
             </motion.article>
-
-            {/* Grille des 3 règles express (compacte, directe, anti-litiges) */}
-            <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
-              <motion.article
-                variants={STAGGER_ITEM_VARIANTS}
-                className="rounded-[22px] border border-[#F3E1E6] bg-white p-5 shadow-powdery"
-              >
-                <div className="flex items-center gap-2.5">
-                  <span className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-[#FDF8F9] text-[#D88B99]">
-                    <Clock className="h-4 w-4" strokeWidth={1.5} />
-                  </span>
-                  <h4 className="font-serif text-lg font-semibold text-[#1C191A]">
-                    Ponctualité stricte
-                  </h4>
-                </div>
-                <p className="mt-2.5 text-xs leading-relaxed text-[#786B6E]">
-                  Au-delà de <strong className="text-[#1C191A]">15 min de retard</strong>, la séance est annulée afin de respecter le planning du studio et la cliente suivante.
-                </p>
-              </motion.article>
-
-              <motion.article
-                variants={STAGGER_ITEM_VARIANTS}
-                className="rounded-[22px] border border-[#F3E1E6] bg-white p-5 shadow-powdery"
-              >
-                <div className="flex items-center gap-2.5">
-                  <span className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-[#FDF8F9] text-[#D88B99]">
-                    <Sparkles className="h-4 w-4" strokeWidth={1.5} />
-                  </span>
-                  <h4 className="font-serif text-lg font-semibold text-[#1C191A]">
-                    Yeux démaquillés
-                  </h4>
-                </div>
-                <p className="mt-2.5 text-xs leading-relaxed text-[#786B6E]">
-                  Venez les <strong className="text-[#1C191A]">yeux 100 % propres</strong> sans mascara ni corps gras. Poses sur cils naturels uniquement (pas de pose extérieure).
-                </p>
-              </motion.article>
-
-              <motion.article
-                variants={STAGGER_ITEM_VARIANTS}
-                className="rounded-[22px] border border-[#F3E1E6] bg-white p-5 shadow-powdery"
-              >
-                <div className="flex items-center gap-2.5">
-                  <span className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-[#FDF8F9] text-[#D88B99]">
-                    <MapPin className="h-4 w-4" strokeWidth={1.5} />
-                  </span>
-                  <h4 className="font-serif text-lg font-semibold text-[#1C191A]">
-                    Adresse confidentielle
-                  </h4>
-                </div>
-                <p className="mt-2.5 text-xs leading-relaxed text-[#786B6E]">
-                  Studio à <strong className="text-[#1C191A]">Dakar (Diamalaye)</strong>. Adresse exacte envoyée sur WhatsApp dès confirmation de l'acompte.
-                </p>
-              </motion.article>
-            </div>
           </div>
 
           {/* Encart Aftercare — Soins & Longévité des Cils */}
